@@ -1,0 +1,24 @@
+.DS_Store
+.idea/
+.vscode/
+*.iml
+target/
+*.class
+*.log
+
+# Локальные настройки и учётные данные
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Рабочие данные стенда и результаты запусков
+/data/
+/volumes/
+/backups/
+/tmp/
+/artifacts/
+
+# Материалы курса используются локально
+/lectures/
