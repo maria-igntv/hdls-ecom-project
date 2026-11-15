@@ -33,6 +33,16 @@ S03 и S09 — внутренние основания модели, а не н�
 
 Разбор применимости данных: [исследование аналогов](market_research.md). Источники подтверждают нишу и масштаб; целевые MAU/DAU, частоты, конверсии, размеры и кэши нашего сервиса — допущения. Полные входные числа находятся в [модели](../model/capacity.json), результаты — в [расчёте](capacity.md). Similarweb не используется.
 
+## Источники чекпоинта 2
+
+| Код | Источник | Применение |
+| --- | --- | --- |
+| S16 | [Spring Boot 3.5 requirements](https://docs.spring.io/spring-boot/3.5/system-requirements.html) | Выбранная ветка 3.5.16 совместима с Java 25; пакет реально собран и запущен |
+| S17 | [PostgreSQL 17 locking](https://www.postgresql.org/docs/17/explicit-locking.html), [EXPLAIN](https://www.postgresql.org/docs/17/using-explain.html) | Row locks, порядок доступа, отличие cost от actual time и выбор индексов |
+| S18 | [SQL dump](https://www.postgresql.org/docs/17/backup-dump.html), [continuous archiving](https://www.postgresql.org/docs/17/continuous-archiving.html), [pgBackRest](https://pgbackrest.org/user-guide.html) | Логический restore стенда отделён от планируемого физического backup/WAL/PITR |
+
+Схема, SQL-планы и фактические измерения собственного прототипа находятся в [storage.md](storage.md) и [проверке этапа 2](stage2_verification.md). Конфигурации целевых серверов остаются оценками до профилирования.
+
 ## Правила использования внешних данных
 
 1. Фиксируем исходную публикацию и период наблюдения; дату доступа не выдаём за дату публикации.

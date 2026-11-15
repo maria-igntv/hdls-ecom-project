@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/commerce}
+    username: ${DB_USER:commerce}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 8
+      minimum-idle: 2
+      connection-timeout: 15000
+      connection-init-sql: "SET statement_timeout = '10s'; SET lock_timeout = '5s'; SET idle_in_transaction_session_timeout = '10s'"
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      connect-timeout: 150ms
+      timeout: 150ms
+  threads:
+    virtual:
+      enabled: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  flyway:
+    locations: classpath:db/migration
+server:
+  shutdown: graceful
+spring.lifecycle.timeout-per-shutdown-phase: 15s
+management:
+  endpoints.web.exposure.include: health,metrics
+  endpoint.health.probes.enabled: true
+logging:
+  level:
+    org.springframework.security: WARN
+    org.springframework.web: WARN

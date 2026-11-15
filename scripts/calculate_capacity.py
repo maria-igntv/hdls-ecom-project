@@ -61,18 +61,23 @@ def calculate(model):
     cat = model["catalog"]
     image_bytes = thumb_requests * cat["thumbnail_bytes"] + detail_requests * cat["detail_bytes"]
     notifications = created + paid + expired
-    inventory_events = 2 * created + c["stock_updates_day"]
+    inventory_events = 2 * created * c["items_per_order"] + c["stock_updates_day"]
     search_events = c["catalog_updates_day"] + inventory_events
     events = notifications + search_events
     query_calls = initiated * c["reconcile_fraction"]
+    costs = model["sql"]
+    private_requests = sum(x["daily"] for x in rows if x["id"] in {"OP04","OP05","OP06","OP07","OP09","OP10","OP11","OP12","OP13"})
     sql = (
         by_id["OP01"]["daily"] + by_id["OP02"]["daily"] * (1 - media["api_card_hit"])
-        + by_id["OP04"]["daily"] + 2 * by_id["OP05"]["daily"]
-        + 12 * created + 2 * (base["OP06"] - created) + (by_id["OP06"]["daily"] - base["OP06"])
-        + 3 * by_id["OP07"]["daily"] + 4 * by_id["OP08"]["daily"]
-        + 2 * (by_id["OP09"]["daily"] + by_id["OP10"]["daily"])
-        + 3 * c["catalog_updates_day"] + 2 * c["stock_updates_day"] + 3 * c["image_uploads_day"]
-        + 4 * expired + 2 * query_calls + 4 * events + search_events + DAY / 2
+        + costs["cart_read"] * by_id["OP04"]["daily"] + costs["cart_write"] * by_id["OP05"]["daily"]
+        + costs["checkout_success"] * created + costs["checkout_rejected"] * (base["OP06"] - created)
+        + costs["checkout_replay"] * (by_id["OP06"]["daily"] - base["OP06"])
+        + costs["payment_init"] * by_id["OP07"]["daily"] + costs["payment_webhook"] * by_id["OP08"]["daily"]
+        + costs["history_read"] * by_id["OP09"]["daily"] + costs["order_detail"] * by_id["OP10"]["daily"]
+        + costs["catalog_update"] * c["catalog_updates_day"] + costs["stock_update"] * c["stock_updates_day"] + costs["image_upload"] * c["image_uploads_day"]
+        + costs["expiry_per_order"] * expired + costs["payment_reconcile"] * query_calls
+        + costs["message_handling"] * events + costs["search_projection"] * search_events
+        + DAY / costs["publisher_poll_interval_seconds"] + private_requests
     )
     redis = requests + by_id["OP02"]["daily"] * (2 - media["api_card_hit"])
     return dict(rows=rows, by_id=by_id, base=base, created=created, initiated=initiated, paid=paid,
@@ -101,7 +106,7 @@ def storage(model, result, years):
     add("Карточки", sku, s["product_bytes"], s["sql_copies"], s["sql_overhead"])
     add("Цены и запас", sku, s["price_inventory_bytes"], s["sql_copies"], s["sql_overhead"])
     add("Метаданные изображений", sku * cat["images_per_sku"], s["image_metadata_bytes"], s["sql_copies"], s["sql_overhead"])
-    add("Корзины", carts, s["cart_header_bytes"], s["sql_copies"], s["sql_overhead"])
+    add("Корзины", profiles, s["cart_header_bytes"], s["sql_copies"], s["sql_overhead"])
     add("Позиции корзин", carts * s["cart_items"], s["cart_item_bytes"], s["sql_copies"], s["sql_overhead"])
     add("Заказы", orders, s["order_header_bytes"], s["sql_copies"], s["sql_overhead"])
     add("Позиции заказов", orders * c["items_per_order"], s["order_item_bytes"], s["sql_copies"], s["sql_overhead"])
@@ -178,8 +183,8 @@ def report(model):
                ["Исходящие платёжные вызовы, включая сверку", number(r["by_id"]["OP07"]["daily"] + r["query_calls"]), number((r["by_id"]["OP07"]["daily"] + r["query_calls"]) / DAY), number((r["by_id"]["OP07"]["daily"] + r["query_calls"]) / DAY * factor)],
                ["Истечение резервов", number(r["expired"], 0), number(r["expired"] / DAY), number(r["expired"] / DAY * factor)],
            ]), "",
-           "SQL-модель: категория 1; miss карточки 1; корзина read 1/write 2; успешный checkout 12, бизнес-отказ 2, повтор 1; инициация 3; webhook 4; история/детали 2; каталог 3, запас 2, медиа 3; expiry 4; сверка 2. Outbox и consumer-state — консервативно 4 SQL/событие, построение поисковой карточки 1/обновление; пустой polling outbox раз в 2 с. Это число обращений, не одинаковых по стоимости транзакций; batch, планы и индексы уточняются позже.", "",
-           "42 тыс. событий = 18 тыс. состояний заказов + 19 тыс. изменений запаса + 5 тыс. изменений каталога. Подтверждения/повторные доставки брокера считаются сверх публикаций. Redis: до одной rate-limit операции на API-запрос плюс GET каждой карточки и SET при miss. Резервы, цены и корзины не полагаются на сохранность кэша.", "",
+           "SQL-модель уточнена по реализации этапа 2: категория 1; miss карточки 1; корзина read 3/write 7; успешный checkout с 3 SKU — 29, бизнес-отказ 7, повтор до 3; история 1, детали 2; каталог/запас 5. Добавлена одна SQL-проверка учётной записи на приватный запрос в текущей аутентификации. Стоимости будущей оплаты, обработки сообщений и polling остаются допущениями из раздела sql в JSON. Это число обращений, а не одинаковых по стоимости транзакций; batch и эксплуатационные профили уточняются дальше.", "",
+           f'{number(r["events"], 0)} событий = {number(r["notifications"], 0)} состояний заказов + {number(2 * r["created"] * model["commerce"]["items_per_order"] + model["commerce"]["stock_updates_day"], 0)} изменений запаса + {number(model["commerce"]["catalog_updates_day"], 0)} изменений каталога. В отличие от первоначального укрупнения, InventoryChanged считается на каждый SKU. Подтверждения/повторные доставки брокера считаются сверх публикаций. Redis: модель rate-limit плюс кэш карточек; Lua/HASH операций прототипа может быть больше логической GET/SET операции. Резервы, цены и корзины не полагаются на сохранность кэша.', "",
            f'Для бюджета служебных запросов взяты {p["api_instances_budget"]} API-экземпляров и {p["lb_instances"]} LB: readiness каждые {p["health_interval_seconds"]} с даёт **{number(p["api_instances_budget"] * p["lb_instances"] / p["health_interval_seconds"])} проверок/с** вне пользовательского RPS. Число экземпляров — пример для бюджета health, не окончательный sizing.', "",
            "## Данные на пользователя и логическое хранение первого года", "",
            "Среднее по MAU ниже — распределённая доля общего хранения, а не персональная квота. Профили делятся на 1 млн MAU при базе 2 млн учётных записей. Общие каталог, картинки и эксплуатационные данные явно отделены от принадлежащих пользователю объектов. Для среднего по зарегистрированному пользователю профиль равен 1 записи и 0,000002 ГБ.", "",
