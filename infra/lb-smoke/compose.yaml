@@ -1,0 +1,43 @@
+name: hdls-stage1-smoke
+
+x-backend: &backend
+  image: eclipse-temurin:25-jdk
+  command: ["java", "--add-modules", "jdk.httpserver", "/app/SmokeBackend.java"]
+  volumes:
+    - ./SmokeBackend.java:/app/SmokeBackend.java:ro
+  environment: &java_environment
+    JAVA_TOOL_OPTIONS: "-Xmx128m -XX:ActiveProcessorCount=2"
+  mem_limit: 256m
+  cpus: 0.5
+  stop_grace_period: 15s
+
+services:
+  commerce-1:
+    <<: *backend
+    environment:
+      <<: *java_environment
+      INSTANCE_ID: commerce-1
+  commerce-2:
+    <<: *backend
+    environment:
+      <<: *java_environment
+      INSTANCE_ID: commerce-2
+  search-1:
+    <<: *backend
+    environment:
+      <<: *java_environment
+      INSTANCE_ID: search-1
+  haproxy:
+    image: haproxy:3.2-alpine
+    ports:
+      - "127.0.0.1:18080:8080"
+      - "127.0.0.1:18404:8404"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - commerce-1
+      - commerce-2
+      - search-1
+    mem_limit: 128m
+    cpus: 0.5
+    stop_grace_period: 15s

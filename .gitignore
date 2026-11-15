@@ -5,6 +5,8 @@
 target/
 *.class
 *.log
+__pycache__/
+*.py[cod]
 
 # Локальные настройки и учётные данные
 .env

@@ -1,0 +1,47 @@
+{
+  "audience": {"mau": 1000000, "dau": 200000, "registered_users": 2000000, "annual_growth": 0.30},
+  "catalog": {"sku": 100000, "annual_growth": 0.20, "images_per_sku": 4, "original_bytes": 250000, "thumbnail_bytes": 30000, "detail_bytes": 120000},
+  "regions": [
+    {"name": "Москва", "share": 0.165},
+    {"name": "Московская область", "share": 0.078},
+    {"name": "Санкт-Петербург", "share": 0.062},
+    {"name": "Краснодарский край", "share": 0.048},
+    {"name": "Свердловская область", "share": 0.028},
+    {"name": "Ростовская область", "share": 0.028},
+    {"name": "Самарская область", "share": 0.020},
+    {"name": "Республика Татарстан", "share": 0.020},
+    {"name": "Нижегородская область", "share": 0.020},
+    {"name": "Красноярский край", "share": 0.019},
+    {"name": "Остальные регионы России", "share": 0.512}
+  ],
+  "operations": [
+    {"id": "OP01", "name": "Категория", "actions": 6, "request_bytes": 700, "response_bytes": 12000, "retry": 0.01, "service": "Commerce"},
+    {"id": "OP02", "name": "Карточка", "actions": 14, "request_bytes": 700, "response_bytes": 8000, "retry": 0.01, "service": "Commerce"},
+    {"id": "OP03", "name": "Поиск", "actions": 5, "request_bytes": 900, "response_bytes": 14000, "retry": 0.01, "service": "Search"},
+    {"id": "OP04", "name": "Чтение корзины", "actions": 1.4, "request_bytes": 700, "response_bytes": 4000, "retry": 0.01, "service": "Commerce"},
+    {"id": "OP05", "name": "Изменение корзины", "actions": 0.6, "request_bytes": 1000, "response_bytes": 2000, "retry": 0.01, "service": "Commerce"},
+    {"id": "OP06", "name": "Попытка заказа", "actions": 0.05, "request_bytes": 1500, "response_bytes": 2000, "retry": 0.02, "service": "Commerce"},
+    {"id": "OP09", "name": "История", "actions": 0.04, "request_bytes": 700, "response_bytes": 10000, "retry": 0.01, "service": "Commerce"},
+    {"id": "OP10", "name": "Детали заказа", "actions": 0.16, "request_bytes": 700, "response_bytes": 6000, "retry": 0.01, "service": "Commerce"}
+  ],
+  "commerce": {"create_success": 0.90, "payment_initiated": 0.96, "payment_paid": 0.90, "payment_retry": 0.05, "webhooks_per_initiation": 1.25, "reconcile_fraction": 0.05, "items_per_order": 3, "reservation_seconds": 900, "catalog_updates_day": 5000, "stock_updates_day": 1000, "image_uploads_day": 100},
+  "media": {"list_images": 20, "list_network_fraction": 0.50, "card_images": 3, "card_network_fraction": 0.70, "image_request_bytes": 500, "cdn_hit": 0.95, "api_card_hit": 0.90},
+  "peak": {"factor": 10, "network_margin": 1.30, "flash_attempts": 1000, "flash_seconds": 10, "flash_repeat_fraction": 0.20, "flash_stock": 100, "late_paid_fraction": 0.01, "api_instances_budget": 6, "lb_instances": 2, "health_interval_seconds": 2},
+  "storage": {
+    "profile_bytes": 2000, "product_bytes": 4000, "price_inventory_bytes": 256, "image_metadata_bytes": 256,
+    "stored_cart_fraction_registered": 0.25, "cart_retention_days": 30, "cart_items": 3, "cart_header_bytes": 256, "cart_item_bytes": 160,
+    "order_header_bytes": 2000, "order_item_bytes": 2000, "payment_bytes": 1000,
+    "reservation_bytes": 896, "reservation_retention_days": 30,
+    "idempotency_bytes": 2000, "idempotency_retention_days": 7,
+    "event_bytes": 1000, "outbox_retention_days": 7, "inbox_bytes": 128, "inbox_retention_days": 7,
+    "webhook_dedup_bytes": 256, "webhook_retention_days": 7,
+    "search_document_bytes": 3000, "search_index_multiplier": 2, "search_copies": 2,
+    "cache_sku_fraction": 0.10, "cache_value_bytes": 8000, "cache_overhead": 1.5, "cache_copies": 2,
+    "sql_overhead": 2, "sql_copies": 3, "queue_outage_hours": 6, "queue_overhead": 1.2, "queue_copies": 3,
+    "log_bytes_per_request": 500, "logs_days": 7, "logs_compression": 0.30,
+    "trace_sample": 0.01, "spans_per_trace": 5, "span_bytes": 500, "traces_days": 3, "traces_compression": 0.50,
+    "observability_copies": 2, "metric_series": 20000, "metric_interval_seconds": 15, "metric_days": 15, "metric_bytes_per_sample": 2, "metric_overhead": 1.3,
+    "backup_full_copies": 2, "backup_compression": 0.50, "wal_bytes_per_created_order": 100000, "wal_days": 7,
+    "orders_retention_years": 3
+  }
+}
