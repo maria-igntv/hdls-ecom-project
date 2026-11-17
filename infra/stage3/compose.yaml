@@ -1,0 +1,21 @@
+services:
+  postgres:
+    command: ["postgres", "-c", "shared_buffers=128MB", "-c", "max_connections=80", "-c", "log_lock_waits=on", "-c", "deadlock_timeout=200ms", "-c", "shared_preload_libraries=pg_stat_statements", "-c", "track_io_timing=on"]
+  commerce-1:
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx256m -XX:ActiveProcessorCount=1 -XX:+UseG1GC -XX:FlightRecorderOptions=maxchunksize=128m -XX:StartFlightRecording=filename=/tmp/commerce.jfr,settings=profile,dumponexit=true,maxsize=128m"
+  commerce-2:
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx256m -XX:ActiveProcessorCount=1 -XX:+UseG1GC -XX:FlightRecorderOptions=maxchunksize=128m -XX:StartFlightRecording=filename=/tmp/commerce.jfr,settings=profile,dumponexit=true,maxsize=128m"
+  k6:
+    image: grafana/k6:1.4.2
+    profiles: [load]
+    user: "${LOAD_UID:-1000}:${LOAD_GID:-1000}"
+    volumes:
+      - ../../scripts/load_stage3.js:/scripts/load.js:ro
+      - ../../model/capacity.json:/scripts/capacity.json:ro
+      - ../../artifacts/stage3:/results
+    environment:
+      BASE_URL: http://haproxy:8080
+    mem_limit: 1536m
+    cpus: 2

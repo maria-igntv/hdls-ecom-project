@@ -1,0 +1,3759 @@
+{
+  "project": "hdls-stage3-check-2792e648",
+  "environment": {
+    "java_options": "-Xmx256m -XX:ActiveProcessorCount=1 -XX:+UseG1GC -XX:FlightRecorderOptions=maxchunksize=128m -XX:StartFlightRecording=filename=/tmp/commerce.jfr,settings=profile,dumponexit=true,maxsize=128m",
+    "haproxy_config_sha256": "622475a80597ff157a196a0f646cb1017fea7bdf5d9c0d4f7b4c0aae0df9f02c",
+    "docker": {
+      "ServerVersion": "29.9.2",
+      "Architecture": "aarch64",
+      "NCPU": 12,
+      "MemTotal": 8319238144,
+      "OperatingSystem": "Docker Desktop"
+    },
+    "java": "openjdk 25.0.5 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-25.0.5+8 (build 25.0.5+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.5+8 (build 25.0.5+8-LTS, mixed mode, sharing)",
+    "images": [
+      {
+        "ID": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+        "ContainerName": "hdls-stage3-check-2792e648-redis-1",
+        "Repository": "redis",
+        "Tag": "7.4-alpine",
+        "Platform": "linux/arm64/v8",
+        "Size": 58770053,
+        "Created": "2026-11-09T20:09:26.701357753Z",
+        "LastTagTime": "2026-11-15T21:44:47.622190922Z"
+      },
+      {
+        "ID": "sha256:a77aa70e641402a21411b92b721c58d10f23b50ae5fdd2333efd22d166e1e5f7",
+        "ContainerName": "hdls-stage3-check-2792e648-postgres-1",
+        "Repository": "postgres",
+        "Tag": "17-alpine",
+        "Platform": "linux/arm64/v8",
+        "Size": 415242046,
+        "Created": "2026-11-12T20:56:36.922671431Z",
+        "LastTagTime": "2026-11-15T21:45:01.542693804Z"
+      },
+      {
+        "ID": "sha256:d234ff07d0c8c2a0ded7a409173022550dd2960beacdd6d23724f5b29a3df1df",
+        "ContainerName": "hdls-stage3-check-2792e648-commerce-2-1",
+        "Repository": "hdls-commerce",
+        "Tag": "stage2",
+        "Platform": "linux/arm64",
+        "Size": 574518820,
+        "Created": "2026-11-17T09:03:14.802122428Z",
+        "LastTagTime": "2026-11-17T09:35:24.864345877Z"
+      },
+      {
+        "ID": "sha256:d234ff07d0c8c2a0ded7a409173022550dd2960beacdd6d23724f5b29a3df1df",
+        "ContainerName": "hdls-stage3-check-2792e648-commerce-1-1",
+        "Repository": "hdls-commerce",
+        "Tag": "stage2",
+        "Platform": "linux/arm64",
+        "Size": 574518820,
+        "Created": "2026-11-17T09:03:14.802122428Z",
+        "LastTagTime": "2026-11-17T09:35:24.864345877Z"
+      },
+      {
+        "ID": "sha256:1c3568e520453cc8ba98c39501febcf450429c80e6cc27ecad779961d76e597c",
+        "ContainerName": "hdls-stage3-check-2792e648-haproxy-1",
+        "Repository": "haproxy",
+        "Tag": "3.2-alpine",
+        "Platform": "linux/arm64/v8",
+        "Size": 58766464,
+        "Created": "2026-11-05T18:52:08.035628023Z",
+        "LastTagTime": "2026-11-15T21:12:15.60056963Z"
+      }
+    ]
+  },
+  "profiles": [
+    {
+      "run": "warmup",
+      "requestedRate": 521,
+      "configuredRate": 521,
+      "duration": 90,
+      "weights": {
+        "checkout": 10200,
+        "stockUpdate": 1000,
+        "cartRead": 282800,
+        "history": 8080,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "category": 1212000,
+        "card": 2828000,
+        "cartWrite": 121200
+      },
+      "instances": 2,
+      "k6_exit": 99,
+      "operations": 46620,
+      "http_requests": 46941,
+      "dropped_iterations": 275,
+      "technical_errors": {
+        "rate": 0.006048906048906049,
+        "passes": 282,
+        "fails": 46338
+      },
+      "operation_errors": {
+        "rate": 0.006048906048906049,
+        "passes": 282,
+        "fails": 46338
+      },
+      "support_errors": {
+        "fails": 321,
+        "rate": 0,
+        "passes": 0
+      },
+      "latency_ms": {
+        "avg": 63.72799338719466,
+        "min": 0.264375,
+        "p(50)": 0.917375,
+        "p(95)": 402.5495086499987,
+        "p(99)": 1731.1579072499999,
+        "max": 2135.281168
+      },
+      "by_operation_ms": {
+        "cartRead": {
+          "avg": 66.292086331741,
+          "min": 0.689167,
+          "p(50)": 1.5767090000000001,
+          "p(95)": 455.71187964999933,
+          "p(99)": 1696.6148338199991,
+          "max": 1960.479209
+        },
+        "stockUpdate": {
+          "avg": 140.0365947272727,
+          "min": 2.034333,
+          "p(50)": 3.759916,
+          "p(95)": 753.5302089999994,
+          "p(99)": 1350.2068426,
+          "max": 1499.376001
+        },
+        "card": {
+          "p(99)": 1775.3542596,
+          "max": 2135.281168,
+          "avg": 63.70254881578505,
+          "min": 0.264375,
+          "p(50)": 0.679083,
+          "p(95)": 384.155459
+        },
+        "detail": {
+          "p(99)": 1729.4105439999996,
+          "max": 1889.001126,
+          "avg": 75.61958644807116,
+          "min": 0.574875,
+          "p(50)": 1.176875,
+          "p(95)": 581.4470169999995
+        },
+        "history": {
+          "avg": 70.90765860714286,
+          "min": 0.744708,
+          "p(50)": 1.4013334999999998,
+          "p(95)": 500.0163861999997,
+          "p(99)": 1396.1156812799998,
+          "max": 1775.259751
+        },
+        "checkout": {
+          "p(99)": 587.0127057799998,
+          "max": 713.582959,
+          "avg": 28.119705878504682,
+          "min": 3.94225,
+          "p(50)": 6.013833,
+          "p(95)": 98.46247489999969
+        },
+        "category": {
+          "avg": 62.097009342037985,
+          "min": 0.588875,
+          "p(50)": 1.1276045,
+          "p(95)": 402.74815864999744,
+          "p(99)": 1649.8616424699992,
+          "max": 1894.706792
+        },
+        "cartWrite": {
+          "avg": 71.51861818615754,
+          "min": 1.202917,
+          "p(50)": 2.392542,
+          "p(95)": 535.5819589999995,
+          "p(99)": 1733.0809345599996,
+          "max": 2101.502417
+        },
+        "catalogUpdate": {
+          "avg": 106.83606530188679,
+          "min": 1.724584,
+          "p(50)": 2.951083,
+          "p(95)": 892.3823253999994,
+          "p(99)": 1721.3184593199999,
+          "max": 1844.224793
+        }
+      },
+      "failed_thresholds": [
+        "latency_cartRead",
+        "latency_stockUpdate",
+        "latency_card",
+        "dropped_iterations",
+        "latency_detail",
+        "latency_history",
+        "operation_latency",
+        "dropped_iterations{scenario:cartRead}",
+        "technical_errors",
+        "latency_category",
+        "latency_cartWrite",
+        "operation_errors",
+        "dropped_iterations{scenario:cartWrite}",
+        "dropped_iterations{scenario:card}",
+        "dropped_iterations{scenario:category}",
+        "latency_catalogUpdate"
+      ],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 5.66,
+            "max": 11.25
+          },
+          "working_set": {
+            "mean": 29388358.89,
+            "max": 30880563.2
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 32.78,
+            "max": 103.23
+          },
+          "working_set": {
+            "mean": 358943696.74,
+            "max": 371091046.4
+          },
+          "rss": {
+            "mean": 379644061.54,
+            "max": 391438336
+          },
+          "heap": {
+            "mean": 50020952.62,
+            "max": 66896016.0
+          },
+          "pending": {
+            "mean": 0.62,
+            "max": 8.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 28.74,
+            "max": 107.83
+          },
+          "working_set": {
+            "mean": 385698516.68,
+            "max": 396256870.4
+          },
+          "rss": {
+            "mean": 394177614.77,
+            "max": 403722240
+          },
+          "heap": {
+            "mean": 60309559.38,
+            "max": 73119840.0
+          },
+          "pending": {
+            "mean": 0.54,
+            "max": 7.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 12.12,
+            "max": 16.24
+          },
+          "working_set": {
+            "mean": 224516253.54,
+            "max": 228065280.0
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 1.67,
+            "max": 2.15
+          },
+          "working_set": {
+            "mean": 18380730.68,
+            "max": 19503513.6
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 18.25,
+            "max": 53.01
+          },
+          "working_set": {
+            "mean": 332503449.6,
+            "max": 355257548.8
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 26625,
+        "xact_rollback": 0,
+        "blks_read": 33271,
+        "blks_hit": 2585560,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 291.496,
+        "blk_write_time": 286.496
+      },
+      "wal_bytes": 3760272,
+      "data_received_bytes": 235159288,
+      "data_sent_bytes": 4748134,
+      "vus_max": 800,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 14487168,
+          "user_usec": 8811016,
+          "system_usec": 5676152,
+          "nice_usec": 0,
+          "nr_periods": 915,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 1789975,
+          "user_usec": 1143687,
+          "system_usec": 646288,
+          "nice_usec": 0,
+          "nr_periods": 908,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 5920175,
+          "user_usec": 2213956,
+          "system_usec": 3706219,
+          "nice_usec": 0,
+          "nr_periods": 907,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 29387455,
+          "user_usec": 25833875,
+          "system_usec": 3553580,
+          "nice_usec": 0,
+          "nr_periods": 912,
+          "nr_throttled": 96,
+          "throttled_usec": 12067744,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 29433840,
+          "user_usec": 25924644,
+          "system_usec": 3509196,
+          "nice_usec": 0,
+          "nr_periods": 918,
+          "nr_throttled": 91,
+          "throttled_usec": 12592951,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 518.0,
+      "objectives_met": false,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 12560,
+          "total_exec_time": 3717.535330000006,
+          "mean_exec_time": 0.29598211226114557,
+          "rows": 251200,
+          "shared_blks_hit": 2029579,
+          "shared_blks_read": 16391,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 6706,
+          "temp_blks_written": 0,
+          "wal_bytes": 11752
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 3139,
+          "total_exec_time": 167.5162999999999,
+          "mean_exec_time": 0.053366135712010064,
+          "rows": 3139,
+          "shared_blks_hit": 28052,
+          "shared_blks_read": 207,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 93,
+          "temp_blks_written": 0,
+          "wal_bytes": 114
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 5230,
+          "total_exec_time": 153.1419389999998,
+          "mean_exec_time": 0.029281441491395884,
+          "rows": 5230,
+          "shared_blks_hit": 15673,
+          "shared_blks_read": 17,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 3,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 4615,
+          "total_exec_time": 130.76703100000015,
+          "mean_exec_time": 0.02833521798483204,
+          "rows": 4615,
+          "shared_blks_hit": 18488,
+          "shared_blks_read": 9,
+          "shared_blks_dirtied": 5,
+          "shared_blks_written": 3,
+          "temp_blks_written": 0,
+          "wal_bytes": 315158
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 4508,
+          "total_exec_time": 122.43411100000003,
+          "mean_exec_time": 0.027159297027506697,
+          "rows": 1956,
+          "shared_blks_hit": 16284,
+          "shared_blks_read": 5,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 2,
+          "temp_blks_written": 0,
+          "wal_bytes": 4846
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 3088,
+        "hits": 25785
+      },
+      "sampled_card_hit_ratio": 0.893
+    },
+    {
+      "run": "baseline",
+      "requestedRate": 200,
+      "configuredRate": 200,
+      "duration": 60,
+      "weights": {
+        "cartRead": 282800,
+        "cartWrite": 121200,
+        "history": 8080,
+        "stockUpdate": 1000,
+        "checkout": 10200,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "category": 1212000,
+        "card": 2828000
+      },
+      "instances": 2,
+      "k6_exit": 0,
+      "operations": 12009,
+      "http_requests": 12093,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 12009
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 12009
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 84
+      },
+      "latency_ms": {
+        "avg": 1.4335663525689144,
+        "min": 0.313459,
+        "p(50)": 1.180708,
+        "p(95)": 2.933925199999998,
+        "p(99)": 4.674999719999998,
+        "max": 29.387959
+      },
+      "by_operation_ms": {
+        "history": {
+          "max": 4.169583,
+          "avg": 1.907759086956522,
+          "min": 0.906958,
+          "p(50)": 1.728084,
+          "p(95)": 3.3421165999999993,
+          "p(99)": 3.99917474
+        },
+        "catalogUpdate": {
+          "p(99)": 5.92572371,
+          "max": 5.983292,
+          "avg": 4.140508928571428,
+          "min": 2.318416,
+          "p(50)": 4.0912705,
+          "p(95)": 5.6954505499999994
+        },
+        "cartRead": {
+          "min": 1.026667,
+          "p(50)": 2.391125,
+          "p(95)": 3.8324956999999986,
+          "p(99)": 5.13577182,
+          "max": 26.849125,
+          "avg": 2.559765023841058
+        },
+        "stockUpdate": {
+          "p(95)": 5.89240005,
+          "p(99)": 6.0000800100000005,
+          "max": 6.027,
+          "avg": 4.3769480000000005,
+          "min": 2.781417,
+          "p(50)": 4.3496875
+        },
+        "detail": {
+          "min": 0.872083,
+          "p(50)": 1.593625,
+          "p(95)": 2.7138337999999984,
+          "p(99)": 3.7164192599999994,
+          "max": 4.077584,
+          "avg": 1.6878467586206898
+        },
+        "category": {
+          "avg": 1.7830100974327203,
+          "min": 0.783125,
+          "p(50)": 1.67575,
+          "p(95)": 2.6609827999999993,
+          "p(99)": 3.4526915599999985,
+          "max": 29.387959
+        },
+        "cartWrite": {
+          "p(95)": 5.381729449999999,
+          "p(99)": 6.967053249999999,
+          "max": 11.871875,
+          "avg": 3.4887955185185167,
+          "min": 1.491875,
+          "p(50)": 3.3512500000000003
+        },
+        "checkout": {
+          "avg": 6.853148821428573,
+          "min": 4.222167,
+          "p(50)": 6.3163540000000005,
+          "p(95)": 9.84720165,
+          "p(99)": 12.665042389999998,
+          "max": 13.667834
+        },
+        "card": {
+          "max": 22.328084,
+          "avg": 1.051604579100916,
+          "min": 0.313459,
+          "p(50)": 0.908,
+          "p(95)": 1.827083,
+          "p(99)": 2.7697915999999987
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 3.25,
+            "max": 3.91
+          },
+          "working_set": {
+            "mean": 28488644.84,
+            "max": 28678553.6
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 10.64,
+            "max": 14.79
+          },
+          "working_set": {
+            "mean": 372640608.71,
+            "max": 373293056.0
+          },
+          "rss": {
+            "mean": 393223736.89,
+            "max": 393781248
+          },
+          "heap": {
+            "mean": 48998137.78,
+            "max": 64426768.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 11.03,
+            "max": 21.25
+          },
+          "working_set": {
+            "mean": 398400625.78,
+            "max": 399822028.8
+          },
+          "rss": {
+            "mean": 405849884.44,
+            "max": 407232512
+          },
+          "heap": {
+            "mean": 49639648.0,
+            "max": 59397664.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 7.26,
+            "max": 8.56
+          },
+          "working_set": {
+            "mean": 227785659.73,
+            "max": 228170137.6
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 1.63,
+            "max": 3.88
+          },
+          "working_set": {
+            "mean": 19240204.52,
+            "max": 19943915.52
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 9.94,
+            "max": 19.41
+          },
+          "working_set": {
+            "mean": 114330173.44,
+            "max": 121739673.6
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 7192,
+        "xact_rollback": 0,
+        "blks_read": 125,
+        "blks_hit": 670503,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 5.206999999999994,
+        "blk_write_time": 0.8579999999999472
+      },
+      "wal_bytes": 480080,
+      "data_received_bytes": 60603436,
+      "data_sent_bytes": 1223679,
+      "vus_max": 241,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 4592377,
+          "user_usec": 2930538,
+          "system_usec": 1661839,
+          "nice_usec": 0,
+          "nr_periods": 609,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 832379,
+          "user_usec": 547052,
+          "system_usec": 285326,
+          "nice_usec": 0,
+          "nr_periods": 609,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 1979547,
+          "user_usec": 742934,
+          "system_usec": 1236613,
+          "nice_usec": 0,
+          "nr_periods": 608,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 6273598,
+          "user_usec": 4955516,
+          "system_usec": 1318083,
+          "nice_usec": 0,
+          "nr_periods": 612,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 6074869,
+          "user_usec": 4756218,
+          "system_usec": 1318651,
+          "nice_usec": 0,
+          "nr_periods": 614,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 200.15,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 3233,
+          "total_exec_time": 1053.865273000001,
+          "mean_exec_time": 0.3259713185895457,
+          "rows": 64660,
+          "shared_blks_hit": 526973,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 2808
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 856,
+          "total_exec_time": 53.86875300000004,
+          "mean_exec_time": 0.06293078621495334,
+          "rows": 856,
+          "shared_blks_hit": 7702,
+          "shared_blks_read": 2,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 62
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 1409,
+          "total_exec_time": 52.574472000000036,
+          "mean_exec_time": 0.0373133229240596,
+          "rows": 1409,
+          "shared_blks_hit": 4227,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 1191,
+          "total_exec_time": 44.525638999999984,
+          "mean_exec_time": 0.03738508732157852,
+          "rows": 1191,
+          "shared_blks_hit": 4766,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 84812
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 1163,
+          "total_exec_time": 42.800008999999974,
+          "mean_exec_time": 0.03680138349097164,
+          "rows": 608,
+          "shared_blks_hit": 4811,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 1246
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 802,
+        "hits": 6492
+      },
+      "sampled_card_hit_ratio": 0.89
+    },
+    {
+      "run": "target",
+      "requestedRate": 521,
+      "configuredRate": 521,
+      "duration": 120,
+      "weights": {
+        "cartRead": 282800,
+        "checkout": 10200,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "stockUpdate": 1000,
+        "category": 1212000,
+        "card": 2828000,
+        "cartWrite": 121200,
+        "history": 8080
+      },
+      "instances": 2,
+      "k6_exit": 0,
+      "operations": 62529,
+      "http_requests": 62958,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 62529
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 62529
+      },
+      "support_errors": {
+        "fails": 429,
+        "rate": 0,
+        "passes": 0
+      },
+      "latency_ms": {
+        "p(99)": 7.648507239999997,
+        "max": 133.944583,
+        "avg": 1.0933893831662194,
+        "min": 0.257875,
+        "p(50)": 0.758125,
+        "p(95)": 2.041583199999999
+      },
+      "by_operation_ms": {
+        "category": {
+          "max": 100.659125,
+          "avg": 1.327094139751733,
+          "min": 0.615625,
+          "p(50)": 1.043792,
+          "p(95)": 1.8282745999999999,
+          "p(99)": 7.974715119999977
+        },
+        "cartRead": {
+          "avg": 1.7627246602188837,
+          "min": 0.661709,
+          "p(50)": 1.385167,
+          "p(95)": 2.4747335999999995,
+          "p(99)": 10.51459699999999,
+          "max": 74.914417
+        },
+        "stockUpdate": {
+          "avg": 3.541569466666667,
+          "min": 2.024375,
+          "p(50)": 2.945833,
+          "p(95)": 5.7332877,
+          "p(99)": 5.93612474,
+          "max": 5.986834
+        },
+        "history": {
+          "avg": 1.4397035221238934,
+          "min": 0.552084,
+          "p(50)": 1.059,
+          "p(95)": 3.2734503999999984,
+          "p(99)": 8.650789919999996,
+          "max": 12.171375
+        },
+        "card": {
+          "avg": 0.8293056345610436,
+          "min": 0.257875,
+          "p(50)": 0.561792,
+          "p(95)": 1.2502249999999993,
+          "p(99)": 6.184427499999998,
+          "max": 116.783583
+        },
+        "catalogUpdate": {
+          "avg": 2.8554806197183082,
+          "min": 1.597208,
+          "p(50)": 2.500542,
+          "p(95)": 5.5535,
+          "p(99)": 8.064899999999996,
+          "max": 12.092
+        },
+        "checkout": {
+          "p(95)": 11.051120799999996,
+          "p(99)": 49.73064577999998,
+          "max": 133.944583,
+          "avg": 7.696071405594404,
+          "min": 3.629542,
+          "p(50)": 5.646333
+        },
+        "cartWrite": {
+          "avg": 2.6217754504451016,
+          "min": 1.066584,
+          "p(50)": 2.031083,
+          "p(95)": 3.9355337999999898,
+          "p(99)": 18.551095559999993,
+          "max": 111.120833
+        },
+        "detail": {
+          "max": 36.47775,
+          "avg": 1.2935546659242747,
+          "min": 0.49375,
+          "p(50)": 1.006542,
+          "p(95)": 2.0575077999999993,
+          "p(99)": 8.268321479999996
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 5.24,
+            "max": 7.46
+          },
+          "working_set": {
+            "mean": 29775240.73,
+            "max": 30125588.48
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 15.51,
+            "max": 22.34
+          },
+          "working_set": {
+            "mean": 376765692.99,
+            "max": 380633088.0
+          },
+          "rss": {
+            "mean": 397138522.35,
+            "max": 400785408
+          },
+          "heap": {
+            "mean": 49294625.41,
+            "max": 66565744.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 14.5,
+            "max": 20.6
+          },
+          "working_set": {
+            "mean": 402116559.81,
+            "max": 404645478.4
+          },
+          "rss": {
+            "mean": 409226059.29,
+            "max": 411508736
+          },
+          "heap": {
+            "mean": 56743023.53,
+            "max": 70370416.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 11.68,
+            "max": 14.39
+          },
+          "working_set": {
+            "mean": 228336676.14,
+            "max": 228694425.6
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 1.84,
+            "max": 2.9
+          },
+          "working_set": {
+            "mean": 20687170.86,
+            "max": 22282240.0
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 13.81,
+            "max": 25.48
+          },
+          "working_set": {
+            "mean": 247732633.6,
+            "max": 261934284.8
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 35221,
+        "xact_rollback": 0,
+        "blks_read": 494,
+        "blks_hit": 3428437,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 20.399,
+        "blk_write_time": 4.560999999999922
+      },
+      "wal_bytes": 3159304,
+      "data_received_bytes": 315620968,
+      "data_sent_bytes": 6367048,
+      "vus_max": 557,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 15397370,
+          "user_usec": 9882882,
+          "system_usec": 5514488,
+          "nice_usec": 0,
+          "nr_periods": 1207,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 2260043,
+          "user_usec": 1471574,
+          "system_usec": 788469,
+          "nice_usec": 0,
+          "nr_periods": 1211,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 6711603,
+          "user_usec": 2453821,
+          "system_usec": 4257782,
+          "nice_usec": 0,
+          "nr_periods": 1206,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 20064069,
+          "user_usec": 15745752,
+          "system_usec": 4318317,
+          "nice_usec": 0,
+          "nr_periods": 1211,
+          "nr_throttled": 3,
+          "throttled_usec": 138533,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 19468844,
+          "user_usec": 15324335,
+          "system_usec": 4144509,
+          "nice_usec": 0,
+          "nr_periods": 1210,
+          "nr_throttled": 3,
+          "throttled_usec": 67727,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 521.075,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 16837,
+          "total_exec_time": 3966.0893780000215,
+          "mean_exec_time": 0.23555796032547202,
+          "rows": 336740,
+          "shared_blks_hit": 2745013,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 20943
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 7004,
+          "total_exec_time": 167.68079200000014,
+          "mean_exec_time": 0.023940718446601898,
+          "rows": 7004,
+          "shared_blks_hit": 21012,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 3683,
+          "total_exec_time": 154.40576400000072,
+          "mean_exec_time": 0.04192391094216675,
+          "rows": 3683,
+          "shared_blks_hit": 33119,
+          "shared_blks_read": 28,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 118
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 6186,
+          "total_exec_time": 152.90650000000045,
+          "mean_exec_time": 0.02471815389589401,
+          "rows": 6186,
+          "shared_blks_hit": 24750,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 488352
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 6043,
+          "total_exec_time": 143.95540600000007,
+          "mean_exec_time": 0.023821844448121823,
+          "rows": 3495,
+          "shared_blks_hit": 28832,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 8512
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 3516,
+        "hits": 34663
+      },
+      "sampled_card_hit_ratio": 0.9079
+    },
+    {
+      "run": "headroom",
+      "requestedRate": 640,
+      "configuredRate": 640.0166666666668,
+      "duration": 90,
+      "weights": {
+        "card": 2828000,
+        "cartWrite": 121200,
+        "catalogUpdate": 5000,
+        "stockUpdate": 1000,
+        "cartRead": 282800,
+        "checkout": 10200,
+        "history": 8080,
+        "detail": 32320,
+        "category": 1212000
+      },
+      "instances": 2,
+      "k6_exit": 0,
+      "operations": 57607,
+      "http_requests": 58000,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "passes": 0,
+        "fails": 57607,
+        "rate": 0
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 57607
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 393
+      },
+      "latency_ms": {
+        "max": 154.327333,
+        "avg": 0.8409827411078422,
+        "min": 0.230833,
+        "p(50)": 0.601417,
+        "p(95)": 1.4836875999999994,
+        "p(99)": 3.6880254999999975
+      },
+      "by_operation_ms": {
+        "checkout": {
+          "avg": 5.648562007633588,
+          "min": 3.421792,
+          "p(50)": 4.953333,
+          "p(95)": 7.602478999999998,
+          "p(99)": 13.000329299999997,
+          "max": 59.009834
+        },
+        "catalogUpdate": {
+          "p(50)": 1.988167,
+          "p(95)": 3.5809005999999988,
+          "p(99)": 14.282178879999998,
+          "max": 15.108792,
+          "avg": 2.453647492307691,
+          "min": 1.34925
+        },
+        "detail": {
+          "avg": 1.0756624554216874,
+          "min": 0.474209,
+          "p(50)": 0.816625,
+          "p(95)": 1.3004249999999997,
+          "p(99)": 4.7660752399999975,
+          "max": 59.711541
+        },
+        "card": {
+          "p(50)": 0.4532705,
+          "p(95)": 0.8478630499999998,
+          "p(99)": 2.2564615099999976,
+          "max": 120.570084,
+          "avg": 0.6019242679725969,
+          "min": 0.230833
+        },
+        "cartRead": {
+          "p(99)": 4.25401571,
+          "max": 141.950875,
+          "avg": 1.486122590331488,
+          "min": 0.623125,
+          "p(50)": 1.203417,
+          "p(95)": 1.75550205
+        },
+        "stockUpdate": {
+          "p(50)": 2.4711455,
+          "p(95)": 10.081431699999998,
+          "p(99)": 11.68175354,
+          "max": 12.081834,
+          "avg": 4.012717285714285,
+          "min": 1.679417
+        },
+        "history": {
+          "max": 8.346666,
+          "avg": 1.0792856923076926,
+          "min": 0.581917,
+          "p(50)": 0.852646,
+          "p(95)": 2.0342313,
+          "p(99)": 4.86277448
+        },
+        "category": {
+          "max": 105.621917,
+          "avg": 1.0668798376740543,
+          "min": 0.575709,
+          "p(50)": 0.9006455,
+          "p(95)": 1.2985354499999995,
+          "p(99)": 2.5148812499999993
+        },
+        "cartWrite": {
+          "p(99)": 5.013611329999996,
+          "max": 154.327333,
+          "avg": 2.072789697164949,
+          "min": 0.96125,
+          "p(50)": 1.755458,
+          "p(95)": 2.4654461999999993
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 5.42,
+            "max": 7.11
+          },
+          "working_set": {
+            "mean": 30282068.28,
+            "max": 30639390.72
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 15.23,
+            "max": 30.43
+          },
+          "working_set": {
+            "mean": 379915216.74,
+            "max": 383254528.0
+          },
+          "rss": {
+            "mean": 400239064.62,
+            "max": 403574784
+          },
+          "heap": {
+            "mean": 49482212.31,
+            "max": 65153032.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 12.94,
+            "max": 22.62
+          },
+          "working_set": {
+            "mean": 404540620.8,
+            "max": 408420352.0
+          },
+          "rss": {
+            "mean": 411357184,
+            "max": 412770304
+          },
+          "heap": {
+            "mean": 50368667.08,
+            "max": 76323072.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 12.24,
+            "max": 13.45
+          },
+          "working_set": {
+            "mean": 228984800.49,
+            "max": 229428428.8
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 1.74,
+            "max": 1.94
+          },
+          "working_set": {
+            "mean": 22747646.42,
+            "max": 23928504.32
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 13.29,
+            "max": 14.9
+          },
+          "working_set": {
+            "mean": 300906359.47,
+            "max": 321073971.2
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 31630,
+        "xact_rollback": 0,
+        "blks_read": 306,
+        "blks_hit": 3152168,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 18.173999999999978,
+        "blk_write_time": 2.2450000000001182
+      },
+      "wal_bytes": 7685240,
+      "data_received_bytes": 290794991,
+      "data_sent_bytes": 5866009,
+      "vus_max": 675,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 12038239,
+          "user_usec": 7579313,
+          "system_usec": 4458925,
+          "nice_usec": 0,
+          "nr_periods": 909,
+          "nr_throttled": 1,
+          "throttled_usec": 3411,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 1661987,
+          "user_usec": 1019466,
+          "system_usec": 642521,
+          "nice_usec": 0,
+          "nr_periods": 912,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 5080648,
+          "user_usec": 1777495,
+          "system_usec": 3303152,
+          "nice_usec": 0,
+          "nr_periods": 906,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 14053692,
+          "user_usec": 10841309,
+          "system_usec": 3212383,
+          "nice_usec": 0,
+          "nr_periods": 915,
+          "nr_throttled": 2,
+          "throttled_usec": 24849,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 12697416,
+          "user_usec": 9362071,
+          "system_usec": 3335345,
+          "nice_usec": 0,
+          "nr_periods": 913,
+          "nr_throttled": 2,
+          "throttled_usec": 102163,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 640.078,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 15512,
+          "total_exec_time": 3197.3569840000146,
+          "mean_exec_time": 0.2061215177926769,
+          "rows": 310240,
+          "shared_blks_hit": 2530419,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 6,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 14382
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 6424,
+          "total_exec_time": 123.24587900000046,
+          "mean_exec_time": 0.019185224003735953,
+          "rows": 6424,
+          "shared_blks_hit": 19272,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 5565,
+          "total_exec_time": 122.23847900000021,
+          "mean_exec_time": 0.021965584725965877,
+          "rows": 3308,
+          "shared_blks_hit": 30978,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 5632
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 5696,
+          "total_exec_time": 116.87713500000002,
+          "mean_exec_time": 0.020519159936797753,
+          "rows": 5696,
+          "shared_blks_hit": 22784,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 4,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 432772
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 2791,
+          "total_exec_time": 100.08471800000001,
+          "mean_exec_time": 0.0358598058043712,
+          "rows": 2791,
+          "shared_blks_hit": 25106,
+          "shared_blks_read": 16,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 210
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 2719,
+        "hits": 32198
+      },
+      "sampled_card_hit_ratio": 0.9221
+    },
+    {
+      "configuredRate": 960.0166666666668,
+      "duration": 90,
+      "weights": {
+        "catalogUpdate": 5000,
+        "card": 2828000,
+        "checkout": 10200,
+        "stockUpdate": 1000,
+        "category": 1212000,
+        "cartRead": 282800,
+        "cartWrite": 121200,
+        "history": 8080,
+        "detail": 32320
+      },
+      "run": "stress",
+      "requestedRate": 960,
+      "instances": 2,
+      "k6_exit": 0,
+      "operations": 86408,
+      "http_requests": 86999,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86408
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86408
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 591
+      },
+      "latency_ms": {
+        "avg": 0.8838330589181602,
+        "min": 0.227208,
+        "p(50)": 0.5293955,
+        "p(95)": 1.4925125999999997,
+        "p(99)": 6.2447354399999995,
+        "max": 105.084417
+      },
+      "by_operation_ms": {
+        "catalogUpdate": {
+          "p(50)": 1.787709,
+          "p(95)": 5.3900748,
+          "p(99)": 27.951442719999953,
+          "max": 78.664084,
+          "avg": 3.2210769072164953,
+          "min": 1.009375
+        },
+        "cartWrite": {
+          "avg": 2.124297798023201,
+          "min": 0.890125,
+          "p(50)": 1.633542,
+          "p(95)": 2.590262499999999,
+          "p(99)": 10.021760999999998,
+          "max": 101.98925
+        },
+        "stockUpdate": {
+          "avg": 10.647341799999996,
+          "min": 1.259583,
+          "p(50)": 1.9199795000000002,
+          "p(95)": 79.00197319999998,
+          "p(99)": 88.70612743999999,
+          "max": 91.132166
+        },
+        "card": {
+          "p(50)": 0.397083,
+          "p(95)": 0.7904768999999999,
+          "p(99)": 5.539771059999985,
+          "max": 91.897416,
+          "avg": 0.672319326456934,
+          "min": 0.227208
+        },
+        "cartRead": {
+          "avg": 1.4860105081967205,
+          "min": 0.539208,
+          "p(50)": 1.105208,
+          "p(95)": 1.7965415999999996,
+          "p(99)": 8.44823951999999,
+          "max": 105.084417
+        },
+        "category": {
+          "p(99)": 6.130451559999992,
+          "max": 104.369375,
+          "avg": 1.0516864481069241,
+          "min": 0.518292,
+          "p(50)": 0.798875,
+          "p(95)": 1.2481001999999999
+        },
+        "history": {
+          "avg": 1.6085129032258059,
+          "min": 0.457666,
+          "p(50)": 0.668875,
+          "p(95)": 1.3787625999999997,
+          "p(99)": 27.897951139999996,
+          "max": 78.572084
+        },
+        "detail": {
+          "p(50)": 0.7214165,
+          "p(95)": 1.2307482499999993,
+          "p(99)": 5.201470999999996,
+          "max": 78.684042,
+          "avg": 1.0146803472668824,
+          "min": 0.426333
+        },
+        "checkout": {
+          "avg": 4.976447335025385,
+          "min": 3.527625,
+          "p(50)": 4.61775,
+          "p(95)": 7.187708599999999,
+          "p(99)": 10.448451679999993,
+          "max": 15.524125
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 8.07,
+            "max": 15.04
+          },
+          "working_set": {
+            "mean": 31606500.43,
+            "max": 32002539.52
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 21.79,
+            "max": 41.0
+          },
+          "working_set": {
+            "mean": 381399355.08,
+            "max": 382415667.2
+          },
+          "rss": {
+            "mean": 401624772.92,
+            "max": 402649088
+          },
+          "heap": {
+            "mean": 49808340.31,
+            "max": 66353784.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 17.92,
+            "max": 37.5
+          },
+          "working_set": {
+            "mean": 405492405.17,
+            "max": 407371776.0
+          },
+          "rss": {
+            "mean": 412607409.23,
+            "max": 414679040
+          },
+          "heap": {
+            "mean": 55641572.92,
+            "max": 76562888.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 18.65,
+            "max": 31.67
+          },
+          "working_set": {
+            "mean": 229250977.48,
+            "max": 229743001.6
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 2.25,
+            "max": 3.49
+          },
+          "working_set": {
+            "mean": 25155338.24,
+            "max": 26570915.84
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 19.29,
+            "max": 38.93
+          },
+          "working_set": {
+            "mean": 421431432.53,
+            "max": 444910796.8
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 47204,
+        "xact_rollback": 0,
+        "blks_read": 505,
+        "blks_hit": 4750178,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 30.93900000000002,
+        "blk_write_time": 3.93100000000004
+      },
+      "wal_bytes": 7131720,
+      "data_received_bytes": 436102767,
+      "data_sent_bytes": 8798384,
+      "vus_max": 990,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 15991676,
+          "user_usec": 10041571,
+          "system_usec": 5950104,
+          "nice_usec": 0,
+          "nr_periods": 908,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 2129013,
+          "user_usec": 1222863,
+          "system_usec": 906150,
+          "nice_usec": 0,
+          "nr_periods": 913,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 7110711,
+          "user_usec": 2289066,
+          "system_usec": 4821645,
+          "nice_usec": 0,
+          "nr_periods": 906,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 18774846,
+          "user_usec": 13978100,
+          "system_usec": 4796746,
+          "nice_usec": 0,
+          "nr_periods": 914,
+          "nr_throttled": 1,
+          "throttled_usec": 26056,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 15933754,
+          "user_usec": 11258784,
+          "system_usec": 4674969,
+          "nice_usec": 0,
+          "nr_periods": 915,
+          "nr_throttled": 1,
+          "throttled_usec": 676,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 960.089,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 23269,
+          "total_exec_time": 4390.874466000034,
+          "mean_exec_time": 0.18870060879281378,
+          "rows": 465380,
+          "shared_blks_hit": 3796162,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 1,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 21722
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 8544,
+          "total_exec_time": 166.43331599999962,
+          "mean_exec_time": 0.01947955477528089,
+          "rows": 8544,
+          "shared_blks_hit": 34208,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 1,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 651625
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 8347,
+          "total_exec_time": 161.57995999999974,
+          "mean_exec_time": 0.019357848328740986,
+          "rows": 3776,
+          "shared_blks_hit": 39350,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 18002
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 9568,
+          "total_exec_time": 160.62459800000002,
+          "mean_exec_time": 0.016787687918060193,
+          "rows": 9568,
+          "shared_blks_hit": 28703,
+          "shared_blks_read": 1,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "INSERT INTO cart_items VALUES ($1,$2,$3) ON CONFLICT(user_id,product_id) DO UPDATE SET quantity=excluded.quantity",
+          "calls": 2918,
+          "total_exec_time": 122.37669999999969,
+          "mean_exec_time": 0.041938553803975355,
+          "rows": 2918,
+          "shared_blks_hit": 23682,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 29,
+          "shared_blks_written": 1,
+          "temp_blks_written": 0,
+          "wal_bytes": 609259
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 3738,
+        "hits": 48724
+      },
+      "sampled_card_hit_ratio": 0.9287
+    },
+    {
+      "run": "saturation",
+      "requestedRate": 1440,
+      "configuredRate": 1439.9833333333331,
+      "duration": 60,
+      "weights": {
+        "category": 1212000,
+        "cartWrite": 121200,
+        "checkout": 10200,
+        "detail": 32320,
+        "stockUpdate": 1000,
+        "card": 2828000,
+        "cartRead": 282800,
+        "history": 8080,
+        "catalogUpdate": 5000
+      },
+      "instances": 2,
+      "k6_exit": 0,
+      "operations": 86408,
+      "http_requests": 86999,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86408
+      },
+      "operation_errors": {
+        "passes": 0,
+        "fails": 86408,
+        "rate": 0
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 591
+      },
+      "latency_ms": {
+        "avg": 1.61424147554625,
+        "min": 0.269333,
+        "p(50)": 0.6523540000000001,
+        "p(95)": 2.7459913499999984,
+        "p(99)": 27.842968309999993,
+        "max": 153.780333
+      },
+      "by_operation_ms": {
+        "card": {
+          "p(50)": 0.478375,
+          "p(95)": 2.000354499999998,
+          "p(99)": 25.4038872,
+          "max": 143.685,
+          "avg": 1.3138557358678191,
+          "min": 0.269333
+        },
+        "cartRead": {
+          "min": 0.697291,
+          "p(50)": 1.198167,
+          "p(95)": 4.397320649999997,
+          "p(99)": 37.77682332,
+          "max": 137.865958,
+          "avg": 2.489848743830574
+        },
+        "cartWrite": {
+          "avg": 3.2854186288659792,
+          "min": 0.943541,
+          "p(50)": 1.651729,
+          "p(95)": 5.830441549999996,
+          "p(99)": 50.30838174999999,
+          "max": 143.469833
+        },
+        "category": {
+          "p(50)": 0.893375,
+          "p(95)": 2.7313999999999963,
+          "p(99)": 29.384411329999956,
+          "max": 146.52825,
+          "avg": 1.873383451564387,
+          "min": 0.579334
+        },
+        "history": {
+          "p(95)": 4.5501452499999955,
+          "p(99)": 35.299691549999956,
+          "max": 68.2885,
+          "avg": 2.0993426666666655,
+          "min": 0.507458,
+          "p(50)": 0.829396
+        },
+        "catalogUpdate": {
+          "avg": 3.0742071237113406,
+          "min": 1.098916,
+          "p(50)": 1.992667,
+          "p(95)": 4.333141999999998,
+          "p(99)": 32.90131167999998,
+          "max": 57.313792
+        },
+        "detail": {
+          "avg": 2.077964787439613,
+          "min": 0.468667,
+          "p(50)": 0.837334,
+          "p(95)": 2.849458,
+          "p(99)": 31.422908599999992,
+          "max": 127.422542
+        },
+        "stockUpdate": {
+          "p(95)": 4.64715144999998,
+          "p(99)": 22.552530289999993,
+          "max": 27.028875,
+          "avg": 3.06282295,
+          "min": 1.266209,
+          "p(50)": 1.6393125
+        },
+        "checkout": {
+          "max": 153.780333,
+          "avg": 7.19415292385787,
+          "min": 3.682417,
+          "p(50)": 5.212542,
+          "p(95)": 11.2193918,
+          "p(99)": 24.897184999999833
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 16.95,
+            "max": 20.39
+          },
+          "working_set": {
+            "mean": 33866674.63,
+            "max": 34718351.36
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 37.33,
+            "max": 45.81
+          },
+          "working_set": {
+            "mean": 383371036.44,
+            "max": 384198246.4
+          },
+          "rss": {
+            "mean": 403775032.89,
+            "max": 404484096
+          },
+          "heap": {
+            "mean": 47303815.11,
+            "max": 60353168.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 31.37,
+            "max": 37.77
+          },
+          "working_set": {
+            "mean": 410296137.96,
+            "max": 414397235.2
+          },
+          "rss": {
+            "mean": 417360099.56,
+            "max": 421629952
+          },
+          "heap": {
+            "mean": 57885912.89,
+            "max": 75504608.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 28.96,
+            "max": 34.53
+          },
+          "working_set": {
+            "mean": 229731350.76,
+            "max": 230267289.6
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 3.19,
+            "max": 4.41
+          },
+          "working_set": {
+            "mean": 28370971.31,
+            "max": 30125588.48
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 33.81,
+            "max": 53.84
+          },
+          "working_set": {
+            "mean": 602197196.8,
+            "max": 645608243.2
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 46449,
+        "xact_rollback": 0,
+        "blks_read": 304,
+        "blks_hit": 4733491,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 23.767999999999972,
+        "blk_write_time": 4.292999999999893
+      },
+      "wal_bytes": 5237712,
+      "data_received_bytes": 436178995,
+      "data_sent_bytes": 8798981,
+      "vus_max": 1466,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 17901016,
+          "user_usec": 11437378,
+          "system_usec": 6463638,
+          "nice_usec": 0,
+          "nr_periods": 614,
+          "nr_throttled": 2,
+          "throttled_usec": 498165,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 2206108,
+          "user_usec": 1293332,
+          "system_usec": 912776,
+          "nice_usec": 0,
+          "nr_periods": 612,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 10749727,
+          "user_usec": 2920497,
+          "system_usec": 7829230,
+          "nice_usec": 0,
+          "nr_periods": 608,
+          "nr_throttled": 4,
+          "throttled_usec": 121818,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 23078853,
+          "user_usec": 16740586,
+          "system_usec": 6338267,
+          "nice_usec": 0,
+          "nr_periods": 620,
+          "nr_throttled": 11,
+          "throttled_usec": 446442,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 19610128,
+          "user_usec": 13257944,
+          "system_usec": 6352184,
+          "nice_usec": 0,
+          "nr_periods": 623,
+          "nr_throttled": 2,
+          "throttled_usec": 79729,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 1440.133,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 23268,
+          "total_exec_time": 5084.515938999989,
+          "mean_exec_time": 0.2185196810641224,
+          "rows": 465360,
+          "shared_blks_hit": 3802217,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 21858
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 8349,
+          "total_exec_time": 218.36157799999967,
+          "mean_exec_time": 0.026154219427476373,
+          "rows": 4710,
+          "shared_blks_hit": 57624,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 21994
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 9530,
+          "total_exec_time": 198.17433699999953,
+          "mean_exec_time": 0.02079478877229797,
+          "rows": 9530,
+          "shared_blks_hit": 28590,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 8546,
+          "total_exec_time": 194.8777890000005,
+          "mean_exec_time": 0.022803392113269393,
+          "rows": 8546,
+          "shared_blks_hit": 34192,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 623114
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 3488,
+          "total_exec_time": 132.62728999999985,
+          "mean_exec_time": 0.038023879013761426,
+          "rows": 3488,
+          "shared_blks_hit": 31384,
+          "shared_blks_read": 16,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 148
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 3365,
+        "hits": 49616
+      },
+      "sampled_card_hit_ratio": 0.9365
+    },
+    {
+      "requestedRate": 2880,
+      "configuredRate": 2880,
+      "duration": 60,
+      "weights": {
+        "cartWrite": 121200,
+        "history": 8080,
+        "stockUpdate": 1000,
+        "checkout": 10200,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "category": 1212000,
+        "card": 2828000,
+        "cartRead": 282800
+      },
+      "run": "overload",
+      "instances": 2,
+      "k6_exit": 99,
+      "operations": 172803,
+      "http_requests": 173964,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0.015532137752238098,
+        "passes": 2684,
+        "fails": 170119
+      },
+      "operation_errors": {
+        "rate": 0.015532137752238098,
+        "passes": 2684,
+        "fails": 170119
+      },
+      "support_errors": {
+        "passes": 9,
+        "fails": 1152,
+        "rate": 0.007751937984496124
+      },
+      "latency_ms": {
+        "p(95)": 60.24527119999992,
+        "p(99)": 19999.735028519997,
+        "max": 20002.70576,
+        "avg": 237.00652569614664,
+        "min": 0,
+        "p(50)": 0.724333
+      },
+      "by_operation_ms": {
+        "detail": {
+          "avg": 214.93596064573268,
+          "min": 0,
+          "p(50)": 0.8863335,
+          "p(95)": 42.17619344999994,
+          "p(99)": 11895.49746313978,
+          "max": 20000.695537
+        },
+        "card": {
+          "min": 0,
+          "p(50)": 0.5022705000000001,
+          "p(95)": 58.80052054999986,
+          "p(99)": 19999.733134780003,
+          "max": 20002.70576,
+          "avg": 234.5938247525978
+        },
+        "cartRead": {
+          "min": 0,
+          "p(50)": 1.280958,
+          "p(95)": 64.95831699999978,
+          "p(99)": 19999.73190922,
+          "max": 20001.520995,
+          "avg": 231.85023562565806
+        },
+        "cartWrite": {
+          "avg": 240.32412632617104,
+          "min": 0,
+          "p(50)": 1.88975,
+          "p(95)": 70.11491249999982,
+          "p(99)": 19999.75415222,
+          "max": 20001.39651
+        },
+        "catalogUpdate": {
+          "p(99)": 20000.522278639997,
+          "max": 20002.677328,
+          "avg": 1044.4408893730565,
+          "min": 0,
+          "p(50)": 2.118292,
+          "p(95)": 8147.686898199831
+        },
+        "checkout": {
+          "avg": 11.410660619791678,
+          "min": 2.970083,
+          "p(50)": 5.953375,
+          "p(95)": 39.02506519999994,
+          "p(99)": 127.03618039,
+          "max": 235.093542
+        },
+        "stockUpdate": {
+          "avg": 7182.807646256409,
+          "min": 0,
+          "p(50)": 2.587333,
+          "p(95)": 20000.5463787,
+          "p(99)": 20000.695550880002,
+          "max": 20000.736828
+        },
+        "history": {
+          "p(50)": 0.763417,
+          "p(95)": 81.05747899999994,
+          "p(99)": 19999.8025334,
+          "max": 20000.520246,
+          "avg": 520.1423060160764,
+          "min": 0
+        },
+        "category": {
+          "p(95)": 60.130750799999895,
+          "p(99)": 19999.73146052,
+          "max": 20001.545302,
+          "avg": 234.89631038809836,
+          "min": 0,
+          "p(50)": 0.898084
+        }
+      },
+      "failed_thresholds": [
+        "operation_latency",
+        "latency_detail",
+        "support_errors",
+        "latency_card",
+        "latency_cartRead",
+        "latency_cartWrite",
+        "latency_catalogUpdate",
+        "operation_errors",
+        "latency_stockUpdate",
+        "latency_history",
+        "technical_errors",
+        "latency_category"
+      ],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 21.53,
+            "max": 39.9
+          },
+          "working_set": {
+            "mean": 34739322.88,
+            "max": 37455134.72
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 44.19,
+            "max": 87.98
+          },
+          "working_set": {
+            "mean": 386208017.07,
+            "max": 387553689.6
+          },
+          "rss": {
+            "mean": 406366549.33,
+            "max": 407449600
+          },
+          "heap": {
+            "mean": 51779250.0,
+            "max": 66134888.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "commerce-2": {
+          "cpu": {
+            "mean": 40.87,
+            "max": 84.53
+          },
+          "working_set": {
+            "mean": 422383889.07,
+            "max": 429811302.4
+          },
+          "rss": {
+            "mean": 429331114.67,
+            "max": 436731904
+          },
+          "heap": {
+            "mean": 54649730.0,
+            "max": 70530448.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 37.34,
+            "max": 99.7
+          },
+          "working_set": {
+            "mean": 232425608.53,
+            "max": 233727590.4
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 4.52,
+            "max": 8.85
+          },
+          "working_set": {
+            "mean": 33353454.93,
+            "max": 36091985.92
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 44.12,
+            "max": 87.8
+          },
+          "working_set": {
+            "mean": 1184001687.55,
+            "max": 1251982966.784
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 91050,
+        "xact_rollback": 0,
+        "blks_read": 527,
+        "blks_hit": 9411702,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 46.12700000000001,
+        "blk_write_time": 7.514000000000124
+      },
+      "wal_bytes": 14986264,
+      "data_received_bytes": 858814160,
+      "data_sent_bytes": 17519052,
+      "vus_max": 2898,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 34560607,
+          "user_usec": 21474652,
+          "system_usec": 13085954,
+          "nice_usec": 0,
+          "nr_periods": 734,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 4159500,
+          "user_usec": 2362171,
+          "system_usec": 1797330,
+          "nice_usec": 0,
+          "nr_periods": 778,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 20275226,
+          "user_usec": 5094643,
+          "system_usec": 15180582,
+          "nice_usec": 0,
+          "nr_periods": 645,
+          "nr_throttled": 37,
+          "throttled_usec": 786212,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 40986477,
+          "user_usec": 29243539,
+          "system_usec": 11742938,
+          "nice_usec": 0,
+          "nr_periods": 806,
+          "nr_throttled": 57,
+          "throttled_usec": 2750263,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-2": {
+          "usage_usec": 37570359,
+          "user_usec": 25271436,
+          "system_usec": 12298922,
+          "nice_usec": 0,
+          "nr_periods": 811,
+          "nr_throttled": 39,
+          "throttled_usec": 1229828,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 2880.05,
+      "objectives_met": false,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 46015,
+          "total_exec_time": 9580.956873000032,
+          "mean_exec_time": 0.20821377535586216,
+          "rows": 920300,
+          "shared_blks_hit": 7519564,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 3,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 42575
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 16490,
+          "total_exec_time": 447.96865800000063,
+          "mean_exec_time": 0.027166079927228526,
+          "rows": 7757,
+          "shared_blks_hit": 113182,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 47396
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 18727,
+          "total_exec_time": 375.1772669999997,
+          "mean_exec_time": 0.020034029315960898,
+          "rows": 18727,
+          "shared_blks_hit": 56180,
+          "shared_blks_read": 1,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 16875,
+          "total_exec_time": 358.15642000000116,
+          "mean_exec_time": 0.02122408414814807,
+          "rows": 16875,
+          "shared_blks_hit": 67527,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 2,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 1264014
+        },
+        {
+          "query": "INSERT INTO cart_items VALUES ($1,$2,$3) ON CONFLICT(user_id,product_id) DO UPDATE SET quantity=excluded.quantity",
+          "calls": 5754,
+          "total_exec_time": 293.6474630000003,
+          "mean_exec_time": 0.051033622349669766,
+          "rows": 5754,
+          "shared_blks_hit": 47136,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 44,
+          "shared_blks_written": 3,
+          "temp_blks_written": 0,
+          "wal_bytes": 1387709
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 5945,
+        "hits": 100969
+      },
+      "sampled_card_hit_ratio": 0.9444
+    },
+    {
+      "run": "single",
+      "requestedRate": 521,
+      "configuredRate": 521,
+      "duration": 90,
+      "weights": {
+        "history": 8080,
+        "stockUpdate": 1000,
+        "category": 1212000,
+        "card": 2828000,
+        "cartRead": 282800,
+        "checkout": 10200,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "cartWrite": 121200
+      },
+      "instances": 1,
+      "k6_exit": 0,
+      "operations": 46897,
+      "http_requests": 47218,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 46897
+      },
+      "operation_errors": {
+        "fails": 46897,
+        "rate": 0,
+        "passes": 0
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 321
+      },
+      "latency_ms": {
+        "avg": 1.3075930190843534,
+        "min": 0.231709,
+        "p(50)": 0.654666,
+        "p(95)": 2.1903085999999985,
+        "p(99)": 14.560334999999974,
+        "max": 158.126917
+      },
+      "by_operation_ms": {
+        "cartWrite": {
+          "avg": 3.1248350909810134,
+          "min": 0.873167,
+          "p(50)": 1.766792,
+          "p(95)": 4.619222399999993,
+          "p(99)": 43.71691815999999,
+          "max": 158.126917
+        },
+        "card": {
+          "max": 128.040986,
+          "avg": 1.038494423010351,
+          "min": 0.231709,
+          "p(50)": 0.453084,
+          "p(95)": 1.2887417999999988,
+          "p(99)": 12.907002119999982
+        },
+        "detail": {
+          "max": 67.68775,
+          "avg": 1.521117207715134,
+          "min": 0.456625,
+          "p(50)": 0.83425,
+          "p(95)": 2.165958199999988,
+          "p(99)": 17.177653879999998
+        },
+        "checkout": {
+          "p(95)": 7.465366799999999,
+          "p(99)": 110.80416745999995,
+          "max": 117.560334,
+          "avg": 7.821509757009341,
+          "min": 3.564542,
+          "p(50)": 4.656958
+        },
+        "history": {
+          "avg": 1.6731872705882347,
+          "min": 0.472083,
+          "p(50)": 0.831625,
+          "p(95)": 3.9411661999999925,
+          "p(99)": 23.388659719999993,
+          "max": 32.31275
+        },
+        "category": {
+          "p(50)": 0.9236665,
+          "p(95)": 1.9689290499999994,
+          "p(99)": 11.60580261,
+          "max": 106.926444,
+          "avg": 1.4551883335445055,
+          "min": 0.57175
+        },
+        "stockUpdate": {
+          "avg": 3.9885568181818174,
+          "min": 1.935458,
+          "p(50)": 3.536917,
+          "p(95)": 7.041728999999999,
+          "p(99)": 7.4447122,
+          "max": 7.545458
+        },
+        "cartRead": {
+          "avg": 2.269095894808291,
+          "min": 0.566625,
+          "p(50)": 1.233583,
+          "p(95)": 3.321003899999972,
+          "p(99)": 31.800431319999976,
+          "max": 145.981611
+        },
+        "catalogUpdate": {
+          "max": 29.266625,
+          "avg": 3.290624962264151,
+          "min": 1.0425,
+          "p(50)": 2.191084,
+          "p(95)": 6.262358399999996,
+          "p(99)": 23.578648159999997
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 4.92,
+            "max": 6.98
+          },
+          "working_set": {
+            "mean": 67251631.66,
+            "max": 67717038.08
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 20.63,
+            "max": 28.08
+          },
+          "working_set": {
+            "mean": 388505473.97,
+            "max": 389755699.2
+          },
+          "rss": {
+            "mean": 408445558.15,
+            "max": 409571328
+          },
+          "heap": {
+            "mean": 50170720.0,
+            "max": 67578712.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 11.14,
+            "max": 14.41
+          },
+          "working_set": {
+            "mean": 205738677.17,
+            "max": 206254899.2
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 1.7,
+            "max": 2.47
+          },
+          "working_set": {
+            "mean": 36065368.22,
+            "max": 36679188.48
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 13.34,
+            "max": 25.12
+          },
+          "working_set": {
+            "mean": 244466756.27,
+            "max": 260256563.2
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 26641,
+        "xact_rollback": 0,
+        "blks_read": 144,
+        "blks_hit": 2630807,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 16.484000000000037,
+        "blk_write_time": 1.9210000000000491
+      },
+      "wal_bytes": 4784192,
+      "data_received_bytes": 236762187,
+      "data_sent_bytes": 4775442,
+      "vus_max": 557,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 11063312,
+          "user_usec": 7020985,
+          "system_usec": 4042326,
+          "nice_usec": 0,
+          "nr_periods": 910,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 1649030,
+          "user_usec": 1017816,
+          "system_usec": 631215,
+          "nice_usec": 0,
+          "nr_periods": 911,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 4798854,
+          "user_usec": 1699604,
+          "system_usec": 3099250,
+          "nice_usec": 0,
+          "nr_periods": 906,
+          "nr_throttled": 1,
+          "throttled_usec": 25552,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 20847056,
+          "user_usec": 15400749,
+          "system_usec": 5446306,
+          "nice_usec": 0,
+          "nr_periods": 911,
+          "nr_throttled": 4,
+          "throttled_usec": 57753,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 521.078,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 12628,
+          "total_exec_time": 2879.260821000007,
+          "mean_exec_time": 0.22800608338612552,
+          "rows": 252560,
+          "shared_blks_hit": 2064893,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 9426
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 4532,
+          "total_exec_time": 154.71728099999967,
+          "mean_exec_time": 0.03413885282436004,
+          "rows": 3068,
+          "shared_blks_hit": 36536,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 4220
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 5190,
+          "total_exec_time": 124.74959600000037,
+          "mean_exec_time": 0.024036531021194647,
+          "rows": 5190,
+          "shared_blks_hit": 15570,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 2788,
+          "total_exec_time": 115.67945699999977,
+          "mean_exec_time": 0.04149191427546629,
+          "rows": 2788,
+          "shared_blks_hit": 25087,
+          "shared_blks_read": 5,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 202
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 4639,
+          "total_exec_time": 109.19839800000013,
+          "mean_exec_time": 0.023539210605734058,
+          "rows": 4639,
+          "shared_blks_hit": 18556,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 346990
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 2577,
+        "hits": 25643
+      },
+      "sampled_card_hit_ratio": 0.9087
+    },
+    {
+      "configuredRate": 960.0166666666668,
+      "duration": 60,
+      "weights": {
+        "history": 8080,
+        "detail": 32320,
+        "catalogUpdate": 5000,
+        "stockUpdate": 1000,
+        "category": 1212000,
+        "card": 2828000,
+        "checkout": 10200,
+        "cartRead": 282800,
+        "cartWrite": 121200
+      },
+      "run": "single-stress",
+      "requestedRate": 960,
+      "instances": 1,
+      "k6_exit": 0,
+      "operations": 57609,
+      "http_requests": 58005,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 57609
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 57609
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 396
+      },
+      "latency_ms": {
+        "p(95)": 3.294033399999998,
+        "p(99)": 81.49998171999997,
+        "max": 246.318125,
+        "avg": 2.670653752104707,
+        "min": 0.216792,
+        "p(50)": 0.518917
+      },
+      "by_operation_ms": {
+        "stockUpdate": {
+          "p(95)": 5.532097799999996,
+          "p(99)": 8.81288596,
+          "max": 9.633083,
+          "avg": 2.3188720000000003,
+          "min": 1.165583,
+          "p(50)": 1.691792
+        },
+        "catalogUpdate": {
+          "avg": 6.484581415384613,
+          "min": 1.064334,
+          "p(50)": 1.618625,
+          "p(95)": 30.68346639999993,
+          "p(99)": 107.61626023999999,
+          "max": 115.045834
+        },
+        "cartRead": {
+          "p(50)": 1.131417,
+          "p(95)": 3.9859830999999994,
+          "p(99)": 108.48443861999999,
+          "max": 187.278209,
+          "avg": 3.8985812147001924,
+          "min": 0.527
+        },
+        "checkout": {
+          "p(50)": 4.1405625,
+          "p(95)": 7.475764249999996,
+          "p(99)": 96.08436049999987,
+          "max": 246.318125,
+          "avg": 7.4259437803030295,
+          "min": 3.207208
+        },
+        "history": {
+          "p(99)": 8.90485576,
+          "max": 57.073708,
+          "avg": 1.5904739519230766,
+          "min": 0.383833,
+          "p(50)": 0.6394165,
+          "p(95)": 5.9450767499999975
+        },
+        "detail": {
+          "p(95)": 4.7613873999999985,
+          "p(99)": 82.23141585999998,
+          "max": 179.764166,
+          "avg": 3.193639568674698,
+          "min": 0.391834,
+          "p(50)": 0.698875
+        },
+        "cartWrite": {
+          "p(50)": 1.6122705000000002,
+          "p(95)": 4.768039249999997,
+          "p(99)": 118.51162432999999,
+          "max": 207.876625,
+          "avg": 4.5726949639175265,
+          "min": 0.81325
+        },
+        "category": {
+          "max": 178.490917,
+          "avg": 2.7843583829691387,
+          "min": 0.515417,
+          "p(50)": 0.789708,
+          "p(95)": 2.9592666,
+          "p(99)": 78.48381807999995
+        },
+        "card": {
+          "p(95)": 2.4614372999999983,
+          "p(99)": 78.38920752,
+          "max": 187.109417,
+          "avg": 2.3906394838789766,
+          "min": 0.216792,
+          "p(50)": 0.373416
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 8.75,
+            "max": 13.01
+          },
+          "working_set": {
+            "mean": 50571655.4,
+            "max": 68555898.88
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 33.38,
+            "max": 40.27
+          },
+          "working_set": {
+            "mean": 391072244.62,
+            "max": 392691712.0
+          },
+          "rss": {
+            "mean": 411053624.89,
+            "max": 412512256
+          },
+          "heap": {
+            "mean": 54213840.89,
+            "max": 66362816.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 16.17,
+            "max": 18.53
+          },
+          "working_set": {
+            "mean": 205858770.49,
+            "max": 206254899.2
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 2.16,
+            "max": 2.79
+          },
+          "working_set": {
+            "mean": 37737085.16,
+            "max": 38073794.56
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 19.28,
+            "max": 41.23
+          },
+          "working_set": {
+            "mean": 414541414.4,
+            "max": 448161382.4
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 30920,
+        "xact_rollback": 0,
+        "blks_read": 151,
+        "blks_hit": 3145364,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 18.552999999999997,
+        "blk_write_time": 2.227999999999838
+      },
+      "wal_bytes": 3801248,
+      "data_received_bytes": 290872576,
+      "data_sent_bytes": 5867739,
+      "vus_max": 990,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 11031052,
+          "user_usec": 7120270,
+          "system_usec": 3910782,
+          "nice_usec": 0,
+          "nr_periods": 609,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 1498550,
+          "user_usec": 869665,
+          "system_usec": 628885,
+          "nice_usec": 0,
+          "nr_periods": 611,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 5619380,
+          "user_usec": 1801505,
+          "system_usec": 3817874,
+          "nice_usec": 0,
+          "nr_periods": 608,
+          "nr_throttled": 3,
+          "throttled_usec": 65298,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 21998851,
+          "user_usec": 15793148,
+          "system_usec": 6205703,
+          "nice_usec": 0,
+          "nr_periods": 615,
+          "nr_throttled": 11,
+          "throttled_usec": 501146,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 960.15,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 15513,
+          "total_exec_time": 2972.2904510000035,
+          "mean_exec_time": 0.19159997750273985,
+          "rows": 310260,
+          "shared_blks_hit": 2537154,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 13590
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 5567,
+          "total_exec_time": 176.69295799999995,
+          "mean_exec_time": 0.03173934938027676,
+          "rows": 3950,
+          "shared_blks_hit": 45968,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 7220
+        },
+        {
+          "query": "INSERT INTO cart_items VALUES ($1,$2,$3) ON CONFLICT(user_id,product_id) DO UPDATE SET quantity=excluded.quantity",
+          "calls": 1948,
+          "total_exec_time": 126.06187800000016,
+          "mean_exec_time": 0.06471348973305965,
+          "rows": 1948,
+          "shared_blks_hit": 15749,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 13,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 323750
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 6342,
+          "total_exec_time": 114.32001800000003,
+          "mean_exec_time": 0.01802586218858399,
+          "rows": 6342,
+          "shared_blks_hit": 19026,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 5699,
+          "total_exec_time": 108.09803600000032,
+          "mean_exec_time": 0.018967895420249153,
+          "rows": 5699,
+          "shared_blks_hit": 22796,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 410040
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 2352,
+        "hits": 32186
+      },
+      "sampled_card_hit_ratio": 0.9319
+    },
+    {
+      "run": "single-overload",
+      "requestedRate": 1440,
+      "configuredRate": 1439.9833333333331,
+      "duration": 60,
+      "weights": {
+        "checkout": 10200,
+        "history": 8080,
+        "stockUpdate": 1000,
+        "category": 1212000,
+        "card": 2828000,
+        "cartRead": 282800,
+        "cartWrite": 121200,
+        "detail": 32320,
+        "catalogUpdate": 5000
+      },
+      "instances": 1,
+      "k6_exit": 0,
+      "operations": 86406,
+      "http_requests": 86997,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "fails": 86406,
+        "rate": 0,
+        "passes": 0
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86406
+      },
+      "support_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 591
+      },
+      "latency_ms": {
+        "avg": 12.807710898861103,
+        "min": 0.262416,
+        "p(50)": 0.925521,
+        "p(95)": 88.51767699999996,
+        "p(99)": 230.98333094999992,
+        "max": 361.952
+      },
+      "by_operation_ms": {
+        "checkout": {
+          "p(99)": 243.77449263999995,
+          "max": 329.194167,
+          "avg": 21.710490497461933,
+          "min": 3.892917,
+          "p(50)": 7.196292,
+          "p(95)": 99.980342
+        },
+        "history": {
+          "avg": 13.770870705128203,
+          "min": 0.490916,
+          "p(50)": 1.0616664999999998,
+          "p(95)": 94.16516699999995,
+          "p(99)": 192.60907894999988,
+          "max": 280.2075
+        },
+        "catalogUpdate": {
+          "p(95)": 117.33241639999987,
+          "p(99)": 208.59895731999993,
+          "max": 297.182917,
+          "avg": 20.706741938144326,
+          "min": 1.138,
+          "p(50)": 2.547459
+        },
+        "card": {
+          "min": 0.262416,
+          "p(50)": 0.644333,
+          "p(95)": 84.51320849999993,
+          "p(99)": 228.91163329999995,
+          "max": 330.420542,
+          "avg": 12.04760699692407
+        },
+        "stockUpdate": {
+          "max": 18.944333,
+          "avg": 6.0095582499999995,
+          "min": 1.065791,
+          "p(50)": 3.1613125,
+          "p(95)": 18.09087675,
+          "p(99)": 18.77364175
+        },
+        "category": {
+          "avg": 13.251490304495528,
+          "min": 0.564959,
+          "p(50)": 1.129875,
+          "p(95)": 91.01210799999994,
+          "p(99)": 233.89321207999996,
+          "max": 325.26725
+        },
+        "detail": {
+          "avg": 14.046646582258061,
+          "min": 0.471,
+          "p(50)": 1.121208,
+          "p(95)": 95.4643294999999,
+          "p(99)": 229.43852646,
+          "max": 307.108041
+        },
+        "cartWrite": {
+          "p(99)": 265.4537657399998,
+          "max": 361.952,
+          "avg": 17.83577816759779,
+          "min": 0.898292,
+          "p(50)": 2.215375,
+          "p(95)": 110.2634205
+        },
+        "cartRead": {
+          "p(95)": 100.24607879999999,
+          "p(99)": 254.99334442999995,
+          "max": 342.547584,
+          "avg": 15.742912667403258,
+          "min": 0.647917,
+          "p(50)": 1.6246665
+        }
+      },
+      "failed_thresholds": [],
+      "resources": {
+        "haproxy": {
+          "cpu": {
+            "mean": 22.65,
+            "max": 36.19
+          },
+          "working_set": {
+            "mean": 53106879.15,
+            "max": 55952015.36
+          }
+        },
+        "commerce-1": {
+          "cpu": {
+            "mean": 65.4,
+            "max": 99.2
+          },
+          "working_set": {
+            "mean": 415375906.13,
+            "max": 426351001.6
+          },
+          "rss": {
+            "mean": 436121144.89,
+            "max": 445882368
+          },
+          "heap": {
+            "mean": 57531368.89,
+            "max": 84807152.0
+          },
+          "pending": {
+            "mean": 0.0,
+            "max": 0.0
+          }
+        },
+        "postgres": {
+          "cpu": {
+            "mean": 38.64,
+            "max": 57.04
+          },
+          "working_set": {
+            "mean": 206359756.8,
+            "max": 207303475.2
+          }
+        },
+        "redis": {
+          "cpu": {
+            "mean": 4.33,
+            "max": 6.69
+          },
+          "working_set": {
+            "mean": 39864529.35,
+            "max": 41135636.48
+          }
+        },
+        "k6": {
+          "cpu": {
+            "mean": 45.12,
+            "max": 66.63
+          },
+          "working_set": {
+            "mean": 610507161.6,
+            "max": 649907404.8
+          }
+        }
+      },
+      "database_delta": {
+        "xact_commit": 46372,
+        "xact_rollback": 0,
+        "blks_read": 217,
+        "blks_hit": 4775665,
+        "deadlocks": 0,
+        "temp_bytes": 0,
+        "blk_read_time": 75.49599999999998,
+        "blk_write_time": 5.697000000000116
+      },
+      "wal_bytes": 5213456,
+      "data_received_bytes": 436306025,
+      "data_sent_bytes": 8799885,
+      "vus_max": 1466,
+      "resource_sample_errors": 0,
+      "cgroup_cpu_delta": {
+        "postgres": {
+          "usage_usec": 25094838,
+          "user_usec": 16181254,
+          "system_usec": 8913584,
+          "nice_usec": 0,
+          "nr_periods": 611,
+          "nr_throttled": 1,
+          "throttled_usec": 2813,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "redis": {
+          "usage_usec": 3034048,
+          "user_usec": 1941141,
+          "system_usec": 1092907,
+          "nice_usec": 0,
+          "nr_periods": 615,
+          "nr_throttled": 0,
+          "throttled_usec": 0,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "haproxy": {
+          "usage_usec": 14579181,
+          "user_usec": 4650065,
+          "system_usec": 9929115,
+          "nice_usec": 0,
+          "nr_periods": 607,
+          "nr_throttled": 19,
+          "throttled_usec": 390007,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        },
+        "commerce-1": {
+          "usage_usec": 41222098,
+          "user_usec": 27994891,
+          "system_usec": 13227208,
+          "nice_usec": 0,
+          "nr_periods": 617,
+          "nr_throttled": 95,
+          "throttled_usec": 4267451,
+          "nr_bursts": 0,
+          "burst_usec": 0
+        }
+      },
+      "achieved_primary_rps": 1440.1,
+      "objectives_met": true,
+      "top_sql_by_exec_time": [
+        {
+          "query": "WITH selected AS MATERIALIZED (\n  SELECT * FROM products WHERE category_id=$1 AND active AND id>$2 ORDER BY id LIMIT $3\n) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n    pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\n  FROM selected p JOIN product_prices pr ON pr.product_id=p.id\n  JOIN inventory i ON i.product_id=p.id ORDER BY p.id",
+          "calls": 23268,
+          "total_exec_time": 6867.51892799999,
+          "mean_exec_time": 0.29514865600825135,
+          "rows": 465360,
+          "shared_blks_hit": 3804068,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 18318
+        },
+        {
+          "query": "SELECT ci.product_id AS \"productId\",p.name,ci.quantity,pr.price_minor AS \"priceMinor\"\nFROM cart_items ci JOIN products p ON p.id=ci.product_id\nJOIN product_prices pr ON pr.product_id=p.id WHERE ci.user_id=$1 ORDER BY ci.product_id",
+          "calls": 8348,
+          "total_exec_time": 386.614551999999,
+          "mean_exec_time": 0.046312236703401975,
+          "rows": 6203,
+          "shared_blks_hit": 70610,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 25768
+        },
+        {
+          "query": "SELECT id,username,password_hash,role FROM users WHERE username=$1",
+          "calls": 9483,
+          "total_exec_time": 261.67442999999895,
+          "mean_exec_time": 0.027594055678582842,
+          "rows": 9483,
+          "shared_blks_hit": 28449,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 0
+        },
+        {
+          "query": "SELECT version FROM carts WHERE user_id=$1 FOR UPDATE",
+          "calls": 8545,
+          "total_exec_time": 244.17742700000025,
+          "mean_exec_time": 0.02857547419543597,
+          "rows": 8545,
+          "shared_blks_hit": 34184,
+          "shared_blks_read": 0,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 615690
+        },
+        {
+          "query": "SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,\n       pr.price_minor,pr.currency,i.on_hand-i.reserved AS available\nFROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id\n WHERE p.id=$1 AND p.active",
+          "calls": 3453,
+          "total_exec_time": 212.89266199999952,
+          "mean_exec_time": 0.061654405444541045,
+          "rows": 3453,
+          "shared_blks_hit": 31052,
+          "shared_blks_read": 27,
+          "shared_blks_dirtied": 0,
+          "shared_blks_written": 0,
+          "temp_blks_written": 0,
+          "wal_bytes": 198
+        }
+      ],
+      "sampled_cache_delta": {
+        "redisErrors": 0,
+        "originLoads": 3345,
+        "hits": 49561
+      },
+      "sampled_card_hit_ratio": 0.9368
+    }
+  ],
+  "cold_stack_start_seconds": 15.942,
+  "readiness_after_compose_seconds": {
+    "18081": 9.949,
+    "18082": 10.672,
+    "18080": 12.706
+  },
+  "inventory_mismatches": 0,
+  "cold_error_routes": {
+    "commerce-1": {
+      "name": "http.server.requests",
+      "baseUnit": "seconds",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 141.0
+        },
+        {
+          "statistic": "TOTAL_TIME",
+          "value": 28.996637508
+        },
+        {
+          "statistic": "MAX",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "exception",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "method",
+          "values": [
+            "GET"
+          ]
+        },
+        {
+          "tag": "error",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "uri",
+          "values": [
+            "/api/products/{id}"
+          ]
+        },
+        {
+          "tag": "outcome",
+          "values": [
+            "SERVER_ERROR"
+          ]
+        }
+      ]
+    },
+    "commerce-2": {
+      "name": "http.server.requests",
+      "baseUnit": "seconds",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 141.0
+        },
+        {
+          "statistic": "TOTAL_TIME",
+          "value": 31.158959596
+        },
+        {
+          "statistic": "MAX",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "exception",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "method",
+          "values": [
+            "GET"
+          ]
+        },
+        {
+          "tag": "error",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "uri",
+          "values": [
+            "/api/products/{id}"
+          ]
+        },
+        {
+          "tag": "outcome",
+          "values": [
+            "SERVER_ERROR"
+          ]
+        }
+      ]
+    }
+  },
+  "cold_error_routes_observation": "Captured after the 960 RPS phase. All 282 HTTP 503 responses occurred during warmup.",
+  "functional_recheck": {
+    "project": "hdls-stage2-check-aa5c7303",
+    "flash": {
+      "attempts": 1000,
+      "created": 100,
+      "out_of_stock": 900,
+      "elapsed_seconds": 4.4,
+      "reserved": 100,
+      "wal_bytes": 1108632
+    },
+    "ownership_and_durable_idempotency": "passed",
+    "concurrent_retries": {
+      "requests": 64,
+      "orders": 1,
+      "reserved": 1
+    },
+    "multi_sku_atomicity_and_failure_replay": "passed",
+    "opposite_sku_order": "passed",
+    "cache_invalidation_authoritative_price_and_snapshot": "passed",
+    "singleflight": {
+      "requests": 64,
+      "origin_loads": 1
+    },
+    "redis_failure_keeps_catalog_and_checkout": "passed",
+    "concurrent_expiration_once": "passed",
+    "inventory_aggregate_invariant": "passed",
+    "restore": {
+      "dump_bytes": 29968454,
+      "backup_seconds": 1.55,
+      "restore_seconds": 2.97,
+      "fingerprints_match": true,
+      "orders": 200106,
+      "items": 600109
+    }
+  },
+  "commerce_sizing": {
+    "model_peak_rps": 523.2144,
+    "tested_single_instance_rps": 1439.9833,
+    "reserve_fraction": 0.3,
+    "safe_per_instance_rps": 1007.9883,
+    "required_healthy_instances": 1,
+    "az_count": 3,
+    "total_instances": 3,
+    "capacity_after_largest_az_loss_rps": 2015.9767
+  },
+  "jfr": {
+    "commerce-1": {
+      "events": {
+        "jdk.ObjectAllocationSample": 187843,
+        "jdk.ExecutionSample": 6863,
+        "jdk.GarbageCollection": 2168
+      },
+      "gc_causes": {
+        "G1 Evacuation Pause": 2164,
+        "Metadata GC Threshold": 4
+      },
+      "top_allocations_by_weight": {
+        "[B": 16096110752,
+        "[C": 6329744840,
+        "jdk.internal.vm.StackChunk": 4273568952,
+        "[Ljava.lang.Object;": 2612325992,
+        "java.lang.String": 2149824776,
+        "io.micrometer.core.instrument.ImmutableTag": 1310306664,
+        "java.util.ArrayList$Itr": 1243681064,
+        "java.util.concurrent.ConcurrentHashMap$Node": 1117849512
+      },
+      "top_execution_leaf_samples": {
+        "java.util.HashMap.getNode": 247,
+        "com.fasterxml.jackson.core.json.WriterBasedJsonGenerator.writeString": 130,
+        "java.lang.invoke.Invokers$Holder.invokeExact_MT": 98,
+        "jakarta.servlet.ServletRequestWrapper.getAttribute": 94,
+        "jakarta.servlet.http.HttpServletRequestWrapper.getMethod": 90,
+        "io.micrometer.core.instrument.Counter.builder": 88,
+        "java.util.concurrent.ConcurrentHashMap.get": 85,
+        "io.micrometer.common.KeyValues.and": 81,
+        "java.util.concurrent.ConcurrentHashMap.putVal": 78,
+        "org.springframework.web.filter.OncePerRequestFilter.doFilter": 72
+      },
+      "gc_longest_pause_ms": 72.431,
+      "gc_total_pause_ms": 9787.07,
+      "sampled_allocation_weight_bytes": 56018770168.0
+    },
+    "commerce-2": {
+      "events": {
+        "jdk.ObjectAllocationSample": 116412,
+        "jdk.ExecutionSample": 4518,
+        "jdk.GarbageCollection": 879
+      },
+      "gc_causes": {
+        "G1 Evacuation Pause": 875,
+        "Metadata GC Threshold": 4
+      },
+      "top_allocations_by_weight": {
+        "[B": 9699847040,
+        "[C": 3773592352,
+        "jdk.internal.vm.StackChunk": 2470846736,
+        "[Ljava.lang.Object;": 1420189304,
+        "java.lang.String": 1125149832,
+        "io.micrometer.core.instrument.ImmutableTag": 879372720,
+        "java.util.ArrayList$Itr": 677822472,
+        "io.micrometer.common.KeyValues": 634396296
+      },
+      "top_execution_leaf_samples": {
+        "java.util.HashMap.getNode": 241,
+        "com.fasterxml.jackson.core.json.WriterBasedJsonGenerator.writeString": 65,
+        "org.springframework.web.filter.OncePerRequestFilter.doFilter": 58,
+        "org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter": 58,
+        "java.lang.invoke.Invokers$Holder.invokeExact_MT": 56,
+        "java.util.concurrent.ConcurrentHashMap.get": 56,
+        "io.micrometer.core.instrument.Counter.builder": 51,
+        "jakarta.servlet.ServletRequestWrapper.getAttribute": 50,
+        "java.util.concurrent.ConcurrentHashMap.putVal": 49,
+        "java.util.HashMap.putVal": 48
+      },
+      "gc_longest_pause_ms": 138.524,
+      "gc_total_pause_ms": 3732.935,
+      "sampled_allocation_weight_bytes": 32965045488.0
+    }
+  }
+}

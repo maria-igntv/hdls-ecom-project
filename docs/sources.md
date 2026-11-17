@@ -43,6 +43,19 @@ S03 и S09 — внутренние основания модели, а не н�
 
 Схема, SQL-планы и фактические измерения собственного прототипа находятся в [storage.md](storage.md) и [проверке этапа 2](stage2_verification.md). Конфигурации целевых серверов остаются оценками до профилирования.
 
+## Источники чекпоинта 3
+
+| Код | Источник | Применение |
+| --- | --- | --- |
+| S19 | [Java 25 launcher](https://docs.oracle.com/en/java/javase/25/docs/specs/man/java.html), [jfr command](https://docs.oracle.com/en/java/javase/25/docs/specs/man/jfr.html) | StartFlightRecording, profile settings, чтение записей Java Flight Recorder |
+| S20 | [G1 в Java 25](https://docs.oracle.com/en/java/javase/25/gctuning/garbage-first-g1-garbage-collector1.html) | Аллокации, heap и компромисс CPU/latency сборщика |
+| S21 | [Spring Boot virtual threads](https://docs.spring.io/spring-boot/3.5/reference/features/spring-application.html#features.spring-application.virtual-threads) | Virtual threads, взаимодействие с пулами и последовательным кодом MVC/JDBC |
+| S22 | [k6 constant-arrival-rate](https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/constant-arrival-rate/), [dropped iterations](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/dropped-iterations/), [VU allocation](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/arrival-rate-vu-allocation/) | Открытая модель поступления, заранее выделенные VU, учёт пропущенных запусков |
+| S23 | [PostgreSQL 17 pg_stat_statements](https://www.postgresql.org/docs/17/pgstatstatements.html) | shared_preload_libraries, reset, SQL calls/total_exec_time, cache и WAL |
+| S24 | [Docker stats](https://docs.docker.com/reference/cli/docker/container/stats/) | CPU, память контейнера и вычитание файлового кэша при отображении Linux memory usage |
+
+Измерения собственного backend и вывод ёмкости находятся в [отчёте этапа 3](stage3_verification.md). Ресурсные бюджеты будущих компонентов выделены в [аппаратной модели](runtime_resources.md).
+
 ## Правила использования внешних данных
 
 1. Фиксируем исходную публикацию и период наблюдения; дату доступа не выдаём за дату публикации.

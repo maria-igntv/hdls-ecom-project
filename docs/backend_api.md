@@ -50,7 +50,7 @@ curl -u buyer-1:demo-buyer-1 -X POST \
 | PUT `/api/admin/inventory/{id}` | Администратор | onHand; не может стать меньше reserved |
 | POST `/api/admin/reservations/expire` | Администратор | До 100 истёкших заказов за транзакцию; повтор безопасен |
 | GET `/api/admin/cache-stats` | Администратор | Origin-loads, hits, ошибки Redis для проверки |
-| GET `/actuator/metrics` | Администратор | Метрики JVM/HTTP/Hikari, основа следующего этапа |
+| GET `/actuator/metrics` | Администратор | Метрики JVM/HTTP/Hikari, используемые в нагрузочном этапе 3 |
 
 Учётные записи: buyer-N / demo-buyer-N, где N от 1 до 1000; admin / demo-admin. Идентификатор владельца берётся из проверенной учётной записи, а не из тела запроса. У другого покупателя чужой заказ возвращает 404. Поиск, загрузка изображений, реальная оплата, автоматический expiry worker и доставка outbox остаются следующими частями реализации.
 

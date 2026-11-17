@@ -1,0 +1,1496 @@
+{
+  "project": "hdls-stage3-check-77fa1b51",
+  "warmup_rate": 200,
+  "warmup_seconds": 45,
+  "profiles": [
+    {
+      "run": "warmup",
+      "requestedRate": 200,
+      "duration": 45,
+      "instances": 2,
+      "achieved_primary_rps": 198.467,
+      "dropped_iterations": 75,
+      "technical_errors": {
+        "rate": 0.00447878177135819,
+        "passes": 40,
+        "fails": 8891
+      },
+      "operation_errors": {
+        "rate": 0.00447878177135819,
+        "passes": 40,
+        "fails": 8891
+      },
+      "latency_ms": {
+        "p(99)": 359.7257258999991,
+        "max": 1274.083626,
+        "avg": 12.183826439256546,
+        "min": 0.550667,
+        "p(50)": 1.46275,
+        "p(95)": 4.186374499999998
+      },
+      "failed_thresholds": [
+        "dropped_iterations",
+        "operation_errors",
+        "technical_errors"
+      ],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 19,
+          "max": 252
+        },
+        "cartRead": {
+          "preallocated": 2,
+          "max": 26
+        },
+        "cartWrite": {
+          "preallocated": 2,
+          "max": 11
+        },
+        "catalogUpdate": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 9,
+          "max": 108
+        },
+        "checkout": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "history": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 2,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "baseline",
+      "requestedRate": 200,
+      "duration": 60,
+      "instances": 2,
+      "achieved_primary_rps": 200.117,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "passes": 0,
+        "fails": 12007,
+        "rate": 0
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 12007
+      },
+      "latency_ms": {
+        "p(99)": 12.349426059999994,
+        "max": 118.972666,
+        "avg": 2.0039327638044586,
+        "min": 0.471208,
+        "p(50)": 1.364292,
+        "p(95)": 3.9583877
+      },
+      "failed_thresholds": [],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 19,
+          "max": 252
+        },
+        "cartRead": {
+          "preallocated": 2,
+          "max": 26
+        },
+        "cartWrite": {
+          "preallocated": 2,
+          "max": 11
+        },
+        "catalogUpdate": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 9,
+          "max": 108
+        },
+        "checkout": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "history": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 2,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "target",
+      "requestedRate": 521,
+      "duration": 120,
+      "instances": 2,
+      "achieved_primary_rps": 520.675,
+      "dropped_iterations": 46,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 62481
+      },
+      "operation_errors": {
+        "passes": 0,
+        "fails": 62481,
+        "rate": 0
+      },
+      "latency_ms": {
+        "min": 0.27925,
+        "p(50)": 0.930042,
+        "p(95)": 7.256875,
+        "p(99)": 65.86177479999976,
+        "max": 655.4335,
+        "avg": 3.327155889998543
+      },
+      "failed_thresholds": [
+        "dropped_iterations"
+      ],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 50,
+          "max": 655
+        },
+        "cartRead": {
+          "preallocated": 5,
+          "max": 66
+        },
+        "cartWrite": {
+          "preallocated": 3,
+          "max": 29
+        },
+        "catalogUpdate": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 22,
+          "max": 281
+        },
+        "checkout": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "history": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 2,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "headroom",
+      "requestedRate": 640,
+      "duration": 90,
+      "instances": 2,
+      "achieved_primary_rps": 627.389,
+      "dropped_iterations": 1141,
+      "technical_errors": {
+        "fails": 56465,
+        "rate": 0,
+        "passes": 0
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 56465
+      },
+      "latency_ms": {
+        "avg": 52.338221615744395,
+        "min": 0.285292,
+        "p(50)": 1.306208,
+        "p(95)": 391.8272753999999,
+        "p(99)": 942.6814219999999,
+        "max": 3026.931834
+      },
+      "failed_thresholds": [
+        "latency_catalogUpdate",
+        "latency_detail",
+        "latency_stockUpdate",
+        "operation_latency",
+        "latency_category",
+        "latency_card",
+        "dropped_iterations",
+        "latency_history",
+        "latency_cartRead",
+        "latency_cartWrite"
+      ],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 61,
+          "max": 805
+        },
+        "cartRead": {
+          "preallocated": 7,
+          "max": 81
+        },
+        "cartWrite": {
+          "preallocated": 3,
+          "max": 35
+        },
+        "catalogUpdate": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 26,
+          "max": 345
+        },
+        "checkout": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "history": {
+          "preallocated": 2,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 2,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "stress",
+      "requestedRate": 960,
+      "duration": 90,
+      "instances": 2,
+      "achieved_primary_rps": 960.022,
+      "dropped_iterations": 4,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86402
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 86402
+      },
+      "latency_ms": {
+        "avg": 8.559192490625232,
+        "min": 0.224292,
+        "p(50)": 0.766708,
+        "p(95)": 12.95778094999992,
+        "p(99)": 251.72977050999992,
+        "max": 671.706209
+      },
+      "failed_thresholds": [
+        "dropped_iterations"
+      ],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 302,
+          "max": 1207
+        },
+        "cartRead": {
+          "preallocated": 31,
+          "max": 121
+        },
+        "cartWrite": {
+          "preallocated": 13,
+          "max": 52
+        },
+        "catalogUpdate": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 130,
+          "max": 518
+        },
+        "checkout": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 4,
+          "max": 14
+        },
+        "history": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 4,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "saturation",
+      "requestedRate": 1440,
+      "duration": 60,
+      "instances": 2,
+      "achieved_primary_rps": 1429.733,
+      "dropped_iterations": 620,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 85784
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 85784
+      },
+      "latency_ms": {
+        "avg": 20.045901953545727,
+        "min": 0.217375,
+        "p(50)": 0.683791,
+        "p(95)": 85.56633744999989,
+        "p(99)": 673.30398825,
+        "max": 1161.304876
+      },
+      "failed_thresholds": [
+        "latency_detail",
+        "dropped_iterations",
+        "latency_cartWrite",
+        "latency_catalogUpdate",
+        "latency_card",
+        "operation_latency",
+        "latency_history",
+        "latency_cartRead",
+        "latency_category"
+      ],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 453,
+          "max": 1810
+        },
+        "cartRead": {
+          "preallocated": 46,
+          "max": 181
+        },
+        "cartWrite": {
+          "preallocated": 20,
+          "max": 78
+        },
+        "catalogUpdate": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 194,
+          "max": 776
+        },
+        "checkout": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 6,
+          "max": 21
+        },
+        "history": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 4,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "single",
+      "requestedRate": 521,
+      "duration": 90,
+      "instances": 1,
+      "achieved_primary_rps": 521.067,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "fails": 46896,
+        "rate": 0,
+        "passes": 0
+      },
+      "operation_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 46896
+      },
+      "latency_ms": {
+        "min": 0.259583,
+        "p(50)": 0.6738335,
+        "p(95)": 1.68451025,
+        "p(99)": 4.355925299999996,
+        "max": 134.807042,
+        "avg": 0.9464487009553028
+      },
+      "failed_thresholds": [],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 164,
+          "max": 655
+        },
+        "cartRead": {
+          "preallocated": 17,
+          "max": 66
+        },
+        "cartWrite": {
+          "preallocated": 8,
+          "max": 29
+        },
+        "catalogUpdate": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 71,
+          "max": 281
+        },
+        "checkout": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "history": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 4,
+          "max": 10
+        }
+      }
+    },
+    {
+      "run": "single-stress",
+      "requestedRate": 960,
+      "duration": 60,
+      "instances": 1,
+      "achieved_primary_rps": 960.15,
+      "dropped_iterations": 0,
+      "technical_errors": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 57609
+      },
+      "operation_errors": {
+        "passes": 0,
+        "fails": 57609,
+        "rate": 0
+      },
+      "latency_ms": {
+        "p(95)": 2.127766599999999,
+        "p(99)": 128.5055463599999,
+        "max": 422.011417,
+        "avg": 3.721548097693064,
+        "min": 0.0165,
+        "p(50)": 0.56125
+      },
+      "failed_thresholds": [],
+      "vu_allocation": {
+        "card": {
+          "preallocated": 302,
+          "max": 1207
+        },
+        "cartRead": {
+          "preallocated": 31,
+          "max": 121
+        },
+        "cartWrite": {
+          "preallocated": 13,
+          "max": 52
+        },
+        "catalogUpdate": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "category": {
+          "preallocated": 130,
+          "max": 518
+        },
+        "checkout": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "detail": {
+          "preallocated": 4,
+          "max": 14
+        },
+        "history": {
+          "preallocated": 4,
+          "max": 10
+        },
+        "stockUpdate": {
+          "preallocated": 4,
+          "max": 10
+        }
+      }
+    }
+  ],
+  "before_cpu_tuning": {
+    "project": "hdls-stage3-check-331cddb7",
+    "java_active_processor_count": 2,
+    "haproxy_threads": 12,
+    "profiles": [
+      {
+        "run": "warmup",
+        "requestedRate": 521,
+        "duration": 90,
+        "instances": 2,
+        "achieved_primary_rps": 521.078,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "rate": 0.004605838326545408,
+          "passes": 216,
+          "fails": 46681
+        },
+        "operation_errors": {
+          "fails": 46681,
+          "rate": 0.004605838326545408,
+          "passes": 216
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 321
+        },
+        "latency_ms": {
+          "avg": 22.408322568458484,
+          "min": 0.265917,
+          "p(50)": 0.819208,
+          "p(95)": 12.415049999999992,
+          "p(99)": 760.43170532,
+          "max": 996.189417
+        },
+        "failed_thresholds": [
+          "latency_stockUpdate",
+          "latency_detail",
+          "latency_cartRead",
+          "technical_errors",
+          "operation_errors",
+          "latency_cartWrite",
+          "latency_category",
+          "latency_catalogUpdate",
+          "latency_card",
+          "operation_latency"
+        ],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 11668398,
+            "user_usec": 7277978,
+            "system_usec": 4390419,
+            "nice_usec": 0,
+            "nr_periods": 910,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 1583826,
+            "user_usec": 965852,
+            "system_usec": 617974,
+            "nice_usec": 0,
+            "nr_periods": 902,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 6698180,
+            "user_usec": 2356428,
+            "system_usec": 4341751,
+            "nice_usec": 0,
+            "nr_periods": 906,
+            "nr_throttled": 8,
+            "throttled_usec": 3055835,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 27133875,
+            "user_usec": 23650883,
+            "system_usec": 3482991,
+            "nice_usec": 0,
+            "nr_periods": 910,
+            "nr_throttled": 57,
+            "throttled_usec": 12334854,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 26723896,
+            "user_usec": 23229746,
+            "system_usec": 3494150,
+            "nice_usec": 0,
+            "nr_periods": 914,
+            "nr_throttled": 65,
+            "throttled_usec": 12651269,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "baseline",
+        "requestedRate": 200,
+        "duration": 60,
+        "instances": 2,
+        "achieved_primary_rps": 200.117,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "fails": 12007,
+          "rate": 0,
+          "passes": 0
+        },
+        "operation_errors": {
+          "passes": 0,
+          "fails": 12007,
+          "rate": 0
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 81
+        },
+        "latency_ms": {
+          "min": 0.359083,
+          "p(50)": 1.142,
+          "p(95)": 3.0623206999999995,
+          "p(99)": 5.3951464399999995,
+          "max": 209.946417,
+          "avg": 1.6058261652369414
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 4585647,
+            "user_usec": 2939987,
+            "system_usec": 1645660,
+            "nice_usec": 0,
+            "nr_periods": 610,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 760425,
+            "user_usec": 502073,
+            "system_usec": 258353,
+            "nice_usec": 0,
+            "nr_periods": 606,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 2670646,
+            "user_usec": 893876,
+            "system_usec": 1776770,
+            "nice_usec": 0,
+            "nr_periods": 606,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 6837197,
+            "user_usec": 5377889,
+            "system_usec": 1459307,
+            "nice_usec": 0,
+            "nr_periods": 611,
+            "nr_throttled": 3,
+            "throttled_usec": 45404,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 6612644,
+            "user_usec": 5154317,
+            "system_usec": 1458328,
+            "nice_usec": 0,
+            "nr_periods": 608,
+            "nr_throttled": 2,
+            "throttled_usec": 267110,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "target",
+        "requestedRate": 521,
+        "duration": 120,
+        "instances": 2,
+        "achieved_primary_rps": 521.075,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 62529
+        },
+        "operation_errors": {
+          "fails": 62529,
+          "rate": 0,
+          "passes": 0
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 429
+        },
+        "latency_ms": {
+          "p(50)": 0.724791,
+          "p(95)": 2.038666599999998,
+          "p(99)": 40.29299875999992,
+          "max": 681.510792,
+          "avg": 3.455155799692945,
+          "min": 0.067903
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 15835577,
+            "user_usec": 10063896,
+            "system_usec": 5771681,
+            "nice_usec": 0,
+            "nr_periods": 1207,
+            "nr_throttled": 2,
+            "throttled_usec": 53529,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 2222081,
+            "user_usec": 1393066,
+            "system_usec": 829016,
+            "nice_usec": 0,
+            "nr_periods": 1211,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 9154098,
+            "user_usec": 3261188,
+            "system_usec": 5892910,
+            "nice_usec": 0,
+            "nr_periods": 1206,
+            "nr_throttled": 13,
+            "throttled_usec": 3034195,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 21318826,
+            "user_usec": 16628991,
+            "system_usec": 4689836,
+            "nice_usec": 0,
+            "nr_periods": 1210,
+            "nr_throttled": 20,
+            "throttled_usec": 2098899,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 20193163,
+            "user_usec": 15575294,
+            "system_usec": 4617869,
+            "nice_usec": 0,
+            "nr_periods": 1210,
+            "nr_throttled": 14,
+            "throttled_usec": 2052941,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "headroom",
+        "requestedRate": 640,
+        "duration": 90,
+        "instances": 2,
+        "achieved_primary_rps": 640.078,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "passes": 0,
+          "fails": 57607,
+          "rate": 0
+        },
+        "operation_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 57607
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 393
+        },
+        "latency_ms": {
+          "p(50)": 0.897792,
+          "p(95)": 3.333041799999998,
+          "p(99)": 13.639769479999991,
+          "max": 182.71375,
+          "avg": 1.592428790372697,
+          "min": 0.267083
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 16121992,
+            "user_usec": 10610700,
+            "system_usec": 5511292,
+            "nice_usec": 0,
+            "nr_periods": 908,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 2418800,
+            "user_usec": 1535429,
+            "system_usec": 883371,
+            "nice_usec": 0,
+            "nr_periods": 910,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 9608061,
+            "user_usec": 3483863,
+            "system_usec": 6124198,
+            "nice_usec": 0,
+            "nr_periods": 908,
+            "nr_throttled": 2,
+            "throttled_usec": 125418,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 22403970,
+            "user_usec": 17398016,
+            "system_usec": 5005954,
+            "nice_usec": 0,
+            "nr_periods": 913,
+            "nr_throttled": 14,
+            "throttled_usec": 937759,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 21039754,
+            "user_usec": 16102188,
+            "system_usec": 4937565,
+            "nice_usec": 0,
+            "nr_periods": 911,
+            "nr_throttled": 6,
+            "throttled_usec": 400033,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "stress",
+        "requestedRate": 960,
+        "duration": 90,
+        "instances": 2,
+        "achieved_primary_rps": 879.356,
+        "dropped_iterations": 7268,
+        "technical_errors": {
+          "rate": 0.00045487857269212303,
+          "passes": 36,
+          "fails": 79106
+        },
+        "operation_errors": {
+          "rate": 0.00045487857269212303,
+          "passes": 36,
+          "fails": 79106
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 537
+        },
+        "latency_ms": {
+          "avg": 245.31182356681634,
+          "min": 0.030668,
+          "p(50)": 1.077938,
+          "p(95)": 2313.7256655499996,
+          "p(99)": 3975.37076934,
+          "max": 5800.374211
+        },
+        "failed_thresholds": [
+          "dropped_iterations{scenario:cartRead}",
+          "latency_history",
+          "dropped_iterations{scenario:detail}",
+          "latency_checkout",
+          "latency_stockUpdate",
+          "latency_cartWrite",
+          "dropped_iterations{scenario:card}",
+          "latency_detail",
+          "dropped_iterations{scenario:category}",
+          "latency_catalogUpdate",
+          "operation_latency",
+          "latency_cartRead",
+          "dropped_iterations{scenario:checkout}",
+          "dropped_iterations{scenario:cartWrite}",
+          "latency_category",
+          "latency_card",
+          "dropped_iterations",
+          "dropped_iterations{scenario:history}"
+        ],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 45938446,
+            "user_usec": 28322241,
+            "system_usec": 17616205,
+            "nice_usec": 0,
+            "nr_periods": 1019,
+            "nr_throttled": 19,
+            "throttled_usec": 3815111,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 4058429,
+            "user_usec": 2730225,
+            "system_usec": 1328205,
+            "nice_usec": 0,
+            "nr_periods": 1010,
+            "nr_throttled": 1,
+            "throttled_usec": 37900,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 24342191,
+            "user_usec": 8722208,
+            "system_usec": 15619982,
+            "nice_usec": 0,
+            "nr_periods": 961,
+            "nr_throttled": 192,
+            "throttled_usec": 51234778,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 52099450,
+            "user_usec": 41779935,
+            "system_usec": 10319514,
+            "nice_usec": 0,
+            "nr_periods": 1036,
+            "nr_throttled": 222,
+            "throttled_usec": 33786329,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 46734919,
+            "user_usec": 35476348,
+            "system_usec": 11258571,
+            "nice_usec": 0,
+            "nr_periods": 1037,
+            "nr_throttled": 169,
+            "throttled_usec": 26261717,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "saturation",
+        "requestedRate": 1440,
+        "duration": 60,
+        "instances": 2,
+        "achieved_primary_rps": 1281.1,
+        "dropped_iterations": 9541,
+        "technical_errors": {
+          "rate": 0.0105898576743944,
+          "passes": 814,
+          "fails": 76052
+        },
+        "operation_errors": {
+          "passes": 814,
+          "fails": 76052,
+          "rate": 0.0105898576743944
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 468
+        },
+        "latency_ms": {
+          "p(95)": 2496.781199249999,
+          "p(99)": 19992.60542505,
+          "max": 20078.498204,
+          "avg": 737.1012569411731,
+          "min": 0.3835,
+          "p(50)": 200.14639599999998
+        },
+        "failed_thresholds": [
+          "operation_latency",
+          "dropped_iterations{scenario:cartWrite}",
+          "dropped_iterations{scenario:cartRead}",
+          "dropped_iterations{scenario:history}",
+          "dropped_iterations{scenario:detail}",
+          "latency_detail",
+          "latency_cartWrite",
+          "latency_category",
+          "dropped_iterations{scenario:category}",
+          "latency_stockUpdate",
+          "latency_catalogUpdate",
+          "dropped_iterations{scenario:checkout}",
+          "dropped_iterations{scenario:card}",
+          "dropped_iterations",
+          "latency_checkout",
+          "latency_card",
+          "technical_errors",
+          "latency_history",
+          "operation_errors",
+          "latency_cartRead",
+          "dropped_iterations{scenario:catalogUpdate}"
+        ],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 56068526,
+            "user_usec": 31783421,
+            "system_usec": 24285106,
+            "nice_usec": 0,
+            "nr_periods": 676,
+            "nr_throttled": 61,
+            "throttled_usec": 17714138,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 3533676,
+            "user_usec": 2377658,
+            "system_usec": 1156018,
+            "nice_usec": 0,
+            "nr_periods": 736,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 26144019,
+            "user_usec": 10859434,
+            "system_usec": 15284585,
+            "nice_usec": 0,
+            "nr_periods": 650,
+            "nr_throttled": 366,
+            "throttled_usec": 94562007,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 45053581,
+            "user_usec": 35706849,
+            "system_usec": 9346731,
+            "nice_usec": 0,
+            "nr_periods": 771,
+            "nr_throttled": 179,
+            "throttled_usec": 15812976,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 41639524,
+            "user_usec": 30969551,
+            "system_usec": 10669972,
+            "nice_usec": 0,
+            "nr_periods": 763,
+            "nr_throttled": 125,
+            "throttled_usec": 10351450,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "overload",
+        "requestedRate": 2880,
+        "duration": 60,
+        "instances": 2,
+        "achieved_primary_rps": 2745.817,
+        "dropped_iterations": 8031,
+        "technical_errors": {
+          "rate": 0.02757528118531827,
+          "passes": 4543,
+          "fails": 160206
+        },
+        "operation_errors": {
+          "fails": 160206,
+          "rate": 0.02757528118531827,
+          "passes": 4543
+        },
+        "support_errors": {
+          "fails": 843,
+          "rate": 0.03103448275862069,
+          "passes": 27
+        },
+        "latency_ms": {
+          "min": 0,
+          "p(50)": 47.526334,
+          "p(95)": 989.3696667999997,
+          "p(99)": 19999.85053516,
+          "max": 22569.566829,
+          "avg": 580.0452792351842
+        },
+        "failed_thresholds": [
+          "support_errors",
+          "latency_checkout",
+          "dropped_iterations{scenario:cartWrite}",
+          "latency_catalogUpdate",
+          "dropped_iterations{scenario:card}",
+          "latency_stockUpdate",
+          "dropped_iterations{scenario:catalogUpdate}",
+          "latency_cartWrite",
+          "latency_category",
+          "dropped_iterations{scenario:checkout}",
+          "dropped_iterations{scenario:category}",
+          "dropped_iterations{scenario:history}",
+          "dropped_iterations",
+          "operation_latency",
+          "technical_errors",
+          "dropped_iterations{scenario:cartRead}",
+          "latency_cartRead",
+          "latency_detail",
+          "latency_card",
+          "operation_errors",
+          "dropped_iterations{scenario:detail}",
+          "latency_history"
+        ],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 46642062,
+            "user_usec": 27139267,
+            "system_usec": 19502796,
+            "nice_usec": 0,
+            "nr_periods": 722,
+            "nr_throttled": 12,
+            "throttled_usec": 1860983,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 3855336,
+            "user_usec": 2336972,
+            "system_usec": 1518364,
+            "nice_usec": 0,
+            "nr_periods": 794,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 27349962,
+            "user_usec": 9999760,
+            "system_usec": 17350201,
+            "nice_usec": 0,
+            "nr_periods": 660,
+            "nr_throttled": 371,
+            "throttled_usec": 91909022,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 42391325,
+            "user_usec": 30765343,
+            "system_usec": 11625982,
+            "nice_usec": 0,
+            "nr_periods": 814,
+            "nr_throttled": 87,
+            "throttled_usec": 4416228,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-2": {
+            "usage_usec": 37444425,
+            "user_usec": 25027374,
+            "system_usec": 12417051,
+            "nice_usec": 0,
+            "nr_periods": 823,
+            "nr_throttled": 18,
+            "throttled_usec": 736760,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "single",
+        "requestedRate": 521,
+        "duration": 90,
+        "instances": 1,
+        "achieved_primary_rps": 521.078,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 46897
+        },
+        "operation_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 46897
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 321
+        },
+        "latency_ms": {
+          "p(50)": 0.795917,
+          "p(95)": 19.242924999999996,
+          "p(99)": 172.7131623199999,
+          "max": 442.663083,
+          "avg": 6.5423264536110395,
+          "min": 0.240792
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 16183774,
+            "user_usec": 10424305,
+            "system_usec": 5759468,
+            "nice_usec": 0,
+            "nr_periods": 910,
+            "nr_throttled": 2,
+            "throttled_usec": 195244,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 2198167,
+            "user_usec": 1448273,
+            "system_usec": 749893,
+            "nice_usec": 0,
+            "nr_periods": 910,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 8416796,
+            "user_usec": 3519679,
+            "system_usec": 4897118,
+            "nice_usec": 0,
+            "nr_periods": 906,
+            "nr_throttled": 12,
+            "throttled_usec": 2167312,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 30037662,
+            "user_usec": 22335830,
+            "system_usec": 7701831,
+            "nice_usec": 0,
+            "nr_periods": 916,
+            "nr_throttled": 57,
+            "throttled_usec": 7645626,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "single-stress",
+        "requestedRate": 960,
+        "duration": 60,
+        "instances": 1,
+        "achieved_primary_rps": 960.15,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "fails": 57609,
+          "rate": 0,
+          "passes": 0
+        },
+        "operation_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 57609
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 396
+        },
+        "latency_ms": {
+          "p(50)": 0.541833,
+          "p(95)": 1.5332077999999993,
+          "p(99)": 5.151304719999999,
+          "max": 87.151708,
+          "avg": 0.8329361724556982,
+          "min": 0.233417
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 11097764,
+            "user_usec": 6838994,
+            "system_usec": 4258770,
+            "nice_usec": 0,
+            "nr_periods": 614,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 1487863,
+            "user_usec": 905369,
+            "system_usec": 582495,
+            "nice_usec": 0,
+            "nr_periods": 612,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 7665182,
+            "user_usec": 2213560,
+            "system_usec": 5451621,
+            "nice_usec": 0,
+            "nr_periods": 606,
+            "nr_throttled": 2,
+            "throttled_usec": 350425,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 24231796,
+            "user_usec": 16577855,
+            "system_usec": 7653942,
+            "nice_usec": 0,
+            "nr_periods": 614,
+            "nr_throttled": 2,
+            "throttled_usec": 115377,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      },
+      {
+        "run": "single-overload",
+        "requestedRate": 1440,
+        "duration": 60,
+        "instances": 1,
+        "achieved_primary_rps": 1440.117,
+        "dropped_iterations": 0,
+        "technical_errors": {
+          "passes": 0,
+          "fails": 86407,
+          "rate": 0
+        },
+        "operation_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 86407
+        },
+        "support_errors": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 591
+        },
+        "latency_ms": {
+          "max": 262.769,
+          "avg": 1.972504876503045,
+          "min": 0.262084,
+          "p(50)": 0.495917,
+          "p(95)": 1.783,
+          "p(99)": 44.249278519999955
+        },
+        "failed_thresholds": [],
+        "cgroup_cpu_delta": {
+          "postgres": {
+            "usage_usec": 15036056,
+            "user_usec": 9203515,
+            "system_usec": 5832542,
+            "nice_usec": 0,
+            "nr_periods": 611,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "redis": {
+            "usage_usec": 1913538,
+            "user_usec": 1107172,
+            "system_usec": 806366,
+            "nice_usec": 0,
+            "nr_periods": 613,
+            "nr_throttled": 0,
+            "throttled_usec": 0,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "haproxy": {
+            "usage_usec": 10914305,
+            "user_usec": 2999790,
+            "system_usec": 7914514,
+            "nice_usec": 0,
+            "nr_periods": 608,
+            "nr_throttled": 9,
+            "throttled_usec": 1686503,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "commerce-1": {
+            "usage_usec": 33570008,
+            "user_usec": 22220968,
+            "system_usec": 11349040,
+            "nice_usec": 0,
+            "nr_periods": 618,
+            "nr_throttled": 21,
+            "throttled_usec": 1396025,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          }
+        }
+      }
+    ],
+    "diagnostics_overlap": "The 960 RPS profile overlapped a separate JFR diagnostic container. The final series runs without this additional workload."
+  }
+}
