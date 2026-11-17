@@ -25,6 +25,11 @@ const operations = new Counter('operation_requests');
 const unexpected = new Counter('unexpected_responses');
 const supportErrors = new Rate('support_errors');
 const latencies = Object.fromEntries(Object.keys(weights).map(name => [name, new Trend(`latency_${name}`, true)]));
+const minutes = Array.from({ length: Math.ceil(duration / 60) }, (_, minute) => ({
+  latency: new Trend(`minute_latency_${minute}`, true),
+  errors: new Rate(`minute_technical_errors_${minute}`),
+  operations: new Counter(`minute_operations_${minute}`),
+}));
 const scenarios = {};
 // Allocate whole arrivals per minute. The rounding error is reported by the runner.
 for (const [name, weight] of Object.entries(weights)) {
@@ -50,6 +55,10 @@ export const options = {
     ...Object.fromEntries(Object.keys(weights).filter(name => name !== 'checkout')
       .map(name => [`latency_${name}`, ['p(95)<200', 'p(99)<500']])),
     ...Object.fromEntries(Object.keys(weights).map(name => [`dropped_iterations{scenario:${name}}`, ['count==0']])),
+    ...Object.fromEntries(minutes.flatMap((_, minute) => [
+      [`minute_latency_${minute}`, ['p(95)<200', 'p(99)<500']],
+      [`minute_technical_errors_${minute}`, ['rate<0.001']],
+    ])),
   },
 };
 
@@ -64,6 +73,10 @@ function params(name, user, body = false) {
 }
 
 function record(name, response, expected = 200) {
+  const minute = Math.min(minutes.length - 1, Math.floor((Date.now() - exec.scenario.startTime) / 60000));
+  minutes[minute].latency.add(response.timings.duration);
+  minutes[minute].errors.add(response.status === 0 || response.status >= 500);
+  minutes[minute].operations.add(1);
   operations.add(1, { operation: name });
   latency.add(response.timings.duration);
   latencies[name].add(response.timings.duration);

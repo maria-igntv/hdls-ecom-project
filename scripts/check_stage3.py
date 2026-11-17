@@ -2,10 +2,13 @@
 """Open-arrival k6 load, container/JVM/SQL measurements and JFR in an owned stack."""
 import argparse
 import base64
+import csv
 import hashlib
+import io
 import json
 import os
 import re
+import socket
 import statistics
 import subprocess
 import threading
@@ -34,6 +37,34 @@ PROFILES = {
     "single-overload": (1440, 60, 1),
 }
 SERVICES = ("postgres", "redis", "commerce-1", "commerce-2", "haproxy")
+
+
+def configure(project, output):
+    global PROJECT, OUTPUT, COMPOSE
+    PROJECT = project
+    OUTPUT = output
+    COMPOSE = ["docker", "compose", "-p", PROJECT,
+               "-f", str(ROOT / "infra/stage2/compose.yaml"),
+               "-f", str(ROOT / "infra/stage3/compose.yaml")]
+    os.environ["LOAD_RESULTS_DIR"] = str(output)
+
+
+def haproxy_command(query):
+    with socket.create_connection(("127.0.0.1", 18084), timeout=3) as connection:
+        connection.sendall((query + "\n").encode())
+        connection.shutdown(socket.SHUT_WR)
+        parts = []
+        while data := connection.recv(65536):
+            parts.append(data)
+    return b"".join(parts).decode()
+
+
+def haproxy_stats():
+    raw = haproxy_command("show stat")
+    fields = ("status", "weight", "scur", "smax", "qcur", "qmax", "stot", "req_tot",
+              "hrsp_2xx", "hrsp_4xx", "hrsp_5xx", "econ", "eresp", "check_status")
+    return {row["pxname"] + "/" + row["svname"]: {key: row.get(key, "") for key in fields}
+            for row in csv.DictReader(io.StringIO(raw.lstrip("# ")))}
 
 
 def command(args, data=None, allowed=(0,)):
@@ -101,10 +132,15 @@ def database_snapshot():
     """))
 
 
-def cgroup_snapshot(instances):
+def cgroup_snapshot(instances, allow_stopped=False):
     values = {}
     for service in ("postgres", "redis", "haproxy", *(f"commerce-{n}" for n in range(1, instances + 1))):
-        raw = compose("exec", "-T", service, "cat", "/sys/fs/cgroup/cpu.stat")
+        try:
+            raw = compose("exec", "-T", service, "cat", "/sys/fs/cgroup/cpu.stat")
+        except RuntimeError:
+            if allow_stopped:
+                continue
+            raise
         values[service] = {key: int(value) for key, value in (line.split() for line in raw.splitlines())}
     return values
 
@@ -114,6 +150,7 @@ def sample_resources(instances):
                              "--format", "{{.ID}}"]).split()
     stats = command(["docker", "stats", "--no-stream", "--format", "{{json .}}", *container_ids])
     result = {"containers": [json.loads(line) for line in stats.splitlines()], "jvm": {}}
+    result["haproxy"] = haproxy_stats()
     metrics = {
         "heap_used": "jvm.memory.used?tag=area:heap",
         "gc_pause": "jvm.gc.pause",
@@ -138,13 +175,15 @@ def sample_resources(instances):
     return result
 
 
-def sample_loop(stop, samples, instances):
+def sample_loop(stop, samples, instances, output_path):
     started = time.monotonic()
     while not stop.is_set():
         try:
             sample = sample_resources(instances)
             sample["elapsed_seconds"] = round(time.monotonic() - started, 3)
             samples.append(sample)
+            with output_path.open("a") as stream:
+                stream.write(json.dumps(sample) + "\n")
         except (OSError, RuntimeError) as error:
             samples.append({"sample_error": str(error)[:500]})
         stop.wait(5)
@@ -177,14 +216,17 @@ def resource_summary(samples):
                    for key, values in group.items() if values} for name, group in groups.items()}
 
 
-def load_profile(name, rate, seconds, instances):
+def load_profile(name, rate, seconds, instances, transitioning=False):
     print(f"Running {name}: {rate} primary RPS, {seconds}s, {instances} API instance(s)", flush=True)
     sql("SELECT pg_stat_statements_reset();")
     before = database_snapshot()
     cpu_before = cgroup_snapshot(instances)
+    haproxy_before = haproxy_stats()
     samples = []
+    live_path = OUTPUT / (name + "-live.jsonl")
+    live_path.write_text("")
     stop = threading.Event()
-    collector = threading.Thread(target=sample_loop, args=(stop, samples, instances), daemon=True)
+    collector = threading.Thread(target=sample_loop, args=(stop, samples, instances, live_path), daemon=True)
     collector.start()
     try:
         process = subprocess.run(COMPOSE + ["run", "--rm", "--no-deps", "-T", "-e", f"RATE={rate}",
@@ -197,7 +239,8 @@ def load_profile(name, rate, seconds, instances):
         stop.set()
         collector.join(timeout=45)
     after = database_snapshot()
-    cpu_after = cgroup_snapshot(instances)
+    cpu_after = cgroup_snapshot(instances, allow_stopped=transitioning)
+    haproxy_after = haproxy_stats()
     save(name + "-resources.json", samples)
     save(name + "-sql.json", {"before": before, "after": after})
     data = json.loads((OUTPUT / f"{name}-k6.json").read_text())
@@ -208,6 +251,7 @@ def load_profile(name, rate, seconds, instances):
     database_delta = {key: after["database"][key] - value for key, value in before["database"].items()}
     result = {
         **data["profile"], "instances": instances, "k6_exit": process.returncode,
+        "transitioning": transitioning,
         "operations": get("operation_requests").get("count", 0),
         "http_requests": get("http_reqs").get("count", 0),
         "dropped_iterations": get("dropped_iterations").get("count", 0),
@@ -221,7 +265,15 @@ def load_profile(name, rate, seconds, instances):
         "data_received_bytes": get("data_received").get("count", 0),
         "data_sent_bytes": get("data_sent").get("count", 0),
         "vus_max": get("vus_max").get("max"),
+        "minute_metrics": [{
+            "minute": minute + 1,
+            "latency_ms": get(f"minute_latency_{minute}"),
+            "technical_errors": get(f"minute_technical_errors_{minute}"),
+            "operations": get(f"minute_operations_{minute}").get("count", 0),
+        } for minute in range((seconds + 59) // 60)],
         "resource_sample_errors": sum("sample_error" in sample for sample in samples),
+        "haproxy_before": haproxy_before,
+        "haproxy_after": haproxy_after,
         "cgroup_cpu_delta": {name: {key: value - cpu_before[name][key] for key, value in values.items()}
                              for name, values in cpu_after.items()},
     }
@@ -236,6 +288,7 @@ def main():
     parser.add_argument("--profiles", nargs="+", choices=PROFILES, default=list(PROFILES))
     args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    os.environ["LOAD_RESULTS_DIR"] = str(OUTPUT)
     os.environ["LOAD_UID"] = str(os.getuid())
     os.environ["LOAD_GID"] = str(os.getgid())
     results = {"project": PROJECT, "environment": {}, "profiles": []}
@@ -260,7 +313,7 @@ def main():
         sql("CREATE EXTENSION IF NOT EXISTS pg_stat_statements;")
         sql((ROOT / "infra/stage2/history_fixture.sql").read_text())
         sql("UPDATE inventory SET on_hand=100000 WHERE product_id BETWEEN 60003 AND 60602; ANALYZE;")
-        results["environment"]["java"] = compose("exec", "-T", "-e", "JAVA_TOOL_OPTIONS=", "commerce-1", "java", "--version").strip()
+        results["environment"]["java"] = compose("exec", "-T", "-e", "JAVA_TOOL_OPTIONS=", "-e", "JDK_JAVA_OPTIONS=", "commerce-1", "java", "--version").strip()
         results["environment"]["images"] = json.loads(compose("images", "--format", "json"))
         instances = 2
         for name in args.profiles:

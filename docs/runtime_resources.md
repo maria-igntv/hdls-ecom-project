@@ -115,7 +115,8 @@ Commerce, Search, PostgreSQL, OpenSearch, RabbitMQ и Garage распредел�
 | Уровень проверки | Реально используемый инструмент / предмет |
 | --- | --- |
 | Расчёты | `calculate_capacity.py --check`, соответствие README и JSON-модели |
-| Сборка | Maven package в Docker, проверка Java 25 и зависимостей |
+| Сборка | Maven verify в Docker, Java 25, модульные тесты и упаковка JAR |
+| Модульные тесты | JUnit Jupiter / AssertJ / Mockito через spring-boot-starter-test, readiness и границы входных контрактов |
 | Интеграция / корректность | `check_stage2.py`, реальный PostgreSQL/Redis, конкурентный checkout, авторизация, идемпотентность, rollback, истечение и dump/restore |
 | Балансировка | `check_balancing.py`, round-robin/readiness/failure/draining функционального стенда этапа 1 |
 | Нагрузка | `check_stage3.py`, k6 constant-arrival-rate, отдельный прогрев, stepped load, один и два API |
@@ -123,3 +124,5 @@ Commerce, Search, PostgreSQL, OpenSearch, RabbitMQ и Garage распредел�
 | Будущие платежи и доставка | Модульные проверки переходов/компенсаций и интеграция RabbitMQ входят в реализацию этапа 4 |
 
 Отдельный CI/CD pipeline остаётся дополнительной частью проекта. Проверенный локальный путь состоит из проверки модели, сборки, интеграционного прогона, нагрузки и анализа артефактов. Для будущего deployment миграции выполняются отдельно до переключения трафика, изменения схемы следуют expand/contract. Rollback приложения требует обратной совместимости с уже применённой схемой.
+
+Конфигурация готовности, init-state fully-down / slowstart HAProxy и длительная проверка описаны в [доработке этапа 3](stage3_followup.md). Нагрузочный профиль дополняет общий JVM runtime записью JFR через JDK_JAVA_OPTIONS.

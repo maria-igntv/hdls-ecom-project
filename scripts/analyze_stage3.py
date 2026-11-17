@@ -14,14 +14,15 @@ OUTPUT = ROOT / "artifacts/stage3"
 
 
 def analyze_jfr(path):
+    directory = path.parent
     docker = ["docker", "run", "--rm", "--network", "none", "--mount",
-              f"type=bind,src={OUTPUT},dst=/recordings,readonly", "eclipse-temurin:25-jdk", "jfr"]
+              f"type=bind,src={directory},dst=/recordings,readonly", "eclipse-temurin:25-jdk", "jfr"]
     summary = subprocess.run(docker + ["summary", "/recordings/" + path.name],
                              capture_output=True, text=True, check=True).stdout
-    (OUTPUT / (path.stem + "-jfr-summary.txt")).write_text(summary)
+    (directory / (path.stem + "-jfr-summary.txt")).write_text(summary)
     raw = subprocess.run([
         "docker", "run", "--rm", "--network", "none", "--memory", "512m", "--cpus", "1",
-        "--mount", f"type=bind,src={OUTPUT},dst=/recordings,readonly",
+        "--mount", f"type=bind,src={directory},dst=/recordings,readonly",
         "--mount", f"type=bind,src={ROOT / 'scripts/JfrSummary.java'},dst=/scripts/JfrSummary.java,readonly",
         "eclipse-temurin:25-jdk", "java", "-Xmx256m", "/scripts/JfrSummary.java", "/recordings/" + path.name,
     ], capture_output=True, text=True, check=True, timeout=120).stdout

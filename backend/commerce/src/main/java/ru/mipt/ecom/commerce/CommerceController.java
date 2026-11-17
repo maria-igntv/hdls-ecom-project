@@ -6,7 +6,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +17,7 @@ class CommerceController {
     record Stock(@Min(0) @Max(100000000) int onHand) {}
     private final CommerceService service;
     private final ProductCache cache;
-    private final JdbcTemplate db;
-    CommerceController(CommerceService service,ProductCache cache,JdbcTemplate db) { this.service=service; this.cache=cache; this.db=db; }
-    @GetMapping("/livez") Object live() { return Map.of("status","UP"); }
-    @GetMapping("/readyz") Object ready() { db.queryForObject("SELECT 1",Integer.class); return Map.of("status","UP"); }
+    CommerceController(CommerceService service,ProductCache cache) { this.service=service; this.cache=cache; }
     @GetMapping("/api/products") Object products(@RequestParam(defaultValue="1") long categoryId,@RequestParam(defaultValue="0") long afterId,@RequestParam(defaultValue="20") int limit) { return service.category(categoryId,afterId,limit); }
     @GetMapping("/api/products/{id}") Object product(@PathVariable long id) { return service.card(id); }
     @GetMapping("/api/cart") Object cart(@AuthenticationPrincipal SecurityConfig.StoreUser user) { return service.cart(user.id); }

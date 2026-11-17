@@ -9,7 +9,7 @@ x-api: &api
     DB_USER: commerce
     DB_PASSWORD: demo-database-only
     REDIS_HOST: redis
-    JAVA_TOOL_OPTIONS: "-Xmx256m -XX:ActiveProcessorCount=2"
+    JAVA_TOOL_OPTIONS: "-Xmx256m -XX:ActiveProcessorCount=1 -XX:+UseG1GC"
   mem_limit: 512m
   cpus: 1
   stop_grace_period: 20s
@@ -55,6 +55,7 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     ports:
       - "127.0.0.1:18080:8080"
+      - "127.0.0.1:18084:9999"
     depends_on:
       - commerce-1
       - commerce-2
