@@ -6,8 +6,8 @@ spring:
     hikari:
       maximum-pool-size: 8
       minimum-idle: 2
-      connection-timeout: 15000
-      connection-init-sql: "SET statement_timeout = '10s'; SET lock_timeout = '5s'; SET idle_in_transaction_session_timeout = '10s'"
+      connection-timeout: ${DB_POOL_WAIT_MS:15000}
+      connection-init-sql: "${DB_INIT_SQL:SET statement_timeout = '10s'; SET lock_timeout = '5s'; SET idle_in_transaction_session_timeout = '10s'}"
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -16,6 +16,7 @@ spring:
   threads:
     virtual:
       enabled: true
+  transaction.default-timeout: 5s
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -28,6 +29,27 @@ management:
   endpoints.web.exposure.include: health,metrics
   endpoint.health.probes.enabled: true
 logging:
+  pattern.level: "%5p [trace=%X{trace_id:-none}]"
   level:
     org.springframework.security: WARN
     org.springframework.web: WARN
+
+spring.servlet.multipart:
+  max-file-size: 2MB
+  max-request-size: 3MB
+spring.rabbitmq:
+  host: ${RABBIT_HOST:localhost}
+  username: commerce
+  password: ${RABBIT_PASSWORD:local-rabbit-password}
+payment:
+  url: ${PAYMENT_URL:http://localhost:18087}
+  token: ${PAYMENT_TOKEN:local-provider-token}
+  webhook-secret: ${PAYMENT_WEBHOOK_SECRET:local-webhook-secret}
+search.url: ${SEARCH_URL:http://localhost:19200}
+media:
+  endpoint: ${S3_ENDPOINT:http://localhost:13900}
+  access-key: ${S3_ACCESS_KEY:GK000000000000000000000000}
+  secret-key: ${S3_SECRET_KEY:local-garage-secret}
+  public-base: ${MEDIA_PUBLIC_BASE:http://localhost:18086}
+
+cache.origin-wait-ms: ${CACHE_ORIGIN_WAIT_MS:100}

@@ -1,5 +1,7 @@
 package ru.mipt.ecom.commerce;
 
+import org.springframework.context.annotation.Profile;
+
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@Profile("!worker")
 class SecurityConfig {
     static final class StoreUser extends User {
         final long id;
@@ -31,6 +34,7 @@ class SecurityConfig {
     @Bean SecurityFilterChain security(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable()).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/payments/webhook").permitAll()
                 .requestMatchers("/readyz","/livez","/actuator/health/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/products","/api/products/*").permitAll()
                 .requestMatchers("/api/admin/**","/actuator/**").hasRole("ADMIN")

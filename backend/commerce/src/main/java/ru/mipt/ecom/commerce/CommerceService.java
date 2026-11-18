@@ -18,7 +18,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Service
 class CommerceService {
     record Product(long id,String sku,long categoryId,String name,String description,long priceMinor,
-                   String currency,int available,boolean active,long version) {}
+                   String currency,int available,boolean active,long version,List<String> images) {
+        Product { images=images==null?List.of():images; }
+    }
     record Result(int status,Map<String,Object> body) {}
     record Item(long productId,int quantity) {}
     static class ApiFailure extends RuntimeException {
@@ -29,20 +31,25 @@ class CommerceService {
     private final NamedParameterJdbcTemplate named;
     private final ProductCache cache;
     private final ObjectMapper json;
-    CommerceService(JdbcTemplate db,NamedParameterJdbcTemplate named,ProductCache cache,ObjectMapper json) {
-        this.db=db; this.named=named; this.cache=cache; this.json=json;
+    @org.springframework.beans.factory.annotation.Value("${media.public-base:http://localhost:18086}")
+    private String mediaBase;
+    private final DomainEvents events;
+    private final ReservationService reservations;
+    CommerceService(JdbcTemplate db,NamedParameterJdbcTemplate named,ProductCache cache,ObjectMapper json,DomainEvents events,ReservationService reservations) {
+        this.db=db; this.named=named; this.cache=cache; this.json=json; this.events=events; this.reservations=reservations;
     }
-    private static Product product(ResultSet r,int n) throws SQLException {
+    private Product product(ResultSet r,int n) throws SQLException {
         return new Product(r.getLong("id"),r.getString("sku"),r.getLong("category_id"),r.getString("name"),
-            r.getString("description"),r.getLong("price_minor"),r.getString("currency"),r.getInt("available"),r.getBoolean("active"),r.getLong("version"));
+            r.getString("description"),r.getLong("price_minor"),r.getString("currency"),r.getInt("available"),r.getBoolean("active"),r.getLong("version"),Arrays.stream((String[])r.getArray("images").getArray()).map(key -> mediaBase+"/"+key).toList());
     }
     private static final String PRODUCT = """
         SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,
-               pr.price_minor,pr.currency,i.on_hand-i.reserved AS available
+               pr.price_minor,pr.currency,i.on_hand-i.reserved AS available,
+                ARRAY(SELECT object_key FROM product_images WHERE product_id=p.id ORDER BY object_key) AS images
         FROM products p JOIN product_prices pr ON pr.product_id=p.id JOIN inventory i ON i.product_id=p.id
         """;
     Product card(long id) {
-        return cache.get(id,() -> db.query(PRODUCT+" WHERE p.id=? AND p.active",CommerceService::product,id)
+        return cache.get(id,() -> db.query(PRODUCT+" WHERE p.id=? AND p.active",this::product,id)
             .stream().findFirst().orElseThrow(() -> new ApiFailure(404,"PRODUCT_NOT_FOUND")));
     }
     List<Product> category(long category,long after,int limit) {
@@ -50,11 +57,12 @@ class CommerceService {
             WITH selected AS MATERIALIZED (
               SELECT * FROM products WHERE category_id=? AND active AND id>? ORDER BY id LIMIT ?
             ) SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,
-                pr.price_minor,pr.currency,i.on_hand-i.reserved AS available
+                pr.price_minor,pr.currency,i.on_hand-i.reserved AS available,
+                ARRAY(SELECT object_key FROM product_images WHERE product_id=p.id ORDER BY object_key) AS images
               FROM selected p JOIN product_prices pr ON pr.product_id=p.id
               JOIN inventory i ON i.product_id=p.id ORDER BY p.id
             """,
-            CommerceService::product,category,after,Math.clamp(limit,1,100));
+            this::product,category,after,Math.clamp(limit,1,100));
     }
     @Transactional
     public Map<String,Object> cart(long user) {
@@ -101,20 +109,9 @@ class CommerceService {
         return new Result(status,body);
     }
     private Result reject(long user,String key,String code) { return finish(user,key,409,Map.of("code",code)); }
-    private void changed(long product,long version) {
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override public void afterCommit() { cache.invalidate(product,version); }
-        });
-    }
-    private void event(String type,String aggregateType,Object aggregate,long version,Map<String,Object> body) {
-        db.update("INSERT INTO outbox_events(event_id,aggregate_type,aggregate_id,aggregate_version,event_type,payload) VALUES (?,?,?,?,?,?::jsonb)",
-            UUID.randomUUID(),aggregateType,aggregate.toString(),version,type,encode(body));
-    }
-    private void inventoryChanged(long product) {
-        long version=db.queryForObject("UPDATE products SET version=version+1 WHERE id=? RETURNING version",Long.class,product);
-        event("InventoryChanged","Product",product,version,Map.of("productId",product,"version",version));
-        changed(product,version);
-    }
+    private void changed(long product,long version) { events.invalidate(product,version); }
+    private void event(String type,String aggregateType,Object aggregate,long version,Map<String,Object> body) { events.emit(type,aggregateType,aggregate,version,body); }
+    private void inventoryChanged(long product) { events.product(product,"InventoryChanged"); }
     @Transactional
     public Result checkout(long user,String key,long expectedVersion,long expectedTotal) {
         if (!key.matches("[A-Za-z0-9_-]{1,80}")) throw new ApiFailure(400,"INVALID_IDEMPOTENCY_KEY");
@@ -138,10 +135,10 @@ class CommerceService {
         var ids=items.stream().map(Item::productId).toList();
         // Every writer locks products in the same order before inventory/price changes.
         var products=named.query("""
-            SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,pr.price_minor,pr.currency,0 AS available
+            SELECT p.id,p.sku,p.category_id,p.name,p.description,p.active,p.version,pr.price_minor,pr.currency,0 AS available,ARRAY[]::text[] AS images
             FROM products p JOIN product_prices pr ON pr.product_id=p.id WHERE p.id IN (:ids)
             ORDER BY p.id FOR UPDATE OF p,pr
-            """,Map.of("ids",ids),CommerceService::product);
+            """,Map.of("ids",ids),this::product);
         var stock=named.queryForList("SELECT product_id,on_hand-reserved AS available FROM inventory WHERE product_id IN (:ids) ORDER BY product_id FOR UPDATE",Map.of("ids",ids));
         Map<Long,Product> byId=new HashMap<>(); products.forEach(p -> byId.put(p.id(),p));
         Map<Long,Integer> available=new HashMap<>(); stock.forEach(r -> available.put(((Number)r.get("product_id")).longValue(),((Number)r.get("available")).intValue()));
@@ -194,7 +191,7 @@ class CommerceService {
         db.update("UPDATE product_prices SET price_minor=? WHERE product_id=?",price,id);
         event("ProductUpdated","Product",id,version,Map.of("productId",id,"version",version));
         changed(id,version);
-        return db.query(PRODUCT+" WHERE p.id=?",CommerceService::product,id).getFirst();
+        return db.query(PRODUCT+" WHERE p.id=?",this::product,id).getFirst();
     }
     @Transactional
     public Map<String,Object> updateStock(long id,int onHand) {
@@ -203,23 +200,5 @@ class CommerceService {
         inventoryChanged(id);
         return db.queryForMap("SELECT on_hand,reserved FROM inventory WHERE product_id=?",id);
     }
-    @Transactional
-    public Map<String,Integer> expire() {
-        var orders=db.queryForList("SELECT id FROM orders WHERE status='PENDING_PAYMENT' AND expires_at<now() ORDER BY expires_at,id LIMIT 100 FOR UPDATE SKIP LOCKED");
-        for (var row:orders) {
-            UUID id=(UUID)row.get("id");
-            UUID reservation=db.queryForObject("SELECT id FROM reservations WHERE order_id=? AND state='ACTIVE' FOR UPDATE",UUID.class,id);
-            var items=db.query("SELECT product_id,quantity FROM reservation_items WHERE reservation_id=? ORDER BY product_id",(r,n) -> new Item(r.getLong(1),r.getInt(2)),reservation);
-            var ids=items.stream().map(Item::productId).toList();
-            named.queryForList("SELECT id FROM products WHERE id IN (:ids) ORDER BY id FOR UPDATE",Map.of("ids",ids));
-            for (var item:items) {
-                db.update("UPDATE inventory SET reserved=reserved-? WHERE product_id=?",item.quantity(),item.productId());
-                inventoryChanged(item.productId());
-            }
-            db.update("UPDATE reservations SET state='RELEASED' WHERE id=?",reservation);
-            long version=db.queryForObject("UPDATE orders SET status='EXPIRED',version=version+1 WHERE id=? RETURNING version",Long.class,id);
-            event("OrderExpired","Order",id,version,Map.of("orderId",id.toString()));
-        }
-        return Map.of("expired",orders.size());
-    }
+    public Map<String,Integer> expire() { return reservations.expire(); }
 }

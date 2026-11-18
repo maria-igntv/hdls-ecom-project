@@ -1,0 +1,13 @@
+spring:
+  task.scheduling.pool.size: 2
+  threads.virtual.enabled: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/commerce?currentSchema=provider}
+    username: ${DB_USER:commerce}
+    password: ${DB_PASSWORD}
+    hikari.maximum-pool-size: 4
+    hikari.connection-init-sql: "SET statement_timeout='5s'; SET lock_timeout='2s'"
+  flyway:
+    schemas: provider
+    default-schema: provider
+server.shutdown: graceful

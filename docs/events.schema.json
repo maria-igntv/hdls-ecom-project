@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Commerce event envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "aggregate_type", "aggregate_id", "aggregate_version", "event_type", "schema_version", "occurred_at", "trace_id", "payload"],
+  "properties": {
+    "event_id": {"type": "string", "format": "uuid"},
+    "aggregate_type": {"enum": ["Product", "Order"]},
+    "aggregate_id": {"type": "string", "minLength": 1},
+    "aggregate_version": {"type": "integer", "minimum": 1},
+    "event_type": {"enum": ["ProductUpdated", "InventoryChanged", "OrderCreated", "PaymentSucceeded", "OrderExpired"]},
+    "schema_version": {"const": 1},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "trace_id": {"type": "string", "format": "uuid"},
+    "payload": {"type": "object"}
+  }
+}

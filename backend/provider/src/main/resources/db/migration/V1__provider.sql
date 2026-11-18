@@ -1,0 +1,3 @@
+CREATE TABLE payments(id uuid PRIMARY KEY, amount_minor bigint NOT NULL CHECK(amount_minor>0), currency text NOT NULL CHECK(currency='RUB'), state text NOT NULL DEFAULT 'PENDING' CHECK(state IN ('PENDING','SUCCEEDED','FAILED','REFUNDED')), trace_id text NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE callbacks(event_id uuid PRIMARY KEY,payment_id uuid NOT NULL REFERENCES payments,body text NOT NULL,sent_at timestamptz,next_attempt timestamptz NOT NULL DEFAULT now(),attempts int NOT NULL DEFAULT 0);
+CREATE TABLE notifications(event_id uuid PRIMARY KEY,body jsonb NOT NULL,created_at timestamptz NOT NULL DEFAULT now());

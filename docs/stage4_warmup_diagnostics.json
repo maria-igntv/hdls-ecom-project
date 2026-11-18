@@ -1,0 +1,94 @@
+{
+  "catalog_503_metrics": {
+    "18081": {
+      "name": "http.server.requests",
+      "baseUnit": "seconds",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 29.0
+        },
+        {
+          "statistic": "TOTAL_TIME",
+          "value": 5.482792211
+        },
+        {
+          "statistic": "MAX",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "exception",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "method",
+          "values": [
+            "GET"
+          ]
+        },
+        {
+          "tag": "error",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "outcome",
+          "values": [
+            "SERVER_ERROR"
+          ]
+        }
+      ]
+    },
+    "18082": {
+      "name": "http.server.requests",
+      "baseUnit": "seconds",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 20.0
+        },
+        {
+          "statistic": "TOTAL_TIME",
+          "value": 2.652226835
+        },
+        {
+          "statistic": "MAX",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "exception",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "method",
+          "values": [
+            "GET"
+          ]
+        },
+        {
+          "tag": "error",
+          "values": [
+            "none"
+          ]
+        },
+        {
+          "tag": "outcome",
+          "values": [
+            "SERVER_ERROR"
+          ]
+        }
+      ]
+    }
+  },
+  "observation": "Route-filtered totals in the final local stack; readiness requests excluded.",
+  "run": "warmup-640-34e40821"
+}

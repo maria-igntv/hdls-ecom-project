@@ -1,5 +1,7 @@
 package ru.mipt.ecom.commerce;
 
+import org.springframework.context.annotation.Profile;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import java.time.OffsetDateTime;
@@ -10,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Profile("!worker")
 class CommerceController {
     record Quantity(@Min(0) @Max(100) int quantity) {}
     record Checkout(@Min(0) long expectedCartVersion,@Min(0) long expectedTotalMinor) {}

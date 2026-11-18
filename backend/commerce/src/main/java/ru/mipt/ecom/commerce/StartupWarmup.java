@@ -1,5 +1,7 @@
 package ru.mipt.ecom.commerce;
 
+import org.springframework.context.annotation.Profile;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -13,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("!worker")
 class StartupWarmup implements ApplicationRunner {
     private static final Logger LOG = LoggerFactory.getLogger(StartupWarmup.class);
     private final JdbcTemplate db;

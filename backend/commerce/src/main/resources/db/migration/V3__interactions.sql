@@ -1,0 +1,20 @@
+ALTER TABLE payments ADD CONSTRAINT one_payment_per_order UNIQUE(order_id);
+ALTER TABLE payments ADD COLUMN updated_at timestamptz NOT NULL DEFAULT now();
+ALTER TABLE payments ADD COLUMN next_attempt timestamptz NOT NULL DEFAULT now();
+ALTER TABLE payments ADD COLUMN lease_until timestamptz;
+ALTER TABLE payments ADD COLUMN attempts integer NOT NULL DEFAULT 0;
+ALTER TABLE payments ADD COLUMN last_error text;
+ALTER TABLE payments ADD COLUMN trace_id uuid NOT NULL DEFAULT gen_random_uuid();
+CREATE INDEX payments_reconcile ON payments(next_attempt) WHERE state IN ('PENDING','REFUND_PENDING');
+CREATE TABLE payment_webhooks(event_id uuid PRIMARY KEY, payment_id uuid NOT NULL REFERENCES payments, body_hash text NOT NULL, processed_at timestamptz NOT NULL DEFAULT now());
+ALTER TABLE outbox_events ADD COLUMN schema_version integer NOT NULL DEFAULT 1;
+ALTER TABLE outbox_events ADD COLUMN trace_id uuid NOT NULL DEFAULT gen_random_uuid();
+ALTER TABLE outbox_events ADD COLUMN lease_until timestamptz;
+ALTER TABLE outbox_events ADD COLUMN attempts integer NOT NULL DEFAULT 0;
+CREATE TABLE search_indexes(name text PRIMARY KEY, state text NOT NULL CHECK(state IN ('BUILDING','LIVE','RETIRED')), created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE search_rebuilds(id uuid PRIMARY KEY, index_name text NOT NULL UNIQUE, state text NOT NULL DEFAULT 'PENDING' CHECK(state IN ('PENDING','RUNNING','DONE')), cursor_id bigint NOT NULL DEFAULT 0, lease_until timestamptz, created_at timestamptz NOT NULL DEFAULT now());
+CREATE UNIQUE INDEX one_active_rebuild ON search_rebuilds((true)) WHERE state <> 'DONE';
+CREATE TABLE media_uploads(object_key text PRIMARY KEY, product_id bigint NOT NULL REFERENCES products, state text NOT NULL CHECK(state IN ('PENDING','READY','CLEANUP')), created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX media_orphans ON media_uploads(created_at) WHERE state <> 'READY';
+-- Demo-only crash injection; no switches exist until explicitly inserted by a check.
+CREATE TABLE demo_faults(name text PRIMARY KEY);

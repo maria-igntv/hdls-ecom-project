@@ -1,0 +1,410 @@
+{
+  "warmup": {
+    "run": "warmup-640-34e40821",
+    "requestedRate": 640,
+    "configuredRate": 640.0166666666665,
+    "duration": 60,
+    "weights": {
+      "imageUpload": 100,
+      "category": 1212000,
+      "detail": 32320,
+      "payment": 9072,
+      "catalogUpdate": 5000,
+      "stockUpdate": 1000,
+      "card": 2828000,
+      "search": 1010000,
+      "cartRead": 282800,
+      "cartWrite": 121200,
+      "checkout": 10200,
+      "history": 8080,
+      "webhook": 10800
+    },
+    "mediaRate": 161,
+    "setupTraffic": "support requests counted separately; provider callbacks run asynchronously",
+    "k6_exit": 99,
+    "operations": 38410,
+    "http_requests": 48775,
+    "technical_errors": {
+      "rate": 0.0012757094506638895,
+      "passes": 49,
+      "fails": 38361
+    },
+    "operation_errors": {
+      "rate": 0.0012757094506638895,
+      "passes": 49,
+      "fails": 38361
+    },
+    "support_errors": {
+      "rate": 0,
+      "passes": 0,
+      "fails": 705
+    },
+    "dropped": 0,
+    "latency_ms": {
+      "max": 557.906667,
+      "avg": 4.714936642593057,
+      "min": 0.316958,
+      "p(50)": 1.1633955,
+      "p(95)": 4.981356249999994,
+      "p(99)": 135.95858927999993
+    },
+    "by_operation_ms": {
+      "card": {
+        "max": 557.906667,
+        "avg": 4.37737639147483,
+        "min": 0.316958,
+        "p(50)": 0.752208,
+        "p(95)": 2.3598752499999978,
+        "p(99)": 164.35587719999998
+      },
+      "catalogUpdate": {
+        "max": 331.822626,
+        "avg": 14.01419171428571,
+        "min": 1.86525,
+        "p(50)": 3.21625,
+        "p(95)": 17.21909109999999,
+        "p(99)": 226.2274513799999
+      },
+      "cartRead": {
+        "max": 422.450501,
+        "avg": 5.090094478880419,
+        "min": 0.868708,
+        "p(50)": 1.712333,
+        "p(95)": 5.715200199999998,
+        "p(99)": 138.8096851199996
+      },
+      "imageUpload": {
+        "avg": 197.48291700000001,
+        "min": 13.294959,
+        "p(50)": 197.48291700000001,
+        "p(95)": 363.2520792,
+        "p(99)": 377.98711584,
+        "max": 381.670875
+      },
+      "payment": {
+        "max": 279.08625,
+        "avg": 11.534801603174598,
+        "min": 4.396458,
+        "p(50)": 6.140417,
+        "p(95)": 12.337762499999998,
+        "p(99)": 120.11078395999985
+      },
+      "webhook": {
+        "p(99)": 79.18597575999999,
+        "max": 91.445834,
+        "avg": 9.084863333333338,
+        "min": 3.3395,
+        "p(50)": 5.248083,
+        "p(95)": 24.298908099999952
+      },
+      "stockUpdate": {
+        "p(95)": 221.4383353999999,
+        "p(99)": 310.08840067999995,
+        "max": 332.250917,
+        "avg": 47.00746875000001,
+        "min": 3.252916,
+        "p(50)": 4.3475
+      },
+      "search": {
+        "avg": 6.066951884659242,
+        "min": 1.423666,
+        "p(50)": 2.817812,
+        "p(95)": 6.681899999999989,
+        "p(99)": 87.81605403999976,
+        "max": 391.382917
+      },
+      "detail": {
+        "max": 217.36475,
+        "avg": 4.619147709821427,
+        "min": 0.683417,
+        "p(50)": 1.2536665,
+        "p(95)": 2.55533395,
+        "p(99)": 144.23752858999984
+      },
+      "category": {
+        "avg": 3.8638000193678863,
+        "min": 0.778959,
+        "p(50)": 1.284542,
+        "p(95)": 2.901260249999999,
+        "p(99)": 85.34117234999997,
+        "max": 334.485
+      },
+      "checkout": {
+        "max": 195.549542,
+        "avg": 10.806324041666663,
+        "min": 4.2415,
+        "p(50)": 6.3584375,
+        "p(95)": 13.797504349999993,
+        "p(99)": 129.18971717999995
+      },
+      "history": {
+        "min": 0.699458,
+        "p(50)": 1.259542,
+        "p(95)": 3.001349999999999,
+        "p(99)": 28.237593479999973,
+        "max": 59.721167,
+        "avg": 2.529144035087719
+      },
+      "cartWrite": {
+        "min": 1.288208,
+        "p(50)": 2.579375,
+        "p(95)": 7.874553899999997,
+        "p(99)": 149.00549763999953,
+        "max": 417.610959,
+        "avg": 6.461081035587193
+      }
+    },
+    "media_latency_ms": {
+      "avg": 0.27537627681159516,
+      "min": 0.093625,
+      "p(50)": 0.177542,
+      "p(95)": 0.32019404999999973,
+      "p(99)": 0.6751427799999977,
+      "max": 500.89275
+    },
+    "media_errors": {
+      "rate": 0,
+      "passes": 0,
+      "fails": 9660
+    },
+    "media_object_bytes": 120303,
+    "callbacks_applied": 213,
+    "deadlocks": 0,
+    "invariant_violations": 0,
+    "failed_thresholds": [
+      "latency_imageUpload",
+      "latency_stockUpdate",
+      "minute_technical_errors_0",
+      "operation_errors",
+      "technical_errors"
+    ],
+    "max_rss_bytes": {
+      "commerce-1": 411680768,
+      "commerce-2": 430206976,
+      "worker-1": 377720832,
+      "worker-2": 351952896,
+      "search": 239988736,
+      "provider": 246333440
+    },
+    "oom_killed": [],
+    "samples": 9,
+    "resource_sample_errors": 0
+  },
+  "mixed": {
+    "requestedRate": 640,
+    "configuredRate": 640.0166666666665,
+    "duration": 300,
+    "weights": {
+      "webhook": 10800,
+      "stockUpdate": 1000,
+      "card": 2828000,
+      "checkout": 10200,
+      "history": 8080,
+      "imageUpload": 100,
+      "catalogUpdate": 5000,
+      "category": 1212000,
+      "search": 1010000,
+      "cartRead": 282800,
+      "cartWrite": 121200,
+      "detail": 32320,
+      "payment": 9072
+    },
+    "mediaRate": 161,
+    "setupTraffic": "support requests counted separately; provider callbacks run asynchronously",
+    "run": "mixed-640-85ea7fdc",
+    "k6_exit": 99,
+    "operations": 185430,
+    "http_requests": 235366,
+    "technical_errors": {
+      "rate": 0.0010030739362562693,
+      "passes": 186,
+      "fails": 185244
+    },
+    "operation_errors": {
+      "rate": 0.0012026101493825163,
+      "passes": 223,
+      "fails": 185207
+    },
+    "support_errors": {
+      "rate": 0.0011580775911986102,
+      "passes": 4,
+      "fails": 3450
+    },
+    "dropped": 8403,
+    "latency_ms": {
+      "p(50)": 0.9031665,
+      "p(95)": 3.5613751499999933,
+      "p(99)": 1267.5660322899996,
+      "max": 7296.174545,
+      "avg": 40.440474384765565,
+      "min": 0.261375
+    },
+    "by_operation_ms": {
+      "imageUpload": {
+        "avg": 574.5383611666666,
+        "min": 12.327875,
+        "p(50)": 20.7052915,
+        "p(95)": 2263.2355527499994,
+        "p(99)": 2721.4686113499997,
+        "max": 2836.026876
+      },
+      "category": {
+        "max": 6934.79342,
+        "avg": 45.82426010191194,
+        "min": 0.685792,
+        "p(50)": 1.05525,
+        "p(95)": 2.661508399999998,
+        "p(99)": 1329.73427572
+      },
+      "payment": {
+        "p(95)": 18.70881454999999,
+        "p(99)": 1577.1726810300001,
+        "max": 5416.001461,
+        "avg": 79.82028724838709,
+        "min": 2.886875,
+        "p(50)": 4.5009375
+      },
+      "search": {
+        "avg": 33.05001290619463,
+        "min": 1.022834,
+        "p(50)": 1.7947715,
+        "p(95)": 5.013026749999999,
+        "p(99)": 1223.0465444999984,
+        "max": 4558.855169
+      },
+      "stockUpdate": {
+        "p(95)": 123.32230249999948,
+        "p(99)": 388.33510865,
+        "max": 394.245209,
+        "avg": 27.005485055555553,
+        "min": 2.236625,
+        "p(50)": 3.4145625
+      },
+      "catalogUpdate": {
+        "avg": 108.48790036363631,
+        "min": 1.437458,
+        "p(50)": 2.3334165000000002,
+        "p(95)": 544.4265939999995,
+        "p(99)": 2622.9763347499993,
+        "max": 5487.471752
+      },
+      "cartRead": {
+        "p(99)": 1394.4942370400001,
+        "max": 6179.246461,
+        "avg": 51.47324065128045,
+        "min": 0.656958,
+        "p(50)": 1.330667,
+        "p(95)": 5.589257999999998
+      },
+      "webhook": {
+        "p(50)": 3.7087294999999996,
+        "p(95)": 14.18098794999993,
+        "p(99)": 1397.3858739699997,
+        "max": 5332.26871,
+        "avg": 47.25457372826087,
+        "min": 2.292958
+      },
+      "cartWrite": {
+        "p(95)": 7.606341899999931,
+        "p(99)": 1694.2573587199984,
+        "max": 7296.174545,
+        "avg": 61.70983873604315,
+        "min": 1.070334,
+        "p(50)": 1.9639795
+      },
+      "checkout": {
+        "min": 3.466584,
+        "p(50)": 4.898833,
+        "p(95)": 19.24477499999999,
+        "p(99)": 1657.53324924,
+        "max": 6560.991211,
+        "avg": 69.87975004022991
+      },
+      "card": {
+        "avg": 37.84663135670189,
+        "min": 0.261375,
+        "p(50)": 0.5395,
+        "p(95)": 1.5106163499999978,
+        "p(99)": 1206.5730401799995,
+        "max": 6491.893337
+      },
+      "history": {
+        "p(50)": 0.870104,
+        "p(95)": 300.77229789999984,
+        "p(99)": 3355.6860370699965,
+        "max": 4680.596419,
+        "avg": 108.94630334285716,
+        "min": 0.613917
+      },
+      "detail": {
+        "avg": 65.26151303916201,
+        "min": 0.498959,
+        "p(50)": 0.9170830000000001,
+        "p(95)": 7.374854449999992,
+        "p(99)": 1643.4937162699998,
+        "max": 5722.345627
+      }
+    },
+    "media_latency_ms": {
+      "max": 2500.342876,
+      "avg": 2.624943203519659,
+      "min": 0.07225,
+      "p(50)": 0.158917,
+      "p(95)": 0.3104568999999999,
+      "p(99)": 5.15255201999999
+    },
+    "media_errors": {
+      "rate": 0,
+      "passes": 0,
+      "fails": 46482
+    },
+    "media_object_bytes": 120303,
+    "callbacks_applied": 1046,
+    "deadlocks": 0,
+    "invariant_violations": 0,
+    "failed_thresholds": [
+      "dropped_iterations{scenario:cartWrite}",
+      "dropped_iterations{scenario:payment}",
+      "latency_imageUpload",
+      "technical_errors",
+      "latency_category",
+      "dropped_iterations",
+      "dropped_iterations{scenario:search}",
+      "dropped_iterations{scenario:history}",
+      "minute_technical_errors_4",
+      "operation_latency",
+      "dropped_iterations{scenario:checkout}",
+      "dropped_iterations{scenario:cartRead}",
+      "latency_payment",
+      "dropped_iterations{scenario:detail}",
+      "dropped_iterations{scenario:category}",
+      "latency_search",
+      "latency_catalogUpdate",
+      "support_errors",
+      "latency_cartRead",
+      "latency_webhook",
+      "latency_cartWrite",
+      "operation_errors",
+      "minute_latency_4",
+      "latency_checkout",
+      "dropped_iterations{scenario:card}",
+      "minute_latency_3",
+      "latency_card",
+      "latency_history",
+      "latency_detail",
+      "dropped_iterations{scenario:webhook}"
+    ],
+    "max_rss_bytes": {
+      "commerce-1": 418918400,
+      "commerce-2": 449548288,
+      "worker-1": 393527296,
+      "worker-2": 370728960,
+      "search": 327344128,
+      "provider": 259993600
+    },
+    "oom_killed": [],
+    "samples": 39,
+    "resource_sample_errors": 0
+  },
+  "measurement_note": "Mixed profile overlapped with a Docker/Maven build on the same host; thresholds failed. Retained as a failed, uncontrolled run, not acceptance evidence."
+}

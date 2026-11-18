@@ -1,0 +1,39 @@
+{
+  "project": "hdls-stage4-validation",
+  "checks": {
+    "initial_search_products": 100000,
+    "payment_retry_webhook_ownership": {
+      "parallel_initiations": 32,
+      "provider_payments": 1,
+      "duplicate_webhooks": 10
+    },
+    "ambiguous_create_reconciled_without_webhook": true,
+    "late_payment_refunded_stock_released_once": true,
+    "failed_payment_expires": true,
+    "payment_expiry_races": {
+      "PAID:SUCCEEDED": 14,
+      "EXPIRED:REFUNDED": 10
+    },
+    "broker_outage_preserves_checkout_and_outbox": true,
+    "search_outage_checkout_and_dlq_replay": {
+      "replayed": 2
+    },
+    "publisher_crash_after_confirm_recovers": true,
+    "consumer_crash_after_external_effect_one_notification": true,
+    "search_rebuild_concurrent_updates_stale_version_and_tombstone": true,
+    "garage_put_get_head_readonly_media_and_orphan_cleanup": true,
+    "unsupported_schema_bounded_retries_dlq": true,
+    "inventory_order_reservation_violations": 0,
+    "search_update_visible_seconds": 1.023,
+    "reconciliation_preserves_trace_id": true,
+    "abandoned_payment_session_becomes_terminal": true
+  },
+  "passed": true,
+  "event_envelope_schema_validated": true,
+  "additional_validation": {
+    "project": "hdls-stage4",
+    "event_envelopes_checked": 2,
+    "reconciliation_trace_id_preserved": true,
+    "abandoned_provider_session_closed": true
+  }
+}

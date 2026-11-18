@@ -1,0 +1,28 @@
+{
+  "flash": {
+    "attempts": 1000,
+    "created": 100,
+    "out_of_stock": 900,
+    "elapsed_seconds": 2.53,
+    "reserved": 100,
+    "wal_bytes": 1108648
+  },
+  "concurrent_retries": {
+    "requests": 64,
+    "orders": 1,
+    "reserved": 1
+  },
+  "multi_sku_atomicity_and_failure_replay": "passed",
+  "opposite_sku_order": "passed",
+  "redis_failure_keeps_catalog_and_checkout": "passed",
+  "concurrent_expiration_once": "passed",
+  "inventory_aggregate_invariant": "passed",
+  "restore": {
+    "dump_bytes": 32307481,
+    "backup_seconds": 1.59,
+    "restore_seconds": 2.96,
+    "fingerprints_match": true,
+    "orders": 200106,
+    "items": 600109
+  }
+}

@@ -38,6 +38,8 @@ class ProductCache {
     private final ObjectMapper json;
     private final ConcurrentHashMap<Long,CompletableFuture<CommerceService.Product>> flights = new ConcurrentHashMap<>();
     private final Semaphore originSlots = new Semaphore(4);
+    @org.springframework.beans.factory.annotation.Value("${cache.origin-wait-ms:100}")
+    private long originWaitMs;
     private final AtomicLong loads=new AtomicLong(),hits=new AtomicLong(),errors=new AtomicLong();
     private volatile long retryAfter;
     ProductCache(StringRedisTemplate redis,ObjectMapper json) { this.redis=redis; this.json=json; }
@@ -66,7 +68,7 @@ class ProductCache {
         }
         boolean acquired=false;
         try {
-            acquired=originSlots.tryAcquire(100,TimeUnit.MILLISECONDS);
+            acquired=originSlots.tryAcquire(originWaitMs,TimeUnit.MILLISECONDS);
             if (!acquired) throw new CommerceService.ApiFailure(503,"CATALOG_BUSY");
             loads.incrementAndGet();
             var product=loader.get();
