@@ -26,6 +26,7 @@ class SearchProjection {
             var req=HttpRequest.newBuilder(URI.create(url+path)).timeout(Duration.ofSeconds(5)).header("Content-Type",path.startsWith("/_bulk")?"application/x-ndjson":"application/json")
                 .method(method,body==null?HttpRequest.BodyPublishers.noBody():HttpRequest.BodyPublishers.ofString(body)).build();
             var response=http.send(req,HttpResponse.BodyHandlers.ofString());
+            if(response.statusCode()==404 && (method.equals("DELETE") || path.endsWith("/_alias"))) return json.createObjectNode();
             if(response.statusCode()/100!=2) throw new IllegalStateException("OpenSearch HTTP "+response.statusCode()+" "+response.body().substring(0,Math.min(200,response.body().length())));
             return json.readTree(response.body());
         } catch(InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException(e); }
@@ -69,13 +70,15 @@ class SearchProjection {
             return db.queryForMap("SELECT id,state,cursor_id AS \"cursorId\",index_name AS \"indexName\" FROM search_rebuilds WHERE state<>'DONE'");
         });
     }
+    private long nextProbe;
     void rebuildStep() {
+        if(System.nanoTime()<nextProbe) return;
         if(db.queryForObject("SELECT count(*) FROM search_rebuilds",Integer.class)==0) requestRebuild();
         var jobs=tx.execute(status -> db.queryForList("""
             WITH picked AS (SELECT id FROM search_rebuilds WHERE state<>'DONE' AND (lease_until IS NULL OR lease_until<clock_timestamp()) ORDER BY created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
             UPDATE search_rebuilds j SET state='RUNNING',lease_until=clock_timestamp()+interval '30 seconds' FROM picked WHERE j.id=picked.id RETURNING j.*
             """));
-        if(jobs.isEmpty()) return;
+        if(jobs.isEmpty()) { nextProbe=System.nanoTime()+Duration.ofSeconds(5).toNanos(); return; }
         var job=jobs.getFirst(); String index=job.get("index_name").toString();
         try {
             if(db.queryForObject("SELECT count(*) FROM search_indexes WHERE name=?",Integer.class,index)==0) {
@@ -97,7 +100,7 @@ class SearchProjection {
                 call("POST","/"+index+"/_refresh","{}");
                 call("POST","/_aliases",events.encode(Map.of("actions",List.of(Map.of("remove",Map.of("index","products-*","alias","products","must_exist",false)),Map.of("add",Map.of("index",index,"alias","products"))))));
                 tx.executeWithoutResult(status -> {
-                    db.update("UPDATE search_indexes SET state='RETIRED' WHERE state='LIVE' AND name<>?",index);
+                    db.update("UPDATE search_indexes SET state='RETIRED',retired_at=now() WHERE state='LIVE' AND name<>?",index);
                     db.update("UPDATE search_indexes SET state='LIVE' WHERE name=?",index);
                     db.update("UPDATE search_rebuilds SET state='DONE',lease_until=NULL WHERE id=?",job.get("id"));
                 });

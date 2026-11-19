@@ -1,2 +1,4 @@
 spring.threads.virtual.enabled: true
 server.shutdown: graceful
+
+management.otlp.tracing.export.enabled: false

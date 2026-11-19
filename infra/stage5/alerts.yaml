@@ -1,0 +1,107 @@
+groups:
+  - name: ecom
+    rules:
+      - record: ecom:request_error_ratio:5m
+        expr: sum(rate(http_server_requests_seconds_count{role=~"commerce|search",uri!~"/actuator.*|/readyz|/livez",status=~"5.."}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{role=~"commerce|search",uri!~"/actuator.*|/readyz|/livez",status=~"2..|5.."}[5m])), 0.001)
+      - record: ecom:request_error_ratio:1h
+        expr: sum(rate(http_server_requests_seconds_count{role=~"commerce|search",uri!~"/actuator.*|/readyz|/livez",status=~"5.."}[1h])) / clamp_min(sum(rate(http_server_requests_seconds_count{role=~"commerce|search",uri!~"/actuator.*|/readyz|/livez",status=~"2..|5.."}[1h])), 0.001)
+      - alert: ApiErrorBudgetBurn
+        expr: ecom:request_error_ratio:5m > 0.0144 and ecom:request_error_ratio:1h > 0.0144
+        for: 1m
+        labels: {severity: critical}
+        annotations: {summary: 'API расходует error budget быстрее 14.4x', runbook: 'docs/runbooks.md#api'}
+      - alert: TargetDown
+        expr: up == 0
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Не удаётся собрать метрики компонента', runbook: 'docs/runbooks.md#dependency'}
+      - alert: ApiLatencyHigh
+        expr: histogram_quantile(0.95, sum by (le,role) (rate(http_server_requests_seconds_bucket{role="commerce",uri!~"/actuator.*|/readyz|/livez"}[5m]))) > 0.2 or histogram_quantile(0.95, sum by (le,role) (rate(http_server_requests_seconds_bucket{role="search",uri!~"/actuator.*|/readyz|/livez"}[5m]))) > 0.3
+        for: 2m
+        labels: {severity: warning}
+        annotations: {summary: 'HTTP p95 приложения превышает SLO', runbook: 'docs/runbooks.md#api'}
+      - alert: EndpointUnavailable
+        expr: probe_success == 0
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'HTTP probe недоступен', runbook: 'docs/runbooks.md#dependency'}
+      - alert: OutboxLag
+        expr: max(ecom_outbox_oldest_seconds) > 60
+        for: 30s
+        labels: {severity: warning}
+        annotations: {summary: 'Outbox старше минуты', runbook: 'docs/runbooks.md#broker'}
+      - alert: OutboxCapacity
+        expr: max(ecom_outbox_pending) > 25000 or max(ecom_outbox_oldest_seconds) > 300
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Приближается ограничение новых заказов', runbook: 'docs/runbooks.md#broker'}
+      - alert: DeadLetterMessages
+        expr: sum(rabbitmq_queue_messages{queue=~".*[.]dlq"}) > 0
+        for: 30s
+        labels: {severity: warning}
+        annotations: {summary: 'Есть сообщения в DLQ', runbook: 'docs/runbooks.md#dlq'}
+      - alert: RefundDelayed
+        expr: max(ecom_refund_oldest_seconds) > 120
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Компенсационный возврат задерживается', runbook: 'docs/runbooks.md#payment'}
+      - alert: ReservationExpiryDelayed
+        expr: max(ecom_expired_reservations) > 0
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: 'Резервы просрочены более 10 с', runbook: 'docs/runbooks.md#worker'}
+      - alert: InventoryInvariant
+        expr: max(ecom_inventory_violations) > 0
+        for: 0s
+        labels: {severity: critical}
+        annotations: {summary: 'Нарушен инвариант запаса', runbook: 'docs/runbooks.md#inventory'}
+      - alert: BusinessMetricsStale
+        expr: time() - max(ecom_last_success_unixtime) > 30
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Бизнес-метрики устарели; состояние неизвестно', runbook: 'docs/runbooks.md#dependency'}
+      - alert: SearchVisibilityDelayed
+        expr: time() - max(ecom_search_canary_last_success_unixtime) > 90
+        for: 30s
+        labels: {severity: warning}
+        annotations: {summary: 'Canary изменения не видны в поиске', runbook: 'docs/runbooks.md#search'}
+      - alert: DatabaseConnections
+        expr: sum(pg_stat_database_numbackends{datname="commerce"}) > 64
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: 'Близок предел 80 соединений PostgreSQL', runbook: 'docs/runbooks.md#database'}
+      - alert: DatabaseUnavailable
+        expr: pg_up == 0
+        for: 10s
+        labels: {severity: critical}
+        annotations: {summary: 'PostgreSQL недоступен exporter', runbook: 'docs/runbooks.md#database'}
+      - alert: RedisUnavailable
+        expr: redis_up == 0
+        for: 30s
+        labels: {severity: warning}
+        annotations: {summary: 'Redis недоступен, работает fallback', runbook: 'docs/runbooks.md#cache'}
+      - alert: WalArchiveFailures
+        expr: increase(pg_stat_archiver_failed_count[5m]) > 0
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Ошибка архивирования WAL', runbook: 'docs/runbooks.md#backup'}
+      - alert: GatewayFailures
+        expr: sum(rate(haproxy_backend_http_responses_total{code="5xx"}[5m])) / clamp_min(sum(rate(haproxy_backend_http_responses_total{code=~"2xx|5xx"}[5m])),0.001) > 0.0144
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: 'Ошибки на gateway, включая отсутствие backend', runbook: 'docs/runbooks.md#api'}
+      - alert: QueueBacklog
+        expr: sum(rabbitmq_queue_messages{queue!~".*[.]dlq"}) > 100
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: 'Растёт backlog потребителей', runbook: 'docs/runbooks.md#worker'}
+      - alert: PaymentStuck
+        expr: max(ecom_payment_oldest_seconds) > 2100
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: 'Платёж не завершился после срока сессии', runbook: 'docs/runbooks.md#payment'}
+      - alert: DiskSpaceLow
+        expr: min(disk_free_bytes / disk_total_bytes) < 0.1
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: 'Мало места в файловой системе Docker VM', runbook: 'docs/runbooks.md#disk'}

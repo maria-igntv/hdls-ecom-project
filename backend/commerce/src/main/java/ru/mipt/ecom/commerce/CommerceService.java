@@ -35,8 +35,9 @@ class CommerceService {
     private String mediaBase;
     private final DomainEvents events;
     private final ReservationService reservations;
-    CommerceService(JdbcTemplate db,NamedParameterJdbcTemplate named,ProductCache cache,ObjectMapper json,DomainEvents events,ReservationService reservations) {
-        this.db=db; this.named=named; this.cache=cache; this.json=json; this.events=events; this.reservations=reservations;
+    private final OutboxAdmission admission;
+    CommerceService(JdbcTemplate db,NamedParameterJdbcTemplate named,ProductCache cache,ObjectMapper json,DomainEvents events,ReservationService reservations,OutboxAdmission admission) {
+        this.db=db; this.named=named; this.cache=cache; this.json=json; this.events=events; this.reservations=reservations; this.admission=admission;
     }
     private Product product(ResultSet r,int n) throws SQLException {
         return new Product(r.getLong("id"),r.getString("sku"),r.getLong("category_id"),r.getString("name"),
@@ -122,6 +123,7 @@ class CommerceService {
             if (!requestHash.equals(old.get("request_hash"))) throw new ApiFailure(409,"IDEMPOTENCY_CONFLICT");
             return new Result(201,decode((String)old.get("checkout_response")));
         }
+        admission.check();
         int inserted=db.update("INSERT INTO idempotency_keys(user_id,key,request_hash) VALUES (?,?,?) ON CONFLICT DO NOTHING",user,key,requestHash);
         if (inserted==0) {
             var old=db.queryForMap("SELECT request_hash,response_status,response_body::text FROM idempotency_keys WHERE user_id=? AND key=?",user,key);

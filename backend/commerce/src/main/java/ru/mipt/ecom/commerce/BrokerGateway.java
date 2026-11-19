@@ -12,6 +12,7 @@ class BrokerGateway {
     final CachingConnectionFactory factory;
     BrokerGateway(@Value("${spring.rabbitmq.host:localhost}") String host,@Value("${spring.rabbitmq.username:commerce}") String user,@Value("${spring.rabbitmq.password:local-rabbit-password}") String password) {
         factory=new CachingConnectionFactory(host); factory.setUsername(user); factory.setPassword(password);
+        factory.getRabbitConnectionFactory().setChannelRpcTimeout(3000);
         factory.setConnectionTimeout(1000); factory.setRequestedHeartBeat(10);
     }
     Channel channel() { return factory.createConnection().createChannel(false); }
@@ -25,7 +26,9 @@ class BrokerGateway {
             if(returned.get()) throw new IllegalStateException("Unroutable message");
         } finally { ch.removeReturnListener(listener); }
     }
-    void declare() throws Exception {
+    private long topologyUntil;
+    synchronized void declare() throws Exception {
+        if(System.nanoTime()<topologyUntil) return;
         try(var ch=channel()) {
             ch.exchangeDeclare("commerce.events","direct",true); ch.exchangeDeclare("commerce.dead","direct",true);
             for(String queue:List.of("search","notifications")) {
@@ -35,7 +38,9 @@ class BrokerGateway {
                 ch.queueBind(queue,"commerce.events",queue.equals("search")?"Product":"Order");
             }
         }
+        topologyUntil=System.nanoTime()+java.time.Duration.ofSeconds(30).toNanos();
     }
+    void invalidateTopology() { topologyUntil=0; }
     int replay(String queue,int limit) throws Exception {
         if(!List.of("search","notifications").contains(queue)) throw new CommerceService.ApiFailure(400,"INVALID_QUEUE");
         int count=0;

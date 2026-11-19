@@ -1,0 +1,259 @@
+{
+  "project": "hdls-stage5-verify",
+  "checks": {
+    "scrapes_up": 16,
+    "dashboard_and_private_scrape_ports": true,
+    "infrastructure_metrics_present": true,
+    "trace_through_outbox_and_rabbit": {
+      "trace_id": "5ea2f04a63ee468f9f8b495634d45732"
+    },
+    "admission_replay_and_critical_payment": true,
+    "retention_keeps_unpublished": true,
+    "failure_commerce-1": {
+      "alert": "TargetDown",
+      "alert_seconds": 33.088,
+      "restart_to_ready_or_drain_seconds": 21.865
+    },
+    "failure_redis": {
+      "alert": "RedisUnavailable",
+      "alert_seconds": 38.15,
+      "restart_to_ready_or_drain_seconds": 0.704
+    },
+    "failure_rabbitmq": {
+      "alert": "OutboxLag",
+      "alert_seconds": 109.151,
+      "restart_to_ready_or_drain_seconds": 4.64
+    },
+    "failure_opensearch": {
+      "alert": "EndpointUnavailable",
+      "alert_seconds": 35.546,
+      "restart_to_ready_or_drain_seconds": 16.743
+    },
+    "failure_postgres": {
+      "alert": "DatabaseUnavailable",
+      "alert_seconds": 23.178,
+      "restart_to_ready_or_drain_seconds": 13.39
+    },
+    "failure_garage": {
+      "alert": "TargetDown",
+      "alert_seconds": 46.244,
+      "restart_to_ready_or_drain_seconds": 7.791
+    },
+    "failure_provider": {
+      "alert": "TargetDown",
+      "alert_seconds": 42.298,
+      "restart_to_ready_or_drain_seconds": 22.507
+    },
+    "inventory_order_invariants": 0,
+    "postgres_crash_durability": {
+      "settings": "on:on",
+      "confirmed_paid_order_survived": true,
+      "idempotent_replay": true,
+      "restart_to_ready_seconds": 4.882
+    }
+  },
+  "failures": {
+    "commerce-1": {
+      "alert": "TargetDown",
+      "alert_seconds": 33.088,
+      "restart_to_ready_or_drain_seconds": 21.865
+    },
+    "redis": {
+      "alert": "RedisUnavailable",
+      "alert_seconds": 38.15,
+      "restart_to_ready_or_drain_seconds": 0.704
+    },
+    "rabbitmq": {
+      "alert": "OutboxLag",
+      "alert_seconds": 109.151,
+      "restart_to_ready_or_drain_seconds": 4.64
+    },
+    "opensearch": {
+      "alert": "EndpointUnavailable",
+      "alert_seconds": 35.546,
+      "restart_to_ready_or_drain_seconds": 16.743
+    },
+    "postgres": {
+      "alert": "DatabaseUnavailable",
+      "alert_seconds": 23.178,
+      "restart_to_ready_or_drain_seconds": 13.39
+    },
+    "garage": {
+      "alert": "TargetDown",
+      "alert_seconds": 46.244,
+      "restart_to_ready_or_drain_seconds": 7.791
+    },
+    "provider": {
+      "alert": "TargetDown",
+      "alert_seconds": 42.298,
+      "restart_to_ready_or_drain_seconds": 22.507
+    }
+  },
+  "read_traffic": {
+    "commerce-1/catalog": {
+      "requests": 5366,
+      "status": {
+        "200": 5269,
+        "503": 97
+      },
+      "max_seconds": 1.006
+    },
+    "commerce-1/search": {
+      "requests": 1075,
+      "status": {
+        "200": 1075
+      },
+      "max_seconds": 0.223
+    },
+    "redis/search": {
+      "requests": 777,
+      "status": {
+        "200": 777
+      },
+      "max_seconds": 0.058
+    },
+    "redis/catalog": {
+      "requests": 3885,
+      "status": {
+        "200": 3885
+      },
+      "max_seconds": 0.191
+    },
+    "rabbitmq/search": {
+      "requests": 2276,
+      "status": {
+        "200": 2276
+      },
+      "max_seconds": 0.203
+    },
+    "rabbitmq/catalog": {
+      "requests": 11379,
+      "status": {
+        "200": 11379
+      },
+      "max_seconds": 0.271
+    },
+    "opensearch/catalog": {
+      "requests": 5229,
+      "status": {
+        "200": 5229
+      },
+      "max_seconds": 0.048
+    },
+    "opensearch/search": {
+      "requests": 1046,
+      "status": {
+        "200": 98,
+        "503": 948
+      },
+      "max_seconds": 0.787
+    },
+    "postgres/catalog": {
+      "requests": 3612,
+      "status": {
+        "200": 1655,
+        "401": 24,
+        "503": 1933
+      },
+      "max_seconds": 1.038
+    },
+    "postgres/search": {
+      "requests": 723,
+      "status": {
+        "200": 723
+      },
+      "max_seconds": 0.109
+    },
+    "garage/catalog": {
+      "requests": 5404,
+      "status": {
+        "200": 5404
+      },
+      "max_seconds": 0.22
+    },
+    "garage/search": {
+      "requests": 1080,
+      "status": {
+        "200": 1080
+      },
+      "max_seconds": 0.12
+    },
+    "provider/catalog": {
+      "requests": 6481,
+      "status": {
+        "200": 6481
+      },
+      "max_seconds": 0.087
+    },
+    "provider/search": {
+      "requests": 1296,
+      "status": {
+        "200": 1296
+      },
+      "max_seconds": 0.081
+    },
+    "recovered/search": {
+      "requests": 2,
+      "status": {
+        "200": 2
+      },
+      "max_seconds": 0.008
+    },
+    "recovered/catalog": {
+      "requests": 7,
+      "status": {
+        "200": 7
+      },
+      "max_seconds": 0.002
+    }
+  },
+  "generator_dropped": 207,
+  "passed": true,
+  "additional_observability": {
+    "scrapes_up": 17,
+    "opensearch_native_metrics": true,
+    "promtool_rule_tests": true
+  },
+  "known_initial_issue": {
+    "public_catalog_401_during_database_outage": 24,
+    "resolved_by": "stage5_followup_results.json",
+    "initial_read_traffic_retained": true
+  },
+  "followup": {
+    "project": "hdls-stage5-verify",
+    "scope": "exception classification and expiry alert after diagnostic run; separate from hourly load",
+    "healthy_bad_credentials_status": 401,
+    "database_outage": {
+      "public": {
+        "statuses": {
+          "503": 32
+        },
+        "codes": {
+          "DATABASE_UNAVAILABLE": 32
+        }
+      },
+      "private": {
+        "statuses": {
+          "503": 32
+        },
+        "codes": {
+          "AUTHENTICATION_UNAVAILABLE": 32
+        }
+      }
+    },
+    "healthy_auth_restored": true,
+    "expiry_alert_detection_seconds": 85.203,
+    "expiry_alert_resolved": true,
+    "invariant_violations": 0,
+    "passed": true
+  },
+  "unit_tests": {
+    "module": "commerce",
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "tool": "Maven verify, JUnit Jupiter / AssertJ / Mockito"
+  },
+  "alert_rule_tests_passed": true
+}

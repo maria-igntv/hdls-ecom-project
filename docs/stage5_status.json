@@ -1,0 +1,29 @@
+{
+  "implementation_ready": true,
+  "load_acceptance_complete": false,
+  "load_rerun_deferred_by_user": true,
+  "latest_measured_hour": "stage5_first_hour_results.json",
+  "latest_generator_probe": "stage5_generator_results.json",
+  "current_generator": {
+    "preallocation_seconds": 0.2,
+    "memory_limit": "2 GiB",
+    "go_memory_limit": "1536 MiB",
+    "requested_primary_rps": 640,
+    "max_vus_unchanged": true,
+    "tested_under_load": false,
+    "preallocated_vus": 219,
+    "max_vus": 1445
+  },
+  "remaining": [
+    "Повторить короткую проверку генератора и затем полный час 640 RPS",
+    "Проверить итоговые пороги, dropped, live client RPS и инварианты",
+    "Сохранить итоговые ресурсные измерения и обновить приемочный статус"
+  ],
+  "configuration_validation": {
+    "compose_valid": true,
+    "k6_inspect_hour_configuration_valid": true,
+    "promtool_rules_passed": true,
+    "python_syntax_valid": true,
+    "load_started_after_deferral": false
+  }
+}

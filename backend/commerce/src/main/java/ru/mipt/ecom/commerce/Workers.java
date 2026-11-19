@@ -13,23 +13,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
-@Profile("worker")
+@Profile("worker & !migrate")
 @EnableScheduling
 class WorkerConfiguration {}
 
 @Component
-@Profile("worker")
+@Profile("worker & !migrate")
 class Workers {
     static final Logger LOG=LoggerFactory.getLogger(Workers.class);
     final JdbcTemplate db; final TransactionTemplate tx; final DomainEvents events; final ObjectMapper json;
     final BrokerGateway broker; final SearchProjection search; final ProviderClient provider; final PaymentService payments;
     final ReservationService reservations; final MediaService media; final boolean demo;
+    final io.micrometer.core.instrument.MeterRegistry meters;
     final Map<String,Channel> consumers=new HashMap<>();
-    Workers(JdbcTemplate db,TransactionTemplate tx,DomainEvents events,ObjectMapper json,BrokerGateway broker,SearchProjection search,ProviderClient provider,PaymentService payments,ReservationService reservations,MediaService media,Environment env) {
+    Workers(JdbcTemplate db,TransactionTemplate tx,DomainEvents events,ObjectMapper json,BrokerGateway broker,SearchProjection search,ProviderClient provider,PaymentService payments,ReservationService reservations,MediaService media,Environment env,io.micrometer.core.instrument.MeterRegistry meters) {
         this.db=db; this.tx=tx; this.events=events; this.json=json; this.broker=broker; this.search=search; this.provider=provider; this.payments=payments; this.reservations=reservations; this.media=media;
+        this.meters=meters;
         demo=env.matchesProfiles("demo");
     }
-    void guard(String name,Runnable task) { try { task.run(); } catch(Exception e) { LOG.warn("{} failed: {}",name,e.toString()); } }
+    void guard(String name,Runnable task) { try { task.run(); } catch(Exception e) { meters.counter("ecom.worker.failures","task",name).increment(); LOG.warn("{} failed: {}",name,e.toString()); } }
     void fault(String name) {
         if(demo && db.update("DELETE FROM demo_faults WHERE name=?",name)>0) Runtime.getRuntime().halt(91);
     }
@@ -37,7 +39,10 @@ class Workers {
     @Scheduled(fixedDelay=1000) void reconcile() { guard("reconcile",payments::reconcileBatch); }
     @Scheduled(fixedDelay=100) void rebuild() { guard("rebuild",search::rebuildStep); }
     @Scheduled(fixedDelay=30000) void orphans() { guard("media cleanup",media::cleanup); }
+    private long nextPublish;
+    private long idleMs=200;
     @Scheduled(fixedDelay=200) void publish() {
+        if(System.nanoTime()<nextPublish) return;
         guard("publisher",()-> {
             try {
                 broker.declare();
@@ -47,18 +52,19 @@ class Workers {
                     UPDATE outbox_events e SET lease_until=clock_timestamp()+interval '30 seconds',attempts=attempts+1
                       FROM picked WHERE e.event_id=picked.event_id RETURNING e.*
                     """));
-                if(rows.isEmpty()) return;
+                if(rows.isEmpty()) { idleMs=Math.min(2000,idleMs*2); nextPublish=System.nanoTime()+idleMs*1000000; return; }
+                idleMs=200;
                 try(var ch=broker.channel()) {
                     for(var row:rows) {
                         Map<String,Object> envelope=new LinkedHashMap<>();
                         for(String key:List.of("event_id","aggregate_id","aggregate_type","aggregate_version","event_type","schema_version","trace_id")) envelope.put(key,row.get(key));
                         envelope.put("occurred_at",((java.sql.Timestamp)row.get("created_at")).toInstant().toString()); envelope.put("payload",json.readTree(row.get("payload").toString()));
-                        BrokerGateway.publish(ch,"commerce.events",row.get("aggregate_type").toString(),events.encode(envelope).getBytes(StandardCharsets.UTF_8),Map.of());
+                        BrokerGateway.publish(ch,"commerce.events",row.get("aggregate_type").toString(),events.encode(envelope).getBytes(StandardCharsets.UTF_8),json.convertValue(json.readTree(row.get("trace_context").toString()),Map.class));
                         fault("publisher_after_confirm");
                         db.update("UPDATE outbox_events SET published_at=clock_timestamp(),lease_until=NULL WHERE event_id=?",row.get("event_id"));
                     }
                 }
-            } catch(Exception e) { throw new IllegalStateException(e); }
+            } catch(Exception e) { broker.invalidateTopology(); nextPublish=System.nanoTime()+2000000000L; throw new IllegalStateException(e); }
         });
     }
     @Scheduled(fixedDelay=2000) synchronized void consumers() {
@@ -76,7 +82,8 @@ class Workers {
     }
     void consume(String queue,Channel ch,Delivery message) {
         long tag=message.getEnvelope().getDeliveryTag();
-        try {
+        var span=events.tracing.consumer(Optional.ofNullable(message.getProperties().getHeaders()).orElse(Map.of()),queue);
+        try(var scope=events.tracing.tracer.withSpan(span)) {
             var event=json.readTree(message.getBody());
             if(event.path("schema_version").asInt()!=1) throw new IllegalArgumentException("Unsupported event schema");
             UUID id=UUID.fromString(event.path("event_id").asText());
@@ -87,14 +94,18 @@ class Workers {
                 fault("consumer_after_effect_"+queue);
                 db.update("INSERT INTO consumer_inbox(consumer,event_id) VALUES(?,?) ON CONFLICT DO NOTHING",queue,id);
             }
+            meters.counter("ecom.consumer.deliveries","queue",queue,"outcome","success").increment();
+            long age=Math.max(0,System.currentTimeMillis()-java.time.Instant.parse(event.path("occurred_at").asText()).toEpochMilli());
+            meters.timer("ecom.event.age","queue",queue).record(age,java.util.concurrent.TimeUnit.MILLISECONDS);
             ch.basicAck(tag,false);
         } catch(Exception error) {
+            meters.counter("ecom.consumer.deliveries","queue",queue,"outcome","failure").increment();
             LOG.warn("Consumer {} failed: {}",queue,error.toString());
             try {
                 long attempts=((Number)Optional.ofNullable(message.getProperties().getHeaders()).orElse(Map.of()).getOrDefault("x-delivery-count",0L)).longValue();
                 if(attempts<5) { Thread.sleep(Math.min(1600,100L<<attempts)+new Random().nextInt(100)); ch.basicNack(tag,false,true); }
                 else ch.basicReject(tag,false);
             } catch(Exception e) { try { ch.close(); } catch(Exception ignored) {} }
-        } finally { MDC.remove("trace_id"); }
+        } finally { span.end(); MDC.remove("trace_id"); }
     }
 }

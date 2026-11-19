@@ -1,0 +1,12 @@
+management:
+  server.port: 9091
+  endpoints.web.exposure.include: health,metrics,prometheus
+  metrics.distribution:
+    percentiles-histogram.http.server.requests: true
+    slo.http.server.requests: 50ms,100ms,200ms,300ms,500ms,1s,2s
+  tracing.sampling.probability: ${TRACE_SAMPLE:0.1}
+  otlp.tracing.export.enabled: true
+  otlp.tracing.endpoint: ${OTLP_TRACES_URL:http://tempo:4318/v1/traces}
+logging.structured.format.console: ecs
+
+spring.application.name: ecom-provider

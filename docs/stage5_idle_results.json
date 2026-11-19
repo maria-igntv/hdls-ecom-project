@@ -1,0 +1,9 @@
+{
+  "migration_version": 6,
+  "legacy_retired_grace_verified": true,
+  "atomic_wal_archived": true,
+  "idle_window_seconds": 30.243,
+  "idle_queries": 633,
+  "idle_queries_per_second": 20.93,
+  "includes": "health, metrics/exporters, canary and scheduler; no user load"
+}

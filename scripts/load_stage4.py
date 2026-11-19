@@ -66,8 +66,8 @@ def profile(name, rate, seconds, image_key, image_bytes, output):
     metric = lambda key: data["metrics"].get(key, {}).get("values", {})
     failures = [key for key, value in data["metrics"].items() if any(not threshold["ok"] for threshold in value.get("thresholds", {}).values())]
     invariant = int(stack.sql("""
-        SELECT (SELECT count(*) FROM inventory WHERE reserved<0 OR reserved>on_hand) +
-          (SELECT count(*) FROM inventory i WHERE reserved<>coalesce((SELECT sum(ri.quantity) FROM reservation_items ri JOIN reservations r ON r.id=ri.reservation_id WHERE ri.product_id=i.product_id AND r.state='ACTIVE'),0)) +
+        WITH active AS (SELECT ri.product_id,sum(ri.quantity) AS qty FROM reservation_items ri JOIN reservations r ON r.id=ri.reservation_id WHERE r.state='ACTIVE' GROUP BY ri.product_id)
+        SELECT (SELECT count(*) FROM inventory i LEFT JOIN active a ON a.product_id=i.product_id WHERE i.reserved<0 OR i.reserved>i.on_hand OR i.reserved<>coalesce(a.qty,0)) +
           (SELECT count(*) FROM orders o JOIN reservations r ON r.order_id=o.id WHERE (o.status='PAID')<>(r.state='CONFIRMED'));
         """))
     assert invariant == 0

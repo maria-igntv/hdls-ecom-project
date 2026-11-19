@@ -1,0 +1,471 @@
+{
+  "name": "hdls-stage5",
+  "services": {
+    "commerce-1": {
+      "image": "hdls-commerce:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "demo,observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces",
+        "OUTBOX_MAX_PENDING": "50000",
+        "OUTBOX_MAX_AGE_SECONDS": "600",
+        "SPRING_FLYWAY_ENABLED": "false"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "commerce-2": {
+      "image": "hdls-commerce:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "demo,observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces",
+        "OUTBOX_MAX_PENDING": "50000",
+        "OUTBOX_MAX_AGE_SECONDS": "600",
+        "SPRING_FLYWAY_ENABLED": "false"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "worker-1": {
+      "image": "hdls-commerce:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "demo,worker,observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces",
+        "OUTBOX_MAX_PENDING": "50000",
+        "OUTBOX_MAX_AGE_SECONDS": "600",
+        "SPRING_MAIN_WEB_APPLICATION_TYPE": "servlet",
+        "CANARY_ENABLED": "true",
+        "SPRING_FLYWAY_ENABLED": "false",
+        "SPRING_APPLICATION_NAME": "ecom-worker"
+      },
+      "mem_limit": "640m",
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "worker-2": {
+      "image": "hdls-commerce:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "demo,worker,observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces",
+        "OUTBOX_MAX_PENDING": "50000",
+        "OUTBOX_MAX_AGE_SECONDS": "600",
+        "SPRING_MAIN_WEB_APPLICATION_TYPE": "servlet",
+        "SPRING_FLYWAY_ENABLED": "false",
+        "SPRING_APPLICATION_NAME": "ecom-worker"
+      },
+      "mem_limit": "640m",
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "provider": {
+      "image": "hdls-provider:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces"
+      },
+      "mem_limit": "512m",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "search": {
+      "image": "hdls-search:stage5",
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "observability",
+        "OTLP_TRACES_URL": "http://tempo:4318/v1/traces"
+      },
+      "mem_limit": "512m",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "postgres": {
+      "command": [
+        "postgres",
+        "-c",
+        "shared_buffers=128MB",
+        "-c",
+        "max_connections=80",
+        "-c",
+        "log_lock_waits=on",
+        "-c",
+        "deadlock_timeout=200ms",
+        "-c",
+        "wal_level=replica",
+        "-c",
+        "archive_mode=on",
+        "-c",
+        "archive_timeout=60s",
+        "-c",
+        "archive_command=test -f /archive/%f || (cp %p /archive/%f.tmp && sync /archive/%f.tmp && mv /archive/%f.tmp /archive/%f && sync /archive)",
+        "-c",
+        "shared_preload_libraries=pg_stat_statements",
+        "-c",
+        "track_io_timing=on"
+      ],
+      "volumes": [
+        "wal-archive:/archive"
+      ],
+      "depends_on": {
+        "archive-init": {
+          "condition": "service_completed_successfully"
+        }
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "archive-init": {
+      "image": "postgres:17-alpine",
+      "user": "0:0",
+      "entrypoint": [
+        "sh",
+        "-c",
+        "chown postgres:postgres /archive && chmod 700 /archive"
+      ],
+      "volumes": [
+        "wal-archive:/archive"
+      ],
+      "mem_limit": "32m",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "haproxy": {
+      "volumes": [
+        "../stage5/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "rabbitmq": {
+      "volumes": [
+        "../stage5/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "garage": {
+      "volumes": [
+        "../stage5/garage.toml:/etc/garage.toml:ro"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "prometheus": {
+      "image": "prom/prometheus:v3.5.0",
+      "mem_limit": "512m",
+      "cpus": 0.5,
+      "ports": [
+        "127.0.0.1:19090:9090"
+      ],
+      "volumes": [
+        "../stage5/prometheus.yaml:/etc/prometheus/prometheus.yml:ro",
+        "../stage5/alerts.yaml:/etc/prometheus/alerts.yaml:ro",
+        "prometheus-data:/prometheus"
+      ],
+      "command": [
+        "--config.file=/etc/prometheus/prometheus.yml",
+        "--storage.tsdb.retention.time=7d",
+        "--storage.tsdb.retention.size=2GB"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "environment": {
+        "GOMEMLIMIT": "384MiB"
+      }
+    },
+    "alertmanager": {
+      "image": "prom/alertmanager:v0.28.1",
+      "mem_limit": "64m",
+      "cpus": 0.5,
+      "ports": [
+        "127.0.0.1:19093:9093"
+      ],
+      "volumes": [
+        "../stage5/alertmanager.yaml:/etc/alertmanager/alertmanager.yml:ro",
+        "alerts-data:/alertmanager"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "grafana": {
+      "image": "grafana/grafana:12.2.1",
+      "mem_limit": "384m",
+      "cpus": 0.5,
+      "ports": [
+        "127.0.0.1:13000:3000"
+      ],
+      "volumes": [
+        "../stage5/grafana/provisioning:/etc/grafana/provisioning:ro",
+        "../stage5/grafana/dashboards:/var/lib/grafana/dashboards:ro",
+        "grafana-data:/var/lib/grafana"
+      ],
+      "environment": {
+        "GF_SECURITY_ADMIN_USER": "admin",
+        "GF_SECURITY_ADMIN_PASSWORD": "local-grafana-password",
+        "GF_USERS_ALLOW_SIGN_UP": "false",
+        "GOMEMLIMIT": "192MiB"
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "tempo": {
+      "image": "grafana/tempo:2.9.0",
+      "mem_limit": "768m",
+      "cpus": 0.5,
+      "ports": [
+        "127.0.0.1:13200:3200"
+      ],
+      "volumes": [
+        "../stage5/tempo.yaml:/etc/tempo.yaml:ro",
+        "tempo-data:/var/tempo"
+      ],
+      "command": [
+        "-config.file=/etc/tempo.yaml"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "environment": {
+        "GOMEMLIMIT": "384MiB"
+      }
+    },
+    "pg-exporter": {
+      "image": "prometheuscommunity/postgres-exporter:v0.18.1",
+      "mem_limit": "64m",
+      "cpus": 0.5,
+      "environment": {
+        "DATA_SOURCE_NAME": "postgresql://commerce:demo-database-only@postgres:5432/commerce?sslmode=disable"
+      },
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "redis-exporter": {
+      "image": "oliver006/redis_exporter:v1.80.1",
+      "mem_limit": "32m",
+      "cpus": 0.5,
+      "command": [
+        "--redis.addr=redis://redis:6379"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "blackbox": {
+      "image": "prom/blackbox-exporter:v0.27.0",
+      "mem_limit": "64m",
+      "cpus": 0.5,
+      "volumes": [
+        "../stage5/blackbox.yaml:/etc/blackbox_exporter/config.yml:ro"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "environment": {
+        "GOMEMLIMIT": "32MiB"
+      }
+    },
+    "k6": {
+      "volumes": [
+        "../../scripts/load_stage5.js:/scripts/load.js:ro"
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "environment": {
+        "GOMEMLIMIT": "1536MiB",
+        "METRIC_WINDOWS": "${METRIC_WINDOWS:-0}",
+        "VU_PREALLOC_SECONDS": "${VU_PREALLOC_SECONDS:-0.2}"
+      },
+      "mem_limit": "2g"
+    },
+    "migrate": {
+      "image": "hdls-commerce:stage5",
+      "command": [
+        "--migrate"
+      ],
+      "environment": {
+        "SPRING_PROFILES_ACTIVE": "demo",
+        "DB_URL": "jdbc:postgresql://postgres:5432/commerce",
+        "DB_USER": "commerce",
+        "DB_PASSWORD": "demo-database-only",
+        "DB_INIT_SQL": "SET statement_timeout='60s'; SET lock_timeout='10s'",
+        "JAVA_TOOL_OPTIONS": "-Xmx256m -XX:ActiveProcessorCount=1"
+      },
+      "depends_on": {
+        "postgres": {
+          "condition": "service_healthy"
+        }
+      },
+      "mem_limit": "512m",
+      "cpus": 1,
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "os-exporter": {
+      "image": "python:3.13-alpine",
+      "command": [
+        "python",
+        "/app/os_exporter.py"
+      ],
+      "volumes": [
+        "../stage5/os_exporter.py:/app/os_exporter.py:ro"
+      ],
+      "mem_limit": "32m",
+      "cpus": 0.25,
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "media": {
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "redis": {
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    },
+    "opensearch": {
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+    }
+  },
+  "volumes": {
+    "wal-archive": {},
+    "prometheus-data": {},
+    "alerts-data": {},
+    "grafana-data": {},
+    "tempo-data": {}
+  }
+}

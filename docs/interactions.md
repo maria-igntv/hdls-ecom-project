@@ -103,7 +103,7 @@ Expiry выполняет до 100 заказов за проход, по отд
 }
 ```
 
-`occurred_at` — время события, а не дата документа. События ProductUpdated/InventoryChanged маршрутизируются по aggregate_type=Product в очередь search, OrderCreated/PaymentSucceeded/OrderExpired — по Order в notifications. Envelope version=1 проверяется перед исполнением; неизвестная версия после ограниченных повторов попадает в DLQ. X-Request-ID UUID проходит через Commerce, платежный адаптер, сохранённый trace провайдера, callback и outbox. Worker устанавливает trace в MDC; централизованную трассировку добавляем в этапе 5.
+`occurred_at` — время события, а не дата документа. События ProductUpdated/InventoryChanged маршрутизируются по aggregate_type=Product в очередь search, OrderCreated/PaymentSucceeded/OrderExpired — по Order в notifications. Envelope version=1 проверяется перед исполнением; неизвестная версия после ограниченных повторов попадает в DLQ. X-Request-ID UUID проходит через Commerce, платежный адаптер, сохранённый trace провайдера, callback и outbox. Worker устанавливает trace в MDC. В этапе 5 добавлена [W3C/OTel трассировка](reliability.md): контекст сохраняется в outbox, проходит через AMQP headers и связывает consumer с исходным HTTP span.
 
 ```mermaid
 sequenceDiagram
@@ -176,3 +176,7 @@ AWS SDK v2 использует Garage endpoint, регион garage, path-style
 - [Garage quick start](https://garagehq.deuxfleurs.fr/documentation/quick-start/) и [конфигурация](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/).
 
 Версии контейнеров/SDK зафиксированы в Compose и pom.xml; проверена фактически используемая часть API. Описание репликации в документации продукта само по себе не доказывает отказоустойчивость локального одноузлового стенда.
+
+## Эксплуатационные ограничения этапа 5
+
+Publisher в простое увеличивает poll 200 мс → 2 с; активная пачка возвращает исходный интервал. Отсутствующий rebuild проверяется раз в 5 с, AMQP topology — не чаще раза в 30 с при здоровом соединении; RPC ограничен 3 с. Cleanup published outbox/inbox после 7 суток не распространяется на unpublished события. Новые checkout ограничены admission; критические payment/refund/release продолжаются. [Надёжность](reliability.md), [runbook](runbooks.md) и [результаты проверок](stage5_verification.md) задают точные границы.

@@ -39,8 +39,12 @@ class CommerceController {
 
 @RestControllerAdvice
 class ErrorHandler {
+    @ExceptionHandler(org.springframework.dao.DataAccessResourceFailureException.class)
+    ResponseEntity<?> unavailable(Exception error) { return ResponseEntity.status(503).body(Map.of("code","DATABASE_UNAVAILABLE")); }
     @ExceptionHandler(CommerceService.ApiFailure.class)
     ResponseEntity<?> business(CommerceService.ApiFailure error) { return ResponseEntity.status(error.status).body(Map.of("code",error.code)); }
+    @ExceptionHandler(software.amazon.awssdk.core.exception.SdkException.class)
+    ResponseEntity<?> media(Exception error) { return ResponseEntity.status(503).body(Map.of("code","MEDIA_UNAVAILABLE")); }
     @ExceptionHandler(org.springframework.dao.TransientDataAccessException.class)
     ResponseEntity<?> busy(Exception error) { return ResponseEntity.status(503).body(Map.of("code","DATABASE_BUSY")); }
 }

@@ -1,0 +1,28 @@
+{
+  "project": "hdls-stage5-verify",
+  "scope": "exception classification and expiry alert after diagnostic run; separate from hourly load",
+  "healthy_bad_credentials_status": 401,
+  "database_outage": {
+    "public": {
+      "statuses": {
+        "503": 32
+      },
+      "codes": {
+        "DATABASE_UNAVAILABLE": 32
+      }
+    },
+    "private": {
+      "statuses": {
+        "503": 32
+      },
+      "codes": {
+        "AUTHENTICATION_UNAVAILABLE": 32
+      }
+    }
+  },
+  "healthy_auth_restored": true,
+  "expiry_alert_detection_seconds": 85.203,
+  "expiry_alert_resolved": true,
+  "invariant_violations": 0,
+  "passed": true
+}

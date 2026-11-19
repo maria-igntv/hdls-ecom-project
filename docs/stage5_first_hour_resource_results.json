@@ -1,0 +1,143 @@
+{
+  "project": "hdls-stage5-verify",
+  "run": "stage5-soak-640-e2a62c22",
+  "business_resource_samples": 439,
+  "manual_samples_in_arrival_window": 28,
+  "sampled_max_stack_memory_bytes_excluding_generator": 4827130101.760001,
+  "sampled_max_stack_memory_bytes_including_generator": 6014791319.552,
+  "containers": {
+    "alertmanager": {
+      "sampled_max_memory_bytes": 31708938.24,
+      "sampled_max_cpu_percent": 14.74,
+      "memory_limit_bytes": 67108864.0,
+      "samples": 467
+    },
+    "blackbox": {
+      "sampled_max_memory_bytes": 33439088.64,
+      "sampled_max_cpu_percent": 10.47,
+      "memory_limit_bytes": 33554432.0,
+      "samples": 467
+    },
+    "commerce-1": {
+      "sampled_max_memory_bytes": 571054489.6,
+      "sampled_max_cpu_percent": 110.7,
+      "memory_limit_bytes": 671088640.0,
+      "samples": 467
+    },
+    "commerce-2": {
+      "sampled_max_memory_bytes": 517052825.6,
+      "sampled_max_cpu_percent": 117.16,
+      "memory_limit_bytes": 671088640.0,
+      "samples": 467
+    },
+    "garage": {
+      "sampled_max_memory_bytes": 33292288.0,
+      "sampled_max_cpu_percent": 38.12,
+      "memory_limit_bytes": 268435456.0,
+      "samples": 467
+    },
+    "grafana": {
+      "sampled_max_memory_bytes": 267596595.2,
+      "sampled_max_cpu_percent": 43.34,
+      "memory_limit_bytes": 268435456.0,
+      "samples": 467
+    },
+    "haproxy": {
+      "sampled_max_memory_bytes": 42960158.72,
+      "sampled_max_cpu_percent": 52.01,
+      "memory_limit_bytes": 134217728.0,
+      "samples": 467
+    },
+    "media": {
+      "sampled_max_memory_bytes": 14659092.48,
+      "sampled_max_cpu_percent": 10.78,
+      "memory_limit_bytes": 67108864.0,
+      "samples": 467
+    },
+    "opensearch": {
+      "sampled_max_memory_bytes": 967311360.0,
+      "sampled_max_cpu_percent": 204.47,
+      "memory_limit_bytes": 1342177280.0,
+      "samples": 467
+    },
+    "os-exporter": {
+      "sampled_max_memory_bytes": 16231956.48,
+      "sampled_max_cpu_percent": 11.12,
+      "memory_limit_bytes": 33554432.0,
+      "samples": 467
+    },
+    "pg-exporter": {
+      "sampled_max_memory_bytes": 19964887.04,
+      "sampled_max_cpu_percent": 36.88,
+      "memory_limit_bytes": 67108864.0,
+      "samples": 467
+    },
+    "postgres": {
+      "sampled_max_memory_bytes": 277662924.8,
+      "sampled_max_cpu_percent": 252.48,
+      "memory_limit_bytes": 805306368.0,
+      "samples": 467
+    },
+    "prometheus": {
+      "sampled_max_memory_bytes": 167981875.2,
+      "sampled_max_cpu_percent": 54.71,
+      "memory_limit_bytes": 536870912.0,
+      "samples": 467
+    },
+    "provider": {
+      "sampled_max_memory_bytes": 294440140.8,
+      "sampled_max_cpu_percent": 50.41,
+      "memory_limit_bytes": 536870912.0,
+      "samples": 467
+    },
+    "rabbitmq": {
+      "sampled_max_memory_bytes": 76860620.8,
+      "sampled_max_cpu_percent": 64.9,
+      "memory_limit_bytes": 536870912.0,
+      "samples": 467
+    },
+    "redis": {
+      "sampled_max_memory_bytes": 61635297.28,
+      "sampled_max_cpu_percent": 28.1,
+      "memory_limit_bytes": 134217728.0,
+      "samples": 467
+    },
+    "redis-exporter": {
+      "sampled_max_memory_bytes": 19849543.68,
+      "sampled_max_cpu_percent": 18.59,
+      "memory_limit_bytes": 33554432.0,
+      "samples": 467
+    },
+    "search": {
+      "sampled_max_memory_bytes": 378745651.2,
+      "sampled_max_cpu_percent": 98.14,
+      "memory_limit_bytes": 536870912.0,
+      "samples": 467
+    },
+    "tempo": {
+      "sampled_max_memory_bytes": 536870912.0,
+      "sampled_max_cpu_percent": 80.88,
+      "memory_limit_bytes": 536870912.0,
+      "samples": 467
+    },
+    "worker-1": {
+      "sampled_max_memory_bytes": 443128217.6,
+      "sampled_max_cpu_percent": 67.51,
+      "memory_limit_bytes": 671088640.0,
+      "samples": 467
+    },
+    "worker-2": {
+      "sampled_max_memory_bytes": 471964057.6,
+      "sampled_max_cpu_percent": 74.1,
+      "memory_limit_bytes": 671088640.0,
+      "samples": 467
+    },
+    "k6": {
+      "sampled_max_memory_bytes": 1304596316.16,
+      "sampled_max_cpu_percent": 316.42,
+      "memory_limit_bytes": 1610612736.0,
+      "samples": 28
+    }
+  },
+  "interpretation": "Sampled Docker working set and CPU; maxima are not necessarily simultaneous; no claim about cloud disk/network or unsampled short peaks. Generator only covered if optional manual snapshots exist."
+}

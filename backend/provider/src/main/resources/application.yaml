@@ -11,3 +11,5 @@ spring:
     schemas: provider
     default-schema: provider
 server.shutdown: graceful
+
+management.otlp.tracing.export.enabled: false

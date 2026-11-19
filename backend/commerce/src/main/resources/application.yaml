@@ -53,3 +53,5 @@ media:
   public-base: ${MEDIA_PUBLIC_BASE:http://localhost:18086}
 
 cache.origin-wait-ms: ${CACHE_ORIGIN_WAIT_MS:100}
+
+management.otlp.tracing.export.enabled: false

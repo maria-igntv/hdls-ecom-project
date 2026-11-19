@@ -1,0 +1,16 @@
+{
+  "project": "hdls-stage5-verify",
+  "recovery_project": "hdls-recovery-b3278c82c0",
+  "restore_point": "ecom_b3278c82c0",
+  "base_backup_verified": true,
+  "base_backup_seconds": 3.981,
+  "target_lsn": "0/29051C20",
+  "restore_to_api_seconds": 17.56,
+  "fingerprints_match": true,
+  "post_target_change_excluded": true,
+  "images_restored": 2,
+  "image_bytes": 240606,
+  "paid_order_http_verified": true,
+  "objects_sha256_match": true,
+  "recovery_scope": "base backup + archived named WAL point + logical immutable objects; isolated primary; derived index/cache restored separately"
+}

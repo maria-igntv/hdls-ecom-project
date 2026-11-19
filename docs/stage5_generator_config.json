@@ -1,0 +1,107 @@
+{
+  "kind": "k6 inspect only; no load functions executed",
+  "configured_primary_rps": 640.0166666666667,
+  "preallocated_vus": 219,
+  "previous_preallocated_vus": 718,
+  "max_vus": 1445,
+  "scenarios": {
+    "card": {
+      "rate": 19635,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 66,
+      "maxVUs": 655
+    },
+    "cartRead": {
+      "rate": 1964,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 66
+    },
+    "cartWrite": {
+      "rate": 842,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 29
+    },
+    "catalogUpdate": {
+      "rate": 35,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "category": {
+      "rate": 8415,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 29,
+      "maxVUs": 281
+    },
+    "checkout": {
+      "rate": 71,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "detail": {
+      "rate": 224,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "history": {
+      "rate": 56,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "imageUpload": {
+      "rate": 1,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "media": {
+      "rate": 161,
+      "timeUnit": "1s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 20,
+      "maxVUs": 100
+    },
+    "payment": {
+      "rate": 63,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "search": {
+      "rate": 7013,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 24,
+      "maxVUs": 234
+    },
+    "stockUpdate": {
+      "rate": 7,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    },
+    "webhook": {
+      "rate": 75,
+      "timeUnit": "1m0s",
+      "duration": "1h0m0s",
+      "preAllocatedVUs": 8,
+      "maxVUs": 10
+    }
+  }
+}

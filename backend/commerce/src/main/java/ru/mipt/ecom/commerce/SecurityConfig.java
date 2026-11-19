@@ -19,6 +19,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @Profile("!worker")
 class SecurityConfig {
+    static org.springframework.security.web.AuthenticationEntryPoint availabilityEntryPoint() {
+        return (request,response,error)-> {
+            boolean unavailable=error instanceof org.springframework.security.authentication.AuthenticationServiceException;
+            response.setStatus(unavailable?503:401);
+            response.setContentType("application/json");
+            if(!unavailable) response.setHeader("WWW-Authenticate","Basic realm=\"ecom\"");
+            response.getWriter().write(unavailable?"{\"code\":\"AUTHENTICATION_UNAVAILABLE\"}":"{\"code\":\"AUTHENTICATION_REQUIRED\"}");
+        };
+    }
     static final class StoreUser extends User {
         final long id;
         StoreUser(long id,String username,String password,String role) {
@@ -34,12 +43,14 @@ class SecurityConfig {
     @Bean SecurityFilterChain security(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable()).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
+                .requestMatchers(r -> r.getLocalPort()==9091 && (r.getRequestURI().equals("/actuator/prometheus") || r.getRequestURI().startsWith("/actuator/health"))).permitAll()
                 .requestMatchers("/api/payments/webhook").permitAll()
                 .requestMatchers("/readyz","/livez","/actuator/health/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/products","/api/products/*").permitAll()
                 .requestMatchers("/api/admin/**","/actuator/**").hasRole("ADMIN")
                 .requestMatchers("/api/cart/**","/api/orders/**").hasRole("BUYER")
                 .anyRequest().authenticated())
-            .httpBasic(Customizer.withDefaults()).build();
+            .httpBasic(b -> b.authenticationEntryPoint(availabilityEntryPoint())).build();
     }
 }

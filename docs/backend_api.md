@@ -1,6 +1,6 @@
 # Запуск транзакционного backend
 
-Полный стенд с оплатой, очередью, поиском и S3 запускается по [инструкции этапа 4](stage4_verification.md). Ниже сохранён минимальный состав этапа 2 для проверки ядра.
+Текущий полный стенд с оплатой, очередью, поиском, S3 и наблюдаемостью запускается по [инструкции этапа 5](stage5_verification.md). Ниже сохранён минимальный состав этапа 2 для проверки ядра.
 
 Реализованы Spring Boot 3.5.16, Java 25, Spring MVC/JDBC/Security, Flyway, PostgreSQL 17 и Redis 7.4. HTTP-стенд доступен только на loopback, использует синтетические Basic-учётные записи demo-profile и не предназначен для публичного эквайринга. Пароли в demo-seed/Compose являются тестовыми фикстурами, а не production secrets.
 
@@ -58,7 +58,7 @@ curl -u buyer-1:demo-buyer-1 -X POST \
 
 Readiness /readyz возвращает 503 во время startup-прогрева, при Spring REFUSING_TRAFFIC и при ошибке SQL. После прогрева и успешной проверки SQL возвращается 200. /livez обслуживает проверку живого HTTP-процесса. HAProxy вводит здоровый сервер постепенно за 60 секунд, Runtime API для локального управления доступен на 127.0.0.1:18084. Модульные тесты выполняются Maven verify при Docker-сборке.
 
-Бизнес-отказы: OUT_OF_STOCK, PRICE_CHANGED, CART_CHANGED, EMPTY_CART, IDEMPOTENCY_CONFLICT и STOCK_BELOW_RESERVED. Они не смешиваются с инфраструктурным 503 DATABASE_BUSY/CATALOG_BUSY. Повтор бизнес-отказа с прежним ключом сохраняет прежний результат в пределах окна; после изменения условий используется новый ключ и актуальная версия корзины.
+Бизнес-отказы: OUT_OF_STOCK, PRICE_CHANGED, CART_CHANGED, EMPTY_CART, IDEMPOTENCY_CONFLICT и STOCK_BELOW_RESERVED. Они не смешиваются с инфраструктурным 503 DATABASE_UNAVAILABLE/DATABASE_BUSY/CATALOG_BUSY. Отказ SQL при проверке Basic credentials возвращает 503 AUTHENTICATION_UNAVAILABLE; неверные credentials при работающей БД — 401. Внутренний ERROR dispatch не переопределяет техническую ошибку как 401. Повтор бизнес-отказа с прежним ключом сохраняет прежний результат в пределах окна; после изменения условий используется новый ключ и актуальная версия корзины.
 
 ## Воспроизводимая проверка
 
@@ -75,3 +75,9 @@ docker compose -f infra/stage2/compose.yaml down
 ```
 
 Без demo-profile создаётся только схема, а тестовые пользователи/пароли не загружаются. Production-подключение требует отдельных учётных данных, защищённого транспорта и выбранного способа регистрации/аутентификации. Один Docker-хост не доказывает отказоустойчивость к потере AZ.
+
+## Эксплуатационный профиль
+
+В этапе 5 Flyway/demo-seed выполняет отдельный migration job до API и workers, с SQL timeout 60 с. Рабочие процессы используют ограничение SQL 2 с и Flyway disabled. Management 9091 доступен только внутри Docker-сети; Prometheus и health endpoints разрешены на этом внутреннем порту. Через публичный API метрики требуют ADMIN.
+
+Новые checkout ограничены admission по outbox: 50 000 pending или возраст 600 с дают 503 OUTBOX_CAPACITY; повтор существующего заказа и завершение оплаты проходят эту защиту. SQL-снимок кэшируется до 5 с. Retention, SLO, traces и восстановление описаны в [надёжности](reliability.md).
